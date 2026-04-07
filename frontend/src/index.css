@@ -1,0 +1,62 @@
+:root {
+  --bg-obsidian: #0d0f12;
+  --accent-neon: #00ffa3;
+  --accent-electric: #00e5ff;
+  --text-main: #f0f0f0;
+  --text-muted: #8892b0;
+  --glass-bg: rgba(20, 24, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Space Grotesk', 'JetBrains Mono', -apple-system, sans-serif;
+  background-color: var(--bg-obsidian);
+  color: var(--text-main);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes staggerIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-stagger {
+  animation: staggerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-neon); }
+
+.markdown-body h1 { font-size: 2.2rem; margin-bottom: 1.5rem; color: #fff; letter-spacing: -0.02em; }
+.markdown-body h2 { font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--accent-neon); border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
+.markdown-body p { margin-bottom: 1.2rem; color: #d1d1d1; line-height: 1.8; }
+.markdown-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+.markdown-body li { margin-bottom: 0.5rem; }
+.markdown-body code { background: rgba(255,255,255,0.08); padding: 0.2rem 0.4rem; border-radius: 6px; color: #ffb86c; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
