@@ -28,11 +28,11 @@ const TreeNodeItem = ({ node, onSelect, activePath }: { node: ContentTreeItem, o
       <div style={{ marginLeft: '10px' }}>
         <div
           onClick={() => setOpen(!open)}
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--text-muted)', padding: '6px 0', fontSize: '0.9rem' }}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--apple-text-secondary)', padding: '6px 0', fontSize: '0.85rem', fontWeight: 500 }}
         >
           {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          <Folder size={14} style={{ margin: '0 8px', opacity: 0.6 }} />
-          <span style={{ fontWeight: open ? 500 : 400 }}>{node.name}</span>
+          <Folder size={14} style={{ margin: '0 8px', opacity: 0.5 }} />
+          <span>{node.name}</span>
         </div>
         {open && node.children?.map((c, i) => <TreeNodeItem key={i} node={c} onSelect={onSelect} activePath={activePath} />)}
       </div>
@@ -46,14 +46,14 @@ const TreeNodeItem = ({ node, onSelect, activePath }: { node: ContentTreeItem, o
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
-        padding: '6px 8px',
+        padding: '6px 10px',
         borderRadius: '8px',
-        backgroundColor: isActive ? 'rgba(0, 255, 163, 0.1)' : 'transparent',
-        transition: 'all 0.2s'
+        backgroundColor: isActive ? 'rgba(0, 113, 227, 0.08)' : 'transparent',
+        transition: 'all 0.15s ease',
       }}
     >
-      <FileText size={14} style={{ margin: '0 8px', color: isActive ? 'var(--accent-neon)' : 'var(--accent-electric)', opacity: 0.8 }} />
-      <span style={{ color: isActive ? 'var(--accent-neon)' : 'var(--text-main)', fontSize: '0.85rem' }}>
+      <FileText size={14} style={{ margin: '0 8px', color: isActive ? 'var(--apple-blue)' : 'var(--apple-text-tertiary)', opacity: 0.7 }} />
+      <span style={{ color: isActive ? 'var(--apple-blue)' : 'var(--apple-text-primary)', fontSize: '0.82rem', fontWeight: isActive ? 500 : 400 }}>
         {node.name.replace('.md', '')}
       </span>
     </div>
@@ -104,54 +104,55 @@ const GlobalSearch = ({
   };
 
   const CATEGORY_COLORS: Record<string, string> = {
-    實體: '#00ffa3',
-    概念: '#00e5ff',
-    摘要: '#ff6b9d',
-    對比: '#ffd93d',
-    綜合: '#c084fc',
-    unknown: '#6b7280',
+    實體: '#34c759',
+    概念: '#0071e3',
+    摘要: '#ff375f',
+    對比: '#ff9500',
+    綜合: '#af52de',
+    unknown: 'var(--apple-text-tertiary)',
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       {/* 搜尋列 */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', width: '100%' }}>
         <div
           style={{
             position: 'relative',
-            backgroundColor: 'rgba(255,255,255,0.05)',
-            border: query ? '1px solid var(--accent-neon)' : '1px solid rgba(255,255,255,0.12)',
-            borderRadius: '16px',
-            boxShadow: query ? '0 0 30px rgba(0,255,163,0.1)' : '0 4px 20px rgba(0,0,0,0.3)',
-            transition: 'all 0.3s',
+            backgroundColor: '#f5f5f7',
+            border: query ? '2px solid var(--apple-blue)' : '1px solid var(--apple-border)',
+            borderRadius: '14px',
+            boxShadow: query ? '0 0 0 4px rgba(0, 113, 227, 0.15), var(--apple-shadow-md)' : 'var(--apple-shadow-sm)',
+            transition: 'all 0.2s ease',
           }}
         >
           <Search
-            size={20}
+            size={18}
             style={{
               position: 'absolute',
-              left: '18px',
+              left: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: query ? 'var(--accent-neon)' : 'rgba(255,255,255,0.3)',
-              transition: 'color 0.3s',
+              color: query ? 'var(--apple-blue)' : 'var(--apple-text-tertiary)',
+              transition: 'color 0.2s ease',
             }}
           />
           <input
             type="text"
-            placeholder="搜尋知識庫中的任何節點..."
+            placeholder="搜尋知識庫..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
             style={{
               width: '100%',
-              padding: '18px 50px 18px 50px',
+              padding: '16px 44px 16px 46px',
               backgroundColor: 'transparent',
               border: 'none',
-              color: 'var(--text-main)',
+              color: 'var(--apple-text-primary)',
               fontSize: '1rem',
               outline: 'none',
               boxSizing: 'border-box',
+              fontFamily: 'var(--apple-font)',
             }}
           />
           {query && (
@@ -160,10 +161,10 @@ const GlobalSearch = ({
               onClick={() => setQuery('')}
               style={{
                 position: 'absolute',
-                right: '16px',
+                right: '14px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: 'rgba(255,255,255,0.3)',
+                color: 'var(--apple-text-tertiary)',
                 cursor: 'pointer',
               }}
             />
@@ -175,12 +176,13 @@ const GlobalSearch = ({
           <div
             style={{
               marginTop: '8px',
-              backgroundColor: 'rgba(13,15,18,0.95)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255,255,255,0.08)',
+              backgroundColor: 'var(--apple-surface)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid var(--apple-border)',
               borderRadius: '12px',
-              maxHeight: '400px',
+              maxHeight: '380px',
               overflowY: 'auto',
+              boxShadow: 'var(--apple-shadow-lg)',
             }}
           >
             {results.map((node) => (
@@ -188,15 +190,15 @@ const GlobalSearch = ({
                 key={node.id}
                 onClick={() => handleSelect(node)}
                 style={{
-                  padding: '12px 16px',
+                  padding: '10px 14px',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
-                  borderBottom: '1px solid rgba(255,255,255,0.04)',
-                  transition: 'background 0.15s',
+                  borderBottom: '1px solid var(--apple-border)',
+                  transition: 'background 0.12s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,255,163,0.05)')}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 113, 227, 0.04)')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
                 <div
@@ -204,29 +206,30 @@ const GlobalSearch = ({
                     width: '8px',
                     height: '8px',
                     borderRadius: '50%',
-                    backgroundColor: CATEGORY_COLORS[node.category] || '#6b7280',
+                    backgroundColor: CATEGORY_COLORS[node.category] || 'var(--apple-text-tertiary)',
                     flexShrink: 0,
                   }}
                 />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: 500 }}>
+                  <div style={{ fontSize: '0.875rem', color: 'var(--apple-text-primary)', fontWeight: 500 }}>
                     {node.name}
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
+                  <div style={{ fontSize: '0.725rem', color: 'var(--apple-text-tertiary)', marginTop: '2px' }}>
                     {node.category} · {node.layer.replace(/\d+_/, '')}
                   </div>
                 </div>
                 <div
                   style={{
                     fontSize: '0.65rem',
-                    color: 'var(--accent-neon)',
-                    backgroundColor: 'rgba(0,255,163,0.1)',
+                    color: 'var(--apple-blue)',
+                    backgroundColor: 'rgba(0, 113, 227, 0.08)',
                     padding: '2px 8px',
                     borderRadius: '10px',
+                    fontWeight: 500,
                     flexShrink: 0,
                   }}
                 >
-                  {node.links} 連結
+                  {node.links}
                 </div>
               </div>
             ))}
@@ -235,55 +238,42 @@ const GlobalSearch = ({
 
         {/* 搜尋無結果 */}
         {query && results.length === 0 && (
-          <div style={{ marginTop: '12px', textAlign: 'center', opacity: 0.4, fontSize: '0.85rem' }}>
-            找不到符合的節點
+          <div style={{ marginTop: '10px', textAlign: 'center', color: 'var(--apple-text-tertiary)', fontSize: '0.875rem' }}>
+            找不到符合的結果
           </div>
         )}
       </div>
 
       {/* 快速統計 */}
       {graphData && !query && (
-        <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '12px',
-            }}
-          >
+        <div style={{ maxWidth: '680px', margin: '0 auto', width: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
             {[
-              { label: '知識節點', value: graphData.nodes.length, color: '#00ffa3' },
-              { label: '關聯連結', value: graphData.links.length, color: '#00e5ff' },
+              { label: '知識節點', value: graphData.nodes.length, color: 'var(--apple-blue)' },
+              { label: '關聯連結', value: graphData.links.length, color: 'var(--apple-teal)' },
               {
                 label: '知識密度',
                 value: graphData.nodes.length > 1
                   ? ((2 * graphData.links.length) / (graphData.nodes.length * (graphData.nodes.length - 1)) * 100).toFixed(2) + '%'
                   : '0%',
-                color: '#ffd93d',
+                color: 'var(--apple-green)',
               },
             ].map((stat) => (
               <div
                 key={stat.label}
                 style={{
-                  backgroundColor: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: '12px',
+                  backgroundColor: 'var(--apple-surface)',
+                  border: '1px solid var(--apple-border)',
+                  borderRadius: '14px',
                   padding: '20px',
                   textAlign: 'center',
+                  boxShadow: 'var(--apple-shadow-sm)',
                 }}
               >
-                <div style={{ fontSize: '1.8rem', fontWeight: 700, color: stat.color, lineHeight: 1 }}>
+                <div style={{ fontSize: '2rem', fontWeight: 700, color: stat.color, lineHeight: 1, letterSpacing: '-0.03em' }}>
                   {stat.value}
                 </div>
-                <div
-                  style={{
-                    fontSize: '0.7rem',
-                    color: 'rgba(255,255,255,0.4)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    marginTop: '6px',
-                  }}
-                >
+                <div style={{ fontSize: '0.7rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '8px', fontWeight: 500 }}>
                   {stat.label}
                 </div>
               </div>
@@ -292,18 +282,10 @@ const GlobalSearch = ({
         </div>
       )}
 
-      {/* 最近瀏覽（如果有的話） */}
+      {/* 最近瀏覽 */}
       {recentlyViewed.length > 0 && !query && (
-        <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%' }}>
-          <h3
-            style={{
-              fontSize: '0.75rem',
-              color: 'rgba(255,255,255,0.4)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              marginBottom: '12px',
-            }}
-          >
+        <div style={{ maxWidth: '680px', margin: '0 auto', width: '100%' }}>
+          <h3 style={{ fontSize: '0.725rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px', fontWeight: 600 }}>
             最近瀏覽
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -315,22 +297,21 @@ const GlobalSearch = ({
                   key={name}
                   onClick={() => handleSelect(node)}
                   style={{
-                    fontSize: '0.8rem',
-                    color: 'rgba(255,255,255,0.6)',
-                    backgroundColor: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '8px',
+                    fontSize: '0.82rem',
+                    color: 'var(--apple-blue)',
+                    backgroundColor: 'rgba(0, 113, 227, 0.06)',
+                    border: '1px solid rgba(0, 113, 227, 0.12)',
+                    borderRadius: '20px',
                     padding: '6px 14px',
                     cursor: 'pointer',
-                    transition: 'all 0.2s',
+                    transition: 'all 0.15s ease',
+                    fontWeight: 500,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--accent-neon)';
-                    e.currentTarget.style.color = 'var(--accent-neon)';
+                    e.currentTarget.style.backgroundColor = 'rgba(0, 113, 227, 0.12)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.6)';
+                    e.currentTarget.style.backgroundColor = 'rgba(0, 113, 227, 0.06)';
                   }}
                 >
                   {name}
@@ -434,19 +415,20 @@ function App() {
     setViewMode('graph');
   }, []);
 
-  // 視圖切換按鈕樣式
+  // 視圖切換按鈕樣式 — Apple UI
   const viewButtonStyle = (mode: ViewMode): React.CSSProperties => ({
     padding: '8px 14px',
-    borderRadius: '8px',
+    borderRadius: '10px',
     border: 'none',
-    backgroundColor: viewMode === mode ? 'rgba(0, 255, 163, 0.15)' : 'rgba(255,255,255,0.05)',
-    color: viewMode === mode ? 'var(--accent-neon)' : 'rgba(255,255,255,0.5)',
+    backgroundColor: viewMode === mode ? 'rgba(0, 113, 227, 0.1)' : 'transparent',
+    color: viewMode === mode ? 'var(--apple-blue)' : 'var(--apple-text-secondary)',
     cursor: 'pointer',
-    fontSize: '0.75rem',
+    fontSize: '0.82rem',
+    fontWeight: viewMode === mode ? 600 : 400,
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
-    transition: 'all 0.2s',
+    gap: '8px',
+    transition: 'all 0.15s ease',
   });
 
   // 預設載入圖譜數據（首頁也需要）
@@ -460,21 +442,22 @@ function App() {
     <div className="app-container">
       {/* 側邊欄 */}
       <aside className="glass-panel animate-stagger" style={{
-        width: viewMode === 'home' ? '260px' : viewMode === 'reader' ? '320px' : '280px',
+        width: viewMode === 'home' ? '260px' : viewMode === 'reader' ? '300px' : '270px',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
+        borderRight: '1px solid var(--apple-border)',
       }}>
-        <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <BrainCircuit size={24} color="var(--accent-neon)" />
+        <div style={{ padding: '1.25rem 1.25rem 1rem', borderBottom: '1px solid var(--apple-border)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <BrainCircuit size={22} color="var(--apple-blue)" />
           <div>
-            <h1 style={{ fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.05em' }}>LLM WIKI</h1>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>DASHBOARD v2.0</div>
+            <h1 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--apple-text-primary)', letterSpacing: '-0.02em' }}>LLM Wiki</h1>
+            <div style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Dashboard v2.0</div>
           </div>
         </div>
 
         {/* 視圖切換 */}
-        <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '4px', borderBottom: '1px solid var(--apple-border)' }}>
           <button onClick={() => setViewMode('home')} style={viewButtonStyle('home')}>
             <Sparkles size={14} />
             首頁
@@ -499,12 +482,12 @@ function App() {
 
         {/* 圖譜篩選控制面板 */}
         {viewMode === 'graph' && graphData && (
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--apple-border)' }}>
+            <div style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
               篩選
             </div>
-            <div style={{ position: 'relative', marginBottom: '8px' }}>
-              <Search size={12} style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+            <div style={{ position: 'relative', marginBottom: '6px' }}>
+              <Search size={12} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--apple-text-tertiary)' }} />
               <input
                 type="text"
                 placeholder="搜尋節點..."
@@ -512,21 +495,22 @@ function App() {
                 onChange={e => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '6px 8px 6px 26px',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '6px',
-                  color: 'rgba(255,255,255,0.8)',
-                  fontSize: '0.75rem',
+                  padding: '7px 8px 7px 28px',
+                  backgroundColor: '#f5f5f7',
+                  border: '1px solid var(--apple-border)',
+                  borderRadius: '8px',
+                  color: 'var(--apple-text-primary)',
+                  fontSize: '0.8rem',
                   outline: 'none',
                   boxSizing: 'border-box',
+                  fontFamily: 'var(--apple-font)',
                 }}
               />
               {searchQuery && (
                 <X
                   size={12}
                   onClick={() => setSearchQuery('')}
-                  style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)', cursor: 'pointer' }}
+                  style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', color: 'var(--apple-text-tertiary)', cursor: 'pointer' }}
                 />
               )}
             </div>
@@ -536,7 +520,7 @@ function App() {
         {/* 首頁模式：顯示快速導航 */}
         {viewMode === 'home' && graphData && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
-            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
               快速導航
             </div>
             {graphData.nodes
@@ -554,30 +538,31 @@ function App() {
                   style={{
                     padding: '8px 10px',
                     cursor: 'pointer',
-                    borderRadius: '6px',
+                    borderRadius: '8px',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
-                    transition: 'background 0.2s',
+                    transition: 'background 0.15s ease',
                     marginBottom: '2px',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,255,163,0.05)')}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 113, 227, 0.06)')}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
                   <div
                     style={{
-                      width: '6px',
-                      height: '6px',
+                      width: '7px',
+                      height: '7px',
                       borderRadius: '50%',
-                      backgroundColor: node.links > 5 ? '#ffd93d' : '#00ffa3',
+                      backgroundColor: node.links > 5 ? 'var(--apple-orange)' : 'var(--apple-green)',
                       flexShrink: 0,
                     }}
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div
                       style={{
-                        fontSize: '0.75rem',
-                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: '0.8rem',
+                        color: 'var(--apple-text-primary)',
+                        fontWeight: 500,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -586,7 +571,7 @@ function App() {
                       {node.name}
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)' }}>{node.links}</span>
+                  <span style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', fontWeight: 500 }}>{node.links}</span>
                 </div>
               ))}
           </div>
@@ -600,19 +585,19 @@ function App() {
         )}
 
         {/* 其他模式顯示簡短統計 */}
-        {viewMode !== 'reader' && graphData && (
+        {viewMode !== 'reader' && viewMode !== 'home' && graphData && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
-            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
               圖譜統計
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ display: 'flex', justifyContent: 'between', fontSize: '0.75rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.5)', flex: 1 }}>節點</span>
-                <span style={{ color: 'var(--accent-neon)', fontWeight: 600 }}>{graphData.nodes.length}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'between', fontSize: '0.8rem' }}>
+                <span style={{ color: 'var(--apple-text-secondary)', flex: 1 }}>節點</span>
+                <span style={{ color: 'var(--apple-blue)', fontWeight: 600 }}>{graphData.nodes.length}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'between', fontSize: '0.75rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.5)', flex: 1 }}>連結</span>
-                <span style={{ color: 'var(--accent-electric)', fontWeight: 600 }}>{graphData.links.length}</span>
+              <div style={{ display: 'flex', justifyContent: 'between', fontSize: '0.8rem' }}>
+                <span style={{ color: 'var(--apple-text-secondary)', flex: 1 }}>連結</span>
+                <span style={{ color: 'var(--apple-teal)', fontWeight: 600 }}>{graphData.links.length}</span>
               </div>
             </div>
           </div>
@@ -620,20 +605,20 @@ function App() {
       </aside>
 
       {/* 主內容區 */}
-      <main className="glass-panel animate-stagger" style={{ flex: 1, display: 'flex', flexDirection: 'column', animationDelay: '0.1s' }}>
+      <main className="glass-panel animate-stagger" style={{ flex: 1, display: 'flex', flexDirection: 'column', animationDelay: '0.08s' }}>
         {graphLoading ? (
-          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '12px', opacity: 0.5 }}>
-            <Sparkles size={32} style={{ animation: 'spin 2s linear infinite' }} />
-            <p style={{ fontSize: '0.8rem' }}>正在解析知識圖譜...</p>
+          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '12px', color: 'var(--apple-text-tertiary)' }}>
+            <Sparkles size={28} style={{ animation: 'spin 2s linear infinite', color: 'var(--apple-blue)' }} />
+            <p style={{ fontSize: '0.875rem', fontWeight: 500 }}>正在解析知識圖譜...</p>
           </div>
         ) : viewMode === 'home' ? (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '3rem' }}>
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <BrainCircuit size={48} color="var(--accent-neon)" style={{ marginBottom: '12px' }} />
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', marginBottom: '8px' }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '2.5rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <BrainCircuit size={40} color="var(--apple-blue)" style={{ marginBottom: '10px' }} />
+              <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--apple-text-primary)', letterSpacing: '-0.03em', marginBottom: '6px' }}>
                 知識庫總覽
               </h2>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>
+              <p style={{ fontSize: '0.938rem', color: 'var(--apple-text-secondary)' }}>
                 搜尋、探索、連結你的知識網絡
               </p>
             </div>
@@ -649,8 +634,8 @@ function App() {
           </div>
         ) : viewMode === 'reader' ? (
           selectedPath ? (
-            <div style={{ flex: 1, overflowY: 'auto', padding: '3rem', maxWidth: '900px' }}>
-              <div style={{ marginBottom: '2rem', fontSize: '0.8rem', color: 'var(--accent-electric)', opacity: 0.5, fontFamily: 'monospace' }}>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '2.5rem 3rem', maxWidth: '860px' }}>
+              <div style={{ marginBottom: '1.5rem', fontSize: '0.75rem', color: 'var(--apple-text-tertiary)', fontFamily: 'var(--apple-mono)' }}>
                 {selectedPath.split('/').slice(-3).join(' / ')}
               </div>
               <div className="markdown-body">
@@ -682,10 +667,10 @@ function App() {
               </div>
             </div>
           ) : (
-            <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.2, textAlign: 'center' }}>
+            <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--apple-text-tertiary)', textAlign: 'center' }}>
               <div>
-                <BrainCircuit size={64} style={{ marginBottom: '1rem' }} />
-                <p>INITIATE KNOWLEDGE RETRIEVAL</p>
+                <BrainCircuit size={48} style={{ marginBottom: '0.75rem', opacity: 0.3 }} />
+                <p style={{ fontSize: '0.875rem', fontWeight: 500 }}>選擇一個知識節點開始閱讀</p>
               </div>
             </div>
           )
@@ -709,9 +694,9 @@ function App() {
             onNodeClick={handleGraphNodeClick}
           />
         ) : (
-          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.3, flexDirection: 'column', gap: '10px' }}>
-            <Network size={48} />
-            <p style={{ fontSize: '0.8rem' }}>加載圖譜數據中...</p>
+          <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--apple-text-tertiary)', flexDirection: 'column', gap: '8px' }}>
+            <Network size={36} opacity={0.4} />
+            <p style={{ fontSize: '0.875rem', fontWeight: 500 }}>加載圖譜數據中...</p>
           </div>
         )}
       </main>

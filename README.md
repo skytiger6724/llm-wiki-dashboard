@@ -1,4 +1,4 @@
-# 🧠 LLM Wiki Dashboard v2.0
+# 🧠 LLM Wiki Dashboard v2.1
 
 > **Compiled Intelligence, Visualized.**
 
@@ -6,8 +6,8 @@ An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired b
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
-![Style](https://img.shields.io/badge/Design-Glassmorphism-purple.svg)
-![Version](https://img.shields.io/badge/Version-2.0-orange.svg)
+![Style](https://img.shields.io/badge/Design-Apple%20UI-blue.svg)
+![Version](https://img.shields.io/badge/Version-2.1-green.svg)
 
 ---
 
@@ -39,11 +39,12 @@ An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired b
 - **Smart Knowledge Jumping**: Automatically parses `[[Double Bracket Links]]` and enables seamless navigation between Entities, Concepts, and Summaries.
 - **Hierarchical Navigation**: Visualizes the four-layer structure (System, Raw, Wiki, Output) with an intuitive sidebar.
 
-### 🎨 Elite Aesthetic (拒绝平庸)
-- **Glassmorphism UI**: Deep obsidian background with heavy blur and subtle borders.
-- **Noise Texture**: A fine film-grain overlay for that high-end "geek" atmosphere.
-- **Staggered Animations**: Fluid entrance effects for every UI element.
-- **Neon Accents**: Neon Vertex (`#00ffa3`) and Electric Pulse (`#00e5ff`) color scheme.
+### 🎨 Apple UI Design System
+- **Clean & Minimal**: Inspired by Apple's design language — SF Pro typography, generous whitespace, subtle shadows.
+- **System Colors**: Apple Blue, Green, Red, Orange, Teal, Purple for consistent semantic coloring.
+- **Apple Typography**: Center-aligned tables with 2pt borders, SF Mono for code blocks, SF Pro Display for headings.
+- **Responsive Interactions**: Smooth hover states, focus rings, and staggered entrance animations.
+- **Markdown Tables**: Center-aligned text, 2pt borders, zebra striping, and hover highlighting.
 
 ---
 
@@ -52,19 +53,22 @@ An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired b
 ```
 llm-wiki-app/
 ├── backend/
-│   ├── server.js              # Express API server
+│   ├── server.js              # Express API server (in-memory graph cache)
 │   ├── precompute-graph.js    # Graph data pre-computation script
+│   ├── graph-data.json        # Pre-computed wikilink graph (gitignored)
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx            # Main app with 5 view modes
+│   │   ├── App.tsx            # Main app with 5 view modes (home, reader, graph, metrics, isolated)
 │   │   ├── graphDataParser.ts # Wikilink → graph data parser
 │   │   ├── types.ts           # TypeScript interfaces
+│   │   ├── index.css          # Apple UI design system (CSS variables + components)
 │   │   └── components/
-│   │       ├── GraphView.tsx       # Force-directed graph
-│   │       ├── DashboardMetrics.tsx # Metrics panel
+│   │       ├── GraphView.tsx       # Force-directed graph visualization
+│   │       ├── DashboardMetrics.tsx # Metrics panel with stats
 │   │       └── IsolatedNodes.tsx   # Disconnected node detector
 │   └── package.json
+├── README.md
 └── CHANGELOG.md
 ```
 
@@ -76,6 +80,7 @@ llm-wiki-app/
 - **Visualization**: `react-force-graph-2d`, D3 Force.
 - **Markdown Engine**: `react-markdown` with `remark-gfm` support.
 - **Backend**: Node.js + Express (Local File System API with pre-computed graph cache).
+- **Design**: Apple UI Design System (CSS custom properties, SF Pro typography, semantic colors).
 
 ---
 
@@ -96,7 +101,7 @@ cd backend && npm install
 cd ../frontend && npm install
 ```
 
-### 3. Pre-compute Graph Data (required for v2.0)
+### 3. Pre-compute Graph Data (required for v2.0+)
 Generate the static graph data JSON to enable fast API responses:
 
 ```bash
@@ -123,13 +128,31 @@ Visit **http://localhost:5173** to initiate knowledge retrieval.
 ## 📊 Knowledge Graph Stats
 
 | Metric | Value |
-|--------|-------|
-| Total Nodes | ~1,035 |
-| Total Links | ~1,211 |
-| Connected Nodes | ~538 |
-| Isolated Nodes | ~497 |
+|:------:|:-----:|
+| Total Nodes | ~1,050 |
+| Total Links | ~1,300+ |
+| Connected Nodes | ~550 |
+| Isolated Nodes | ~500 |
 
-*Stats will vary based on your Wiki content.*
+*Stats will vary based on your Wiki content. Use the Dashboard Metrics panel for real-time numbers.*
+
+---
+
+## 🎨 Design Tokens
+
+| Token | Value | Usage |
+|:------|:------|:------|
+| `--apple-blue` | `#0071e3` | Primary actions, links, active states |
+| `--apple-green` | `#34c759` | Success, Entities category |
+| `--apple-red` | `#ff3b30` | Errors, Summaries category |
+| `--apple-orange` | `#ff9500` | Warnings, Comparisons category |
+| `--apple-teal` | `#5ac8fa` | Links, secondary info |
+| `--apple-purple` | `#af52de` | Synthesis category |
+| `--apple-text-primary` | `#1d1d1f` | Main text |
+| `--apple-text-secondary` | `#6e6e73` | Secondary text |
+| `--apple-text-tertiary` | `#86868b` | Muted text |
+| `--apple-bg` | `#f5f5f7` | Page background |
+| `--apple-surface` | `#ffffff` | Card/panel background |
 
 ---
 

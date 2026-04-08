@@ -9,9 +9,9 @@ interface IsolatedNodesProps {
 }
 
 const REASON_LABELS: Record<IsolatedNode['reason'], { text: string; color: string; icon: any }> = {
-  'no_links': { text: '無連結', color: '#ff6b9d', icon: Unlink },
-  'single_layer': { text: '系統層級', color: '#ffd93d', icon: FileText },
-  'orphan': { text: '孤立摘要', color: '#c084fc', icon: Lightbulb },
+  'no_links': { text: '無連結', color: 'var(--apple-red)', icon: Unlink },
+  'single_layer': { text: '系統層級', color: 'var(--apple-orange)', icon: FileText },
+  'orphan': { text: '孤立摘要', color: 'var(--apple-purple)', icon: Lightbulb },
 };
 
 /**
@@ -74,11 +74,11 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '20px', gap: '16px' }}>
       {/* Header */}
       <div>
-        <h3 style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', fontWeight: 600, marginBottom: '4px' }}>
+        <h3 style={{ fontSize: '0.9rem', color: 'var(--apple-text-primary)', fontWeight: 600, marginBottom: '4px' }}>
           孤立節點檢測
         </h3>
-        <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
-          這些知識節點尚未與其他節點建立連結，可能是待開發的知識領域
+        <p style={{ fontSize: '0.75rem', color: 'var(--apple-text-secondary)' }}>
+          這些知識節點尚未與其他節點建立連結
         </p>
       </div>
 
@@ -92,13 +92,15 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
               fontSize: '0.7rem',
               padding: '4px 10px',
               borderRadius: '20px',
-              border: `1px solid ${filterReason === key ? color : 'rgba(255,255,255,0.15)'}`,
-              backgroundColor: filterReason === key ? `${color}15` : 'transparent',
-              color: filterReason === key ? color : 'rgba(255,255,255,0.5)',
+              border: `1px solid ${filterReason === key ? color : 'var(--apple-border-strong)'}`,
+              backgroundColor: filterReason === key ? `${color}12` : 'transparent',
+              color: filterReason === key ? color : 'var(--apple-text-secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
+              fontFamily: 'var(--apple-font)',
+              fontWeight: 500,
             }}
           >
             {text}
@@ -109,7 +111,7 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
 
       {/* Search */}
       <div style={{ position: 'relative' }}>
-        <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+        <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--apple-text-tertiary)' }} />
         <input
           type="text"
           placeholder="搜尋孤立節點..."
@@ -118,12 +120,13 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
           style={{
             width: '100%',
             padding: '8px 10px 8px 30px',
-            backgroundColor: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            backgroundColor: '#f5f5f7',
+            border: '1px solid var(--apple-border)',
             borderRadius: '8px',
-            color: 'rgba(255,255,255,0.8)',
+            color: 'var(--apple-text-primary)',
             fontSize: '0.8rem',
             outline: 'none',
+            fontFamily: 'var(--apple-font)',
           }}
         />
       </div>
@@ -145,8 +148,8 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
               <div
                 key={node.id}
                 style={{
-                  backgroundColor: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  backgroundColor: 'var(--apple-surface)',
+                  border: '1px solid var(--apple-border)',
                   borderRadius: '10px',
                   overflow: 'hidden',
                 }}
@@ -160,8 +163,8 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
                 >
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)', fontWeight: 500 }}>{node.name}</div>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--apple-text-primary)', fontWeight: 500 }}>{node.name}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--apple-text-tertiary)', marginTop: '2px' }}>
                       {node.category} · {node.layer.replace(/\d+_/, '')}
                     </div>
                   </div>
@@ -182,8 +185,8 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
 
                 {/* Expanded: suggested connections */}
                 {isExpanded && connections.length > 0 && (
-                  <div style={{ padding: '0 12px 12px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', padding: '8px 0 4px' }}>
+                  <div style={{ padding: '0 12px 12px', borderTop: '1px solid var(--apple-border)' }}>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--apple-text-tertiary)', padding: '8px 0 4px', fontWeight: 600 }}>
                       建議關聯節點
                     </div>
                     {connections.map(cn => (
@@ -192,17 +195,17 @@ export const IsolatedNodes = ({ data, onNodeClick, contentCache }: IsolatedNodes
                         onClick={() => onNodeClick(cn)}
                         style={{
                           fontSize: '0.75rem',
-                          color: 'rgba(255,255,255,0.6)',
+                          color: 'var(--apple-text-secondary)',
                           padding: '4px 8px',
                           cursor: 'pointer',
                           borderRadius: '4px',
-                          transition: 'background 0.2s',
+                          transition: 'background 0.15s ease',
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)')}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.04)')}
                         onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                       >
                         {cn.name}
-                        <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', marginLeft: '6px' }}>
+                        <span style={{ fontSize: '0.65rem', color: 'var(--apple-text-tertiary)', marginLeft: '6px' }}>
                           {cn.category}
                         </span>
                       </div>

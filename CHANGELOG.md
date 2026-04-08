@@ -4,6 +4,25 @@ All notable changes to the **LLM Wiki Dashboard** will be documented in this fil
 
 ---
 
+## [2.1.0] - 2026-04-08
+
+### Changed
+- **Apple UI Design System**: Replaced dark glassmorphism/neon theme with clean Apple-inspired design — SF Pro typography, `#f5f5f7` background, white surfaces, semantic system colors.
+- **Table Styling**: All markdown tables now feature center-aligned text and 2pt borders (`border: 2pt solid`).
+- **Sidebar Readability**: Fixed invisible text in "Quick Navigation" section — all colors now use Apple CSS variables (`--apple-text-primary`, `--apple-text-secondary`, `--apple-text-tertiary`).
+- **Component Color Audit**: Updated DashboardMetrics, IsolatedNodes, GraphView, and GlobalSearch to use Apple color tokens consistently.
+- **Tooltip Redesign**: Graph hover tooltips now use white surface with Apple borders and shadows instead of dark neon overlays.
+
+### Design Tokens
+| Before | After |
+|--------|-------|
+| `#0d0f12` obsidian background | `#f5f5f7` Apple gray |
+| `#00ffa3` neon green accent | `#0071e3` Apple blue |
+| Dark glassmorphism panels | White surface cards |
+| Neon glowing borders | Subtle Apple shadows |
+
+---
+
 ## [2.0.0] - 2026-04-08
 
 ### Added

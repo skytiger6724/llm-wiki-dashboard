@@ -12,20 +12,20 @@ interface GraphViewProps {
 
 // 知識層級配色（霓虹風格）
 const CATEGORY_COLORS: Record<string, string> = {
-  '實體': '#00ffa3',
-  '概念': '#00e5ff',
-  '摘要': '#ff6b9d',
-  '對比': '#ffd93d',
-  '綜合': '#c084fc',
-  'unknown': '#6b7280',
+  '實體': '#34c759',
+  '概念': '#0071e3',
+  '摘要': '#ff375f',
+  '對比': '#ff9500',
+  '綜合': '#af52de',
+  'unknown': '#86868b',
 };
 
 const LAYER_GLOW: Record<string, string> = {
-  'System': 'rgba(255, 215, 0, 0.3)',
-  'Raw': 'rgba(0, 229, 255, 0.3)',
-  'Wiki': 'rgba(0, 255, 163, 0.3)',
-  'Output': 'rgba(192, 132, 252, 0.3)',
-  'unknown': 'rgba(107, 114, 128, 0.3)',
+  'System': 'rgba(255, 214, 10, 0.15)',
+  'Raw': 'rgba(90, 200, 250, 0.15)',
+  'Wiki': 'rgba(52, 199, 89, 0.15)',
+  'Output': 'rgba(175, 82, 222, 0.15)',
+  'unknown': 'rgba(134, 134, 139, 0.15)',
 };
 
 export const GraphView = ({ data, onNodeClick, filterCategory, filterLayer, searchQuery }: GraphViewProps) => {
@@ -193,25 +193,26 @@ export const GraphView = ({ data, onNodeClick, filterCategory, filterLayer, sear
             position: 'absolute',
             left: tooltip.x + 15,
             top: tooltip.y - 10,
-            background: 'rgba(13, 15, 18, 0.95)',
+            background: 'var(--apple-surface)',
             backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(0, 255, 163, 0.3)',
-            borderRadius: '8px',
+            border: '1px solid var(--apple-border)',
+            borderRadius: '10px',
             padding: '10px 14px',
             pointerEvents: 'none',
             zIndex: 100,
             minWidth: '150px',
+            boxShadow: 'var(--apple-shadow-md)',
           }}
         >
-          <div style={{ color: '#00ffa3', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>
+          <div style={{ color: 'var(--apple-text-primary)', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>
             {tooltip.node.name}
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+          <div style={{ color: 'var(--apple-text-secondary)', fontSize: '0.75rem' }}>
             <span style={{ color: CATEGORY_COLORS[tooltip.node.category] }}>{tooltip.node.category}</span>
             {' · '}
             {tooltip.node.layer.replace(/\d+_/, '')}
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem', marginTop: '4px' }}>
+          <div style={{ color: 'var(--apple-text-tertiary)', fontSize: '0.7rem', marginTop: '4px' }}>
             連結數: {tooltip.node.links}
           </div>
         </div>

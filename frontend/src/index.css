@@ -1,11 +1,38 @@
 :root {
-  --bg-obsidian: #0d0f12;
-  --accent-neon: #00ffa3;
-  --accent-electric: #00e5ff;
-  --text-main: #f0f0f0;
-  --text-muted: #8892b0;
-  --glass-bg: rgba(20, 24, 30, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Apple UI 色彩系統 */
+  --apple-bg: #f5f5f7;
+  --apple-surface: #ffffff;
+  --apple-text-primary: #1d1d1f;
+  --apple-text-secondary: #6e6e73;
+  --apple-text-tertiary: #86868b;
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --apple-green: #34c759;
+  --apple-orange: #ff9500;
+  --apple-red: #ff3b30;
+  --apple-indigo: #5856d6;
+  --apple-teal: #5ac8fa;
+  --apple-purple: #af52de;
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-border-strong: rgba(0, 0, 0, 0.12);
+  --apple-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --apple-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --apple-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --apple-radius-sm: 8px;
+  --apple-radius-md: 12px;
+  --apple-radius-lg: 16px;
+  --apple-radius-xl: 20px;
+  --apple-font: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --apple-mono: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+
+  /* 保留舊變數相容 */
+  --bg-obsidian: var(--apple-bg);
+  --accent-neon: var(--apple-blue);
+  --accent-electric: var(--apple-teal);
+  --text-main: var(--apple-text-primary);
+  --text-muted: var(--apple-text-secondary);
+  --glass-bg: var(--apple-surface);
+  --glass-border: var(--apple-border);
 }
 
 * {
@@ -15,10 +42,11 @@
 }
 
 body {
-  font-family: 'Space Grotesk', 'JetBrains Mono', -apple-system, sans-serif;
-  background-color: var(--bg-obsidian);
-  color: var(--text-main);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  font-family: var(--apple-font);
+  background-color: var(--apple-bg);
+  color: var(--apple-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   overflow: hidden;
 }
@@ -26,37 +54,253 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
-  padding: 1.5rem;
-  gap: 1.5rem;
+  padding: 1rem;
+  gap: 1rem;
 }
 
+/* Apple UI 面板 */
 .glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  background: var(--apple-surface);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-xl);
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--apple-shadow-lg);
 }
 
 @keyframes staggerIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .animate-stagger {
-  animation: staggerIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: staggerIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-::-webkit-scrollbar { width: 4px; }
+/* Apple UI 捲軸 */
+::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-neon); }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.2); }
 
-.markdown-body h1 { font-size: 2.2rem; margin-bottom: 1.5rem; color: #fff; letter-spacing: -0.02em; }
-.markdown-body h2 { font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--accent-neon); border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
-.markdown-body p { margin-bottom: 1.2rem; color: #d1d1d1; line-height: 1.8; }
-.markdown-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
-.markdown-body li { margin-bottom: 0.5rem; }
-.markdown-body code { background: rgba(255,255,255,0.08); padding: 0.2rem 0.4rem; border-radius: 6px; color: #ffb86c; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+/* =====================================================
+   表格樣式 — Apple UI 風格
+   文字置中對齊、2pt 框線
+   ===================================================== */
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  background: var(--apple-surface);
+  border-radius: var(--apple-radius-md);
+  overflow: hidden;
+  box-shadow: var(--apple-shadow-sm);
+}
+
+.markdown-body thead th {
+  background: var(--apple-bg);
+  color: var(--apple-text-primary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px 16px;
+  border: 2pt solid var(--apple-border-strong);
+  white-space: nowrap;
+}
+
+.markdown-body tbody td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px 16px;
+  border: 2pt solid var(--apple-border);
+  color: var(--apple-text-primary);
+  line-height: 1.5;
+}
+
+.markdown-body tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.markdown-body tbody tr:hover {
+  background-color: rgba(0, 113, 227, 0.04);
+}
+
+.markdown-body tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.015);
+}
+
+.markdown-body tbody tr:nth-child(even):hover {
+  background-color: rgba(0, 113, 227, 0.04);
+}
+
+/* 表格第一欄可選左對齊（適合標籤欄） */
+.markdown-body tbody td:first-child {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* 表格內連結 */
+.markdown-body table a {
+  color: var(--apple-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.markdown-body table a:hover {
+  text-decoration: underline;
+}
+
+/* =====================================================
+   Markdown 內容 — Apple UI 排版
+   ===================================================== */
+
+.markdown-body h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  border-bottom: 1px solid var(--apple-border);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.markdown-body p {
+  margin-bottom: 1rem;
+  color: var(--apple-text-secondary);
+  line-height: 1.7;
+  font-size: 0.938rem;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--apple-text-secondary);
+  font-size: 0.938rem;
+  line-height: 1.7;
+}
+
+.markdown-body li {
+  margin-bottom: 0.35rem;
+}
+
+.markdown-body li::marker {
+  color: var(--apple-text-tertiary);
+}
+
+.markdown-body a {
+  color: var(--apple-blue);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.markdown-body a:hover {
+  color: var(--apple-blue-hover);
+  text-decoration: underline;
+}
+
+.markdown-body code {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  color: var(--apple-indigo);
+  font-family: var(--apple-mono);
+  font-size: 0.85em;
+}
+
+.markdown-body pre {
+  background: #1d1d1f;
+  color: #f5f5f7;
+  padding: 1rem 1.25rem;
+  border-radius: var(--apple-radius-md);
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.markdown-body pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid var(--apple-blue);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: rgba(0, 113, 227, 0.04);
+  border-radius: 0 var(--apple-radius-sm) var(--apple-radius-sm) 0;
+  color: var(--apple-text-secondary);
+  font-style: italic;
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--apple-border);
+  margin: 2rem 0;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: var(--apple-radius-md);
+  box-shadow: var(--apple-shadow-md);
+}
+
+/* =====================================================
+   按鈕 — Apple UI 風格
+   ===================================================== */
+
+button {
+  font-family: var(--apple-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 搜尋輸入 */
+input[type="text"] {
+  font-family: var(--apple-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =====================================================
+   側邊欄樣式覆寫
+   ===================================================== */
+
+aside .glass-panel {
+  background: var(--apple-surface);
+  border-right: 1px solid var(--apple-border);
+}
+
+aside h1 {
+  color: var(--apple-text-primary);
+}
+
+aside div[style*="color: var(--accent-neon)"] {
+  color: var(--apple-blue) !important;
+}
