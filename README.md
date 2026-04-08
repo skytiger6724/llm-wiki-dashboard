@@ -1,16 +1,38 @@
-# 🧠 LLM Wiki Dashboard
+# 🧠 LLM Wiki Dashboard v2.0
 
 > **Compiled Intelligence, Visualized.**
 
-An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired by **Andrej Karpathy's** "Compiling Knowledge" philosophy. This app transforms your local Markdown-based knowledge network into a high-performance, interconnected web experience.
+An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired by **Andrej Karpathy's** "Compiling Knowledge" philosophy. Transforms your local Markdown-based knowledge network into a high-performance, interconnected **knowledge graph** with visualization, metrics, and global search.
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
 ![Style](https://img.shields.io/badge/Design-Glassmorphism-purple.svg)
+![Version](https://img.shields.io/badge/Version-2.0-orange.svg)
 
 ---
 
 ## 🔥 Features
+
+### 🌐 Knowledge Graph Visualization
+- **Force-Directed Graph**: Interactive 2D network layout powered by `react-force-graph-2d` and D3.
+- **Node Coloring**: Color-coded by knowledge category (Entities, Concepts, Summaries, Comparisons, Synthesis).
+- **Glow Effects & Tooltips**: Hover to see node details; links animate with directional particles.
+- **Search & Filter**: Real-time node search, category and layer filtering.
+
+### 📊 Dashboard Metrics
+- **Graph Statistics**: Node count, link count, density, average degree.
+- **Category Distribution**: Visual breakdown of knowledge types.
+- **Top 10 Hubs**: Most connected knowledge nodes ranked by link count.
+
+### 🔗 Isolated Node Detection
+- **Automatic Identification**: Finds disconnected knowledge nodes.
+- **Reason Classification**: No links, single layer, or orphan summary.
+- **Suggested Connections**: Recommends related nodes based on category and keyword matching.
+
+### 🔍 Global Search Homepage
+- **Instant Search**: Find any knowledge node by name or category.
+- **Quick Navigation**: Top 10 hub nodes for fast access.
+- **Knowledge Overview**: Real-time stats on your knowledge network.
 
 ### 🏛️ Karpathy-style Compilation
 - **Direct Local Sync**: Reads directly from your structured `20_LLM_Wiki` directory.
@@ -25,11 +47,35 @@ An advanced, aesthetic dashboard for managing your personal LLM Wiki, inspired b
 
 ---
 
+## 🗂️ Project Structure
+
+```
+llm-wiki-app/
+├── backend/
+│   ├── server.js              # Express API server
+│   ├── precompute-graph.js    # Graph data pre-computation script
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── App.tsx            # Main app with 5 view modes
+│   │   ├── graphDataParser.ts # Wikilink → graph data parser
+│   │   ├── types.ts           # TypeScript interfaces
+│   │   └── components/
+│   │       ├── GraphView.tsx       # Force-directed graph
+│   │       ├── DashboardMetrics.tsx # Metrics panel
+│   │       └── IsolatedNodes.tsx   # Disconnected node detector
+│   └── package.json
+└── CHANGELOG.md
+```
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: React 19, Vite, TypeScript, Lucide Icons.
+- **Visualization**: `react-force-graph-2d`, D3 Force.
 - **Markdown Engine**: `react-markdown` with `remark-gfm` support.
-- **Backend**: Node.js + Express (Local File System API).
+- **Backend**: Node.js + Express (Local File System API with pre-computed graph cache).
 
 ---
 
@@ -50,7 +96,14 @@ cd backend && npm install
 cd ../frontend && npm install
 ```
 
-### 3. Run
+### 3. Pre-compute Graph Data (required for v2.0)
+Generate the static graph data JSON to enable fast API responses:
+
+```bash
+cd backend && node precompute-graph.js
+```
+
+### 4. Run
 Open two terminal windows:
 
 **Terminal 1 (Backend):**
@@ -64,6 +117,24 @@ cd frontend && npm run dev
 ```
 
 Visit **http://localhost:5173** to initiate knowledge retrieval.
+
+---
+
+## 📊 Knowledge Graph Stats
+
+| Metric | Value |
+|--------|-------|
+| Total Nodes | ~1,035 |
+| Total Links | ~1,211 |
+| Connected Nodes | ~538 |
+| Isolated Nodes | ~497 |
+
+*Stats will vary based on your Wiki content.*
+
+---
+
+## 📄 Changelog
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ---
 

@@ -8,6 +8,18 @@ app.use(cors());
 
 const ROOT_DIR = '/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/00_KM_核心知識庫/20_LLM_Wiki';
 
+// 啟動時載入圖譜數據到記憶體，避免每次請求都讀取檔案
+let GRAPH_DATA = null;
+const graphFile = path.join(__dirname, 'graph-data.json');
+if (fs.existsSync(graphFile)) {
+    try {
+        GRAPH_DATA = JSON.parse(fs.readFileSync(graphFile, 'utf-8'));
+        console.log(`📊 圖譜數據已載入: ${GRAPH_DATA.count} 節點`);
+    } catch (e) {
+        console.error('⚠️  圖譜數據載入失敗:', e.message);
+    }
+}
+
 function getTree(dirPath) {
     const items = fs.readdirSync(dirPath);
     const result = [];
@@ -58,6 +70,16 @@ app.get('/api/content', (req, res) => {
         res.send(content);
     } catch (e) {
         res.status(500).json({ error: e.message });
+    }
+});
+
+// 批量獲取所有 Markdown 檔案的 wikilink（用於圖譜分析）
+// 直接返回記憶體中預載的數據
+app.get('/api/all-content', (req, res) => {
+    if (GRAPH_DATA) {
+        res.json(GRAPH_DATA);
+    } else {
+        res.status(503).json({ error: '圖譜數據尚未生成，請執行 precompute-graph.js' });
     }
 });
 
