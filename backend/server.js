@@ -25,7 +25,6 @@ function getTree(dirPath) {
     const items = fs.readdirSync(dirPath);
     const result = [];
     for (const item of items) {
-        // 排除隱藏檔與 Mac 的煩人小怪獸 .DS_Store
         if (item === '.DS_Store' || item.startsWith('.')) continue;
 
         const fullPath = path.join(dirPath, item);
@@ -36,17 +35,21 @@ function getTree(dirPath) {
                 name: item,
                 type: 'dir',
                 path: fullPath,
+                mtime: stat.mtime,
                 children: getTree(fullPath)
             });
         } else if (item.endsWith('.md') || item.endsWith('.txt')) {
             result.push({
                 name: item,
                 type: 'file',
-                path: fullPath
+                path: fullPath,
+                mtime: stat.mtime
             });
         }
     }
-    return result;
+    
+    // 按時間排序：由新到舊 (Newest First)
+    return result.sort((a, b) => b.mtime - a.mtime);
 }
 
 app.get('/api/tree', (req, res) => {

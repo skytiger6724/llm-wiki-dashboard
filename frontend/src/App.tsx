@@ -17,30 +17,50 @@ type ViewMode = 'home' | 'reader' | 'graph' | 'metrics' | 'isolated';
 const TreeNodeItem = ({ node, onSelect, activePath, depth = 0 }: {
   node: ContentTreeItem; onSelect: (p: string) => void; activePath: string | null; depth?: number;
 }) => {
-  const [open, setOpen] = useState(depth === 0);
+  const [open, setOpen] = useState(depth < 2);
   const isActive = activePath === node.path;
-  const displayName = node.name.replace(/^\d+_/, '');
+  const displayName = node.name.replace(/^\d+/, '').replace(/^[_-]+/, '');
 
   if (node.type === 'dir') {
     return (
       <div>
         <div onClick={() => setOpen(!open)} style={{
           cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--apple-text-secondary)',
-          padding: '5px 6px', fontSize: depth === 0 ? '0.82rem' : '0.76rem', fontWeight: depth === 0 ? 600 : 500,
+          padding: '4px 6px', fontSize: depth === 0 ? '0.8rem' : '0.74rem', fontWeight: depth === 0 ? 600 : 500,
           borderRadius: '4px',
         }}
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)')}
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
         >
-          {open ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-          <Folder size={12} style={{ marginRight: '4px', opacity: 0.6 }} />
+          {open ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+          <Folder size={11} style={{ marginRight: '4px', opacity: 0.5 }} />
           {displayName}
         </div>
         {open && node.children?.map((c) => <TreeNodeItem key={c.path} node={c} onSelect={onSelect} activePath={activePath} depth={depth + 1} />)}
       </div>
     );
   }
-  return null; // 不顯示個別檔案
+
+  // 顯示檔案，點擊跳轉閱讀器
+  return (
+    <div
+      onClick={() => onSelect(node.path)}
+      style={{
+        cursor: 'pointer', display: 'flex', alignItems: 'center',
+        padding: '3px 6px', marginLeft: `${depth * 12 + 16}px`,
+        fontSize: '0.72rem', borderRadius: '4px',
+        backgroundColor: isActive ? 'rgba(0,113,227,0.1)' : 'transparent',
+        color: isActive ? 'var(--apple-blue)' : 'var(--apple-text-primary)',
+        fontWeight: isActive ? 600 : 400,
+        transition: 'all 0.12s ease',
+      }}
+      onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)'; }}
+      onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+    >
+      <FileText size={10} style={{ marginRight: '4px', opacity: 0.5, flexShrink: 0 }} />
+      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{displayName}</span>
+    </div>
+  );
 };
 
 // ==================== Changelog 組件 ====================
@@ -172,7 +192,11 @@ function App() {
 
   // 初始化
   useEffect(() => {
-    fetch('http://localhost:3001/api/tree').then(r => r.json()).then(setTree);
+    fetch('http://localhost:3001/api/tree').then(r => r.json()).then((data: ContentTreeItem[]) => {
+      // 過濾掉根目錄的 21_LLM_Wiki_核心知識庫，直接顯示子層
+      const filtered = data.length === 1 && data[0].children ? data[0].children : data;
+      setTree(filtered);
+    });
     fetch('http://localhost:3001/api/km-changelog').then(r => r.json()).then(d => setChangelog(d.entries || []));
   }, []);
 
@@ -249,16 +273,17 @@ function App() {
 
         {/* 首頁模式：目錄式導航 */}
         {viewMode === 'home' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '10px', borderTop: '1px solid var(--apple-border)' }}>
-            <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--apple-text-secondary)', marginBottom: '8px' }}>📂 知識目錄</div>
-            {tree.map((n, i) => <TreeNodeItem key={n.path} node={n} onSelect={() => {}} activePath={null} />)}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '8px', borderTop: '1px solid var(--apple-border)' }}>
+            <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--apple-text-secondary)', marginBottom: '6px', padding: '0 4px' }}>📂 知識目錄</div>
+            {tree.map((n) => <TreeNodeItem key={n.path} node={n} onSelect={(p) => { setSelectedPath(p); setViewMode('reader'); }} activePath={selectedPath} />)}
           </div>
         )}
 
-        {/* 閱讀器模式 */}
+        {/* 閱讀器模式：相同目錄樹 + 當前高亮 */}
         {viewMode === 'reader' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '10px', borderTop: '1px solid var(--apple-border)' }}>
-            {tree.map((n) => <TreeNodeItem key={n.path} node={n} onSelect={() => {}} activePath={null} />)}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '8px', borderTop: '1px solid var(--apple-border)' }}>
+            <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--apple-text-secondary)', marginBottom: '6px', padding: '0 4px' }}>📂 導航</div>
+            {tree.map((n) => <TreeNodeItem key={n.path} node={n} onSelect={(p) => { setSelectedPath(p); setViewMode('reader'); }} activePath={selectedPath} />)}
           </div>
         )}
 
@@ -301,23 +326,168 @@ function App() {
           </div>
         ) : viewMode === 'reader' ? (
           selectedPath ? (
-            <div style={{ padding: '28px', overflowY: 'auto', flex: 1 }}>
-              <div style={{ fontSize: '0.72rem', color: 'var(--apple-text-tertiary)', marginBottom: '14px', paddingBottom: '10px', borderBottom: '1px solid var(--apple-border)' }}>{selectedPath.split('/').slice(-3).join(' / ')}</div>
-              {loading ? <div style={{ textAlign: 'center', padding: '40px', color: 'var(--apple-text-tertiary)' }}>載入中...</div> : (
-                <div className="markdown-content">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
-                    a: ({ href, children }) => {
-                      if (href?.startsWith('wikilink:')) {
-                        const t = href.replace('wikilink:', '');
-                        return <a onClick={() => { const p = findPathByName(t, tree); if (p) setSelectedPath(p); else alert(`找不到: ${t}`); }} style={{ color: 'var(--apple-blue)', cursor: 'pointer', borderBottom: '1px dashed var(--apple-blue)' }}>{children}</a>;
-                      }
-                      return <>{children}</>;
-                    }
-                  }}>{processedContent}</ReactMarkdown>
+            <div style={{ overflowY: 'auto', flex: 1, background: 'var(--apple-bg)' }}>
+              {/* Breadcrumb */}
+              <div style={{
+                position: 'sticky', top: 0, zIndex: 10,
+                background: 'rgba(245,245,247,0.85)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderBottom: '1px solid var(--apple-border)',
+                padding: '12px 48px',
+              }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--apple-text-tertiary)', fontFamily: 'var(--apple-font)', letterSpacing: '0.02em' }}>
+                  {selectedPath.split('/').slice(-3).join('  ›  ')}
                 </div>
-              )}
+              </div>
+
+              {/* Content Area — Apple-style centered layout */}
+              <div style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 48px 80px' }}>
+                {loading ? (
+                  <div style={{ textAlign: 'center', padding: '60px', color: 'var(--apple-text-tertiary)' }}>
+                    <div style={{ fontSize: '1.5rem', marginBottom: '12px', opacity: 0.5 }}>⏳</div>
+                    <div style={{ fontSize: '0.9rem' }}>載入中...</div>
+                  </div>
+                ) : (
+                  <div className="apple-reader">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
+                      h1: ({ children }) => (
+                        <h1 style={{
+                          fontSize: '2rem', fontWeight: 700, lineHeight: 1.2, letterSpacing: '-0.025em',
+                          color: 'var(--apple-text-primary)', marginTop: '0', marginBottom: '8px',
+                          fontFamily: 'var(--apple-font)',
+                        }}>{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 style={{
+                          fontSize: '1.5rem', fontWeight: 600, lineHeight: 1.3, letterSpacing: '-0.02em',
+                          color: 'var(--apple-text-primary)', marginTop: '36px', marginBottom: '12px',
+                          fontFamily: 'var(--apple-font)',
+                        }}>{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 style={{
+                          fontSize: '1.2rem', fontWeight: 600, lineHeight: 1.4, letterSpacing: '-0.015em',
+                          color: 'var(--apple-text-primary)', marginTop: '28px', marginBottom: '8px',
+                          fontFamily: 'var(--apple-font)',
+                        }}>{children}</h3>
+                      ),
+                      h4: ({ children }) => (
+                        <h4 style={{
+                          fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.4,
+                          color: 'var(--apple-text-primary)', marginTop: '24px', marginBottom: '8px',
+                          fontFamily: 'var(--apple-font)',
+                        }}>{children}</h4>
+                      ),
+                      p: ({ children }) => (
+                        <p style={{
+                          fontSize: '0.95rem', lineHeight: 1.75, letterSpacing: '0.01em',
+                          color: 'var(--apple-text-primary)', marginTop: '0', marginBottom: '16px',
+                          fontFamily: 'var(--apple-font)',
+                        }}>{children}</p>
+                      ),
+                      ul: ({ children }) => (
+                        <ul style={{
+                          fontSize: '0.95rem', lineHeight: 1.7, paddingLeft: '24px', marginBottom: '16px',
+                          color: 'var(--apple-text-primary)', fontFamily: 'var(--apple-font)',
+                        }}>{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol style={{
+                          fontSize: '0.95rem', lineHeight: 1.7, paddingLeft: '24px', marginBottom: '16px',
+                          color: 'var(--apple-text-primary)', fontFamily: 'var(--apple-font)',
+                        }}>{children}</ol>
+                      ),
+                      li: ({ children }) => (
+                        <li style={{ marginBottom: '6px' }}>{children}</li>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote style={{
+                          borderLeft: '3px solid var(--apple-blue)', paddingLeft: '20px', margin: '20px 0',
+                          color: 'var(--apple-text-secondary)', fontStyle: 'italic', lineHeight: 1.7,
+                          fontSize: '0.95rem', fontFamily: 'var(--apple-font)',
+                        }}>{children}</blockquote>
+                      ),
+                      code: ({ children }) => (
+                        <code style={{
+                          fontFamily: 'var(--apple-font-mono)', fontSize: '0.85rem',
+                          background: 'rgba(0,0,0,0.05)', padding: '2px 6px', borderRadius: '5px',
+                          color: '#e83e8c',
+                        }}>{children}</code>
+                      ),
+                      pre: ({ children }) => (
+                        <pre style={{
+                          background: '#1d1d1f', color: '#f5f5f7', padding: '20px', borderRadius: '12px',
+                          overflowX: 'auto', marginBottom: '20px', fontSize: '0.85rem', lineHeight: 1.6,
+                          fontFamily: 'var(--apple-font-mono)',
+                        }}>{children}</pre>
+                      ),
+                      table: ({ children }) => (
+                        <div style={{ overflowX: 'auto', margin: '24px 0', borderRadius: '10px', border: '2px solid var(--apple-border)' }}>
+                          <table style={{
+                            width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', lineHeight: 1.6,
+                            fontFamily: 'var(--apple-font)',
+                          }}>{children}</table>
+                        </div>
+                      ),
+                      th: ({ children }) => (
+                        <th style={{
+                          textAlign: 'center', padding: '10px 14px', border: '2px solid var(--apple-border)',
+                          fontWeight: 600, fontSize: '0.8rem', color: 'var(--apple-text-secondary)',
+                          background: 'rgba(0,0,0,0.02)', letterSpacing: '0.02em', textTransform: 'uppercase',
+                        }}>{children}</th>
+                      ),
+                      td: ({ children }) => (
+                        <td style={{
+                          textAlign: 'center', padding: '10px 14px', border: '2px solid var(--apple-border)',
+                          color: 'var(--apple-text-primary)', fontSize: '0.88rem',
+                        }}>{children}</td>
+                      ),
+                      hr: () => (
+                        <hr style={{
+                          border: 'none', borderTop: '1px solid var(--apple-border)',
+                          margin: '32px 0',
+                        }} />
+                      ),
+                      img: ({ src, alt }) => (
+                        <img src={src} alt={alt} style={{
+                          maxWidth: '100%', borderRadius: '12px', margin: '20px 0',
+                          boxShadow: 'var(--shadow-md)',
+                        }} />
+                      ),
+                      a: ({ href, children }) => {
+                        if (href?.startsWith('wikilink:')) {
+                          const t = href.replace('wikilink:', '');
+                          return (
+                            <a onClick={() => { const p = findPathByName(t, tree); if (p) setSelectedPath(p); else alert(`找不到: ${t}`); }}
+                              style={{
+                                color: 'var(--apple-blue)', cursor: 'pointer',
+                                borderBottom: '1px solid rgba(0,113,227,0.3)', textDecoration: 'none',
+                                fontWeight: 500, transition: 'border-color 0.15s ease',
+                              }}
+                              onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--apple-blue)')}
+                              onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,113,227,0.3)')}
+                            >{children}</a>
+                          );
+                        }
+                        return (
+                          <a href={href} style={{ color: 'var(--apple-blue)', textDecoration: 'none', borderBottom: '1px solid rgba(0,113,227,0.3)' }}>{children}</a>
+                        );
+                      },
+                    }}>{processedContent}</ReactMarkdown>
+                  </div>
+                )}
+              </div>
             </div>
-          ) : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}><div style={{ textAlign: 'center', color: 'var(--apple-text-tertiary)' }}><div style={{ fontSize: '3rem', marginBottom: '12px' }}>📖</div><div>選擇一個檔案開始閱讀</div></div></div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--apple-bg)' }}>
+              <div style={{ textAlign: 'center', color: 'var(--apple-text-tertiary)' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.4 }}>📖</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '6px', color: 'var(--apple-text-secondary)' }}>選擇一個檔案開始閱讀</div>
+                <div style={{ fontSize: '0.82rem' }}>從左側目錄中點擊任意檔案</div>
+              </div>
+            </div>
+          )
         ) : viewMode === 'graph' && graphData ? (
           <GraphView nodes={graphData.nodes} links={graphData.links} onNodeClick={handleGraphNodeClick} searchQuery={searchQuery} />
         ) : viewMode === 'metrics' && graphData ? (
