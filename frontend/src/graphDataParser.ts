@@ -1,189 +1,86 @@
-import type { TreeNode, GraphNode, GraphLink, GraphData } from './types';
+export interface GraphNode {
+  name: string;
+  category: string;
+  layer: string;
+  path: string;
+  links: number;
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  index?: number;
+  id?: string;
+}
 
-export type { GraphNode, GraphLink, GraphData };
+export interface GraphLink {
+  source: string;
+  target: string;
+  strength?: number;
+}
 
-export interface IsolatedNode {
-  node: GraphNode;
-  reason: 'no_links' | 'single_layer' | 'orphan';
+export interface GraphData {
+  nodes: GraphNode[];
+  links: GraphLink[];
+  wikilinks: Record<string, string[]>;
+  count: number;
+  totalWikilinks: number;
 }
 
 /**
- * 判斷檔案所屬的知識層級與分類
- */
-function categorizeNode(filePath: string): { layer: string; category: string } {
-  const parts = filePath.split('/');
-  const wikiIndex = parts.findIndex(p => p === '20_LLM_Wiki');
-  if (wikiIndex === -1) return { layer: 'unknown', category: 'unknown' };
-
-  const subPath = parts.slice(wikiIndex + 1);
-  const layer = subPath[0]?.replace(/\d+_/, '') || 'unknown';
-  const category = subPath[1]?.replace(/\d+_/, '') || 'unknown';
-
-  return { layer, category };
-}
-
-/**
- * 從 Markdown 內容中提取 [[wikilink]] 目標
- */
-export function extractWikiLinks(content: string): string[] {
-  const regex = /\[\[(.*?)(?:\|(.*?))?\]\]/g;
-  const links: string[] = [];
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    links.push(match[1].trim());
-  }
-  return [...new Set(links)]; // 去重
-}
-
-/**
- * 從樹狀結構和 wikilink 數據构建圖譜數據
- * wikilinkCache: { fileName: [linkTarget1, linkTarget2, ...] }
+ * 從 API 回應建立圖譜數據
+ * 按照 Karpathy LLM Wiki 邏輯：
+ * - wikilinks 是核心關聯數據
+ * - 連結計數反映節點的知識密度
  */
 export async function buildGraphData(
-  tree: TreeNode[],
-  wikilinkCache: Record<string, string[]>
+  tree: any[],
+  _wikilinks: Record<string, string[]>
 ): Promise<GraphData> {
-  const nodeMap = new Map<string, GraphNode>();
-  const linkMap = new Map<string, Map<string, number>>();
-
-  // 先建立所有 Markdown 檔案為節點
-  function traverseNodes(nodes: TreeNode[]) {
-    for (const node of nodes) {
-      if (node.type === 'file' && node.name.endsWith('.md')) {
-        const name = node.name.replace('.md', '');
-        const { layer, category } = categorizeNode(node.path);
-        nodeMap.set(name.toLowerCase(), {
-          id: name,
-          name,
-          category,
-          layer,
-          links: 0,
-          val: 1,
-          path: node.path,
-        });
-        linkMap.set(name.toLowerCase(), new Map());
-      }
-      if (node.children) traverseNodes(node.children);
-    }
+  // 從 API 獲取完整圖譜數據
+  try {
+    const res = await fetch('http://localhost:3001/api/all-content');
+    const json = await res.json();
+    return {
+      nodes: json.nodes || [],
+      links: json.links || [],
+      wikilinks: json.wikilinks || {},
+      count: json.count || 0,
+      totalWikilinks: json.totalWikilinks || 0,
+    };
+  } catch (e) {
+    console.error('圖譜數據加載失敗:', e);
+    return { nodes: [], links: [], wikilinks: {}, count: 0, totalWikilinks: 0 };
   }
-  traverseNodes(tree);
-
-  // 從 wikilink 緩存建立邊
-  for (const [fileName, targets] of Object.entries(wikilinkCache)) {
-    const sourceKey = fileName.toLowerCase();
-    if (!linkMap.has(sourceKey)) continue;
-
-    const sourceLinks = linkMap.get(sourceKey)!;
-
-    for (const target of targets) {
-      const targetKey = target.toLowerCase();
-      if (nodeMap.has(targetKey)) {
-        sourceLinks.set(targetKey, (sourceLinks.get(targetKey) || 0) + 1);
-      }
-    }
-  }
-
-  // 計算每個節點的連結數
-  for (const [sourceKey, targets] of linkMap.entries()) {
-    const sourceNode = nodeMap.get(sourceKey);
-    if (sourceNode) {
-      sourceNode.links += targets.size;
-      sourceNode.val = Math.max(1, Math.min(5, 1 + targets.size * 0.5));
-    }
-  }
-
-  // 建立邊列表（含強度）
-  const links: GraphLink[] = [];
-  const processedPairs = new Set<string>();
-
-  for (const [sourceKey, targets] of linkMap.entries()) {
-    for (const [targetKey, strength] of targets.entries()) {
-      const pairKey = [sourceKey, targetKey].sort().join('|||');
-      if (processedPairs.has(pairKey)) continue;
-      processedPairs.add(pairKey);
-
-      // 檢查是否有反向連結（增加強度）
-      const reverseStrength = linkMap.get(targetKey)?.get(sourceKey) || 0;
-      const finalStrength = strength + reverseStrength;
-
-      links.push({
-        source: nodeMap.get(sourceKey)!.id,
-        target: nodeMap.get(targetKey)!.id,
-        strength: finalStrength,
-      });
-    }
-  }
-
-  return {
-    nodes: Array.from(nodeMap.values()),
-    links,
-  };
 }
 
 /**
- * 識別孤立節點
+ * 計算知識密度指標
+ * 基於 Metcalfe's Law 和實際連結數
  */
-export function findIsolatedNodes(graphData: GraphData): IsolatedNode[] {
-  const connectedNodes = new Set<string>();
-  for (const link of graphData.links) {
-    connectedNodes.add(typeof link.source === 'string' ? link.source : link.source.id);
-    connectedNodes.add(typeof link.target === 'string' ? link.target : link.target.id);
-  }
+export function computeKnowledgeDensity(graphData: GraphData): {
+  density: number;
+  avgLinks: number;
+  maxLinks: number;
+  isolated: number;
+  hubs: GraphNode[];
+} {
+  const n = graphData.nodes.length;
+  const e = graphData.links.length;
+  const maxPossible = n * (n - 1);
+  const density = maxPossible > 0 ? (2 * e / maxPossible) * 100 : 0;
+  const avgLinks = n > 0 ? e / n : 0;
+  const maxLinks = Math.max(...graphData.nodes.map((node) => node.links || 0), 0);
+  const isolated = graphData.nodes.filter((node) => node.links === 0).length;
 
-  return graphData.nodes
-    .filter(node => !connectedNodes.has(node.id))
-    .map(node => {
-      let reason: IsolatedNode['reason'] = 'no_links';
-      if (node.layer === '01_System') reason = 'single_layer';
-      else if (node.category === 'Summaries') reason = 'orphan';
-      return { node, reason };
-    });
-}
+  // 知識中心（連結數 > avg + 1std）
+  const stdDev =
+    n > 0
+      ? Math.sqrt(graphData.nodes.reduce((sum, node) => sum + Math.pow((node.links || 0) - avgLinks, 2), 0) / n)
+      : 0;
+  const hubs = graphData.nodes
+    .filter((node) => (node.links || 0) > avgLinks + stdDev)
+    .sort((a, b) => (b.links || 0) - (a.links || 0))
+    .slice(0, 10);
 
-/**
- * 計算圖譜統計指標
- */
-export function computeGraphMetrics(graphData: GraphData) {
-  const { nodes, links } = graphData;
-  const totalNodes = nodes.length;
-  const totalLinks = links.length;
-  const density = totalNodes > 1 ? (2 * totalLinks) / (totalNodes * (totalNodes - 1)) : 0;
-
-  // 分類統計
-  const categoryCount: Record<string, number> = {};
-  for (const node of nodes) {
-    categoryCount[node.category] = (categoryCount[node.category] || 0) + 1;
-  }
-
-  // 層級統計
-  const layerCount: Record<string, number> = {};
-  for (const node of nodes) {
-    layerCount[node.layer] = (layerCount[node.layer] || 0) + 1;
-  }
-
-  // 平均度
-  const avgDegree = totalNodes > 0 ? (2 * totalLinks) / totalNodes : 0;
-
-  // 最大度節點
-  const sortedByDegree = [...nodes].sort((a, b) => b.links - a.links);
-  const topNodes = sortedByDegree.slice(0, 10);
-
-  // 孤立節點數
-  const connectedNodes = new Set<string>();
-  for (const link of links) {
-    connectedNodes.add(typeof link.source === 'string' ? link.source : link.source.id);
-    connectedNodes.add(typeof link.target === 'string' ? link.target : link.target.id);
-  }
-  const isolatedCount = totalNodes - connectedNodes.size;
-
-  return {
-    totalNodes,
-    totalLinks,
-    density,
-    avgDegree,
-    categoryCount,
-    layerCount,
-    topNodes,
-    isolatedCount,
-  };
+  return { density, avgLinks, maxLinks, isolated, hubs };
 }

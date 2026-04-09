@@ -1,17 +1,14 @@
 {
-  "name": "backend",
+  "name": "llm-wiki-app-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "LLM Wiki App Backend",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "precompute": "node precompute-graph.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   }
 }

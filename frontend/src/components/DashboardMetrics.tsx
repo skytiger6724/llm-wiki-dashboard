@@ -1,185 +1,75 @@
-import { useMemo } from 'react';
-import { computeGraphMetrics } from '../graphDataParser';
-import type { GraphData } from '../types';
-import { BarChart3, Network, GitBranch, AlertTriangle, TrendingUp, Layers } from 'lucide-react';
+export function DashboardMetrics({ nodes, links }: { nodes: any[]; links: any[] }) {
+  const n = nodes.length;
+  const e = links.length;
+  const density = n > 1 ? ((2 * e) / (n * (n - 1)) * 100).toFixed(3) : '0';
+  const avgLinks = n > 0 ? (e / n).toFixed(1) : '0';
+  const maxLinks = Math.max(...nodes.map(node => node.links || 0), 0);
+  const isolated = nodes.filter(node => node.links === 0).length;
+  const topNodes = [...nodes].sort((a, b) => (b.links || 0) - (a.links || 0)).slice(0, 15);
 
-interface DashboardMetricsProps {
-  data: GraphData;
-  onCategoryClick?: (category: string) => void;
-  onLayerClick?: (layer: string) => void;
-}
-
-const MetricCard = ({ icon: Icon, label, value, subtext, accentColor }: {
-  icon: any; label: string; value: string | number; subtext?: string; accentColor: string;
-}) => (
-  <div style={{
-    background: 'var(--apple-surface)',
-    border: '1px solid var(--apple-border)',
-    borderRadius: '14px',
-    padding: '16px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    boxShadow: 'var(--apple-shadow-sm)',
-  }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <Icon size={14} color={accentColor} />
-      <span style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
-        {label}
-      </span>
-    </div>
-    <div style={{ fontSize: '1.75rem', fontWeight: 700, color: accentColor, lineHeight: 1, letterSpacing: '-0.03em' }}>
-      {value}
-    </div>
-    {subtext && (
-      <div style={{ fontSize: '0.7rem', color: 'var(--apple-text-tertiary)' }}>{subtext}</div>
-    )}
-  </div>
-);
-
-const CATEGORY_COLORS: Record<string, string> = {
-  '實體': '#34c759',
-  '概念': '#0071e3',
-  '摘要': '#ff375f',
-  '對比': '#ff9500',
-  '綜合': '#af52de',
-  'unknown': '#86868b',
-};
-
-export const DashboardMetrics = ({ data, onCategoryClick, onLayerClick }: DashboardMetricsProps) => {
-  const metrics = useMemo(() => computeGraphMetrics(data), [data]);
+  const catCounts: Record<string, number> = {};
+  nodes.forEach(node => { const c = node.category || 'unknown'; catCounts[c] = (catCounts[c] || 0) + 1; });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px', overflowY: 'auto', height: '100%' }}>
-      {/* 核心指標 */}
-      <div>
-        <h3 style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px', fontWeight: 600 }}>
-          知識圖譜概覽
-        </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-          <MetricCard
-            icon={Network}
-            label="節點總數"
-            value={metrics.totalNodes}
-            subtext={`密度: ${metrics.density.toFixed(4)}`}
-            accentColor="var(--apple-blue)"
-          />
-          <MetricCard
-            icon={GitBranch}
-            label="連結總數"
-            value={metrics.totalLinks}
-            subtext={`平均度: ${metrics.avgDegree.toFixed(2)}`}
-            accentColor="var(--apple-teal)"
-          />
-          <MetricCard
-            icon={TrendingUp}
-            label="最高連結節點"
-            value={metrics.topNodes[0]?.name || '-'}
-            subtext={`${metrics.topNodes[0]?.links || 0} 個連結`}
-            accentColor="var(--apple-orange)"
-          />
-          <MetricCard
-            icon={AlertTriangle}
-            label="孤立節點"
-            value={metrics.isolatedCount}
-            subtext="待關聯知識"
-            accentColor="var(--apple-red)"
-          />
+    <div style={{ padding: '24px', overflowY: 'auto', height: '100%' }}>
+      <h2 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '20px' }}>📊 知識密度儀表板</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
+        {[
+          { label: '知識節點', value: n, color: 'var(--apple-blue)' },
+          { label: '關聯連結', value: e, color: 'var(--apple-teal)' },
+          { label: '知識密度', value: `${density}%`, color: 'var(--apple-green)' },
+          { label: '平均連結', value: avgLinks, color: 'var(--apple-purple)' },
+        ].map(s => (
+          <div key={s.label} style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '16px', textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 700, color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: '0.72rem', color: 'var(--apple-text-secondary)', marginTop: '4px' }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+        <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--apple-blue)' }}>{maxLinks}</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--apple-text-secondary)' }}>最高連結數</div>
+        </div>
+        <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--apple-orange)' }}>{isolated}</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--apple-text-secondary)' }}>孤立節點</div>
+        </div>
+        <div style={{ background: 'white', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--apple-green)' }}>{Object.keys(catCounts).length}</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--apple-text-secondary)' }}>類別數</div>
         </div>
       </div>
-
-      {/* 分類分佈 */}
-      <div>
-        <h3 style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Layers size={13} />
-          分類分佈
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {Object.entries(metrics.categoryCount).sort((a, b) => b[1] - a[1]).map(([cat, count]) => {
-            const pct = metrics.totalNodes > 0 ? (count / metrics.totalNodes) * 100 : 0;
-            const color = CATEGORY_COLORS[cat] || '#86868b';
-            return (
-              <div
-                key={cat}
-                onClick={() => onCategoryClick?.(cat)}
-                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 0' }}
-              >
-                <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
-                <span style={{ fontSize: '0.82rem', color: 'var(--apple-text-secondary)', flex: 1 }}>{cat}</span>
-                <div style={{ width: '80px', height: '4px', backgroundColor: 'rgba(0,0,0,0.06)', borderRadius: '2px', overflow: 'hidden' }}>
-                  <div style={{ width: `${pct}%`, height: '100%', backgroundColor: color, borderRadius: '2px' }} />
-                </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--apple-text-tertiary)', minWidth: '28px', textAlign: 'right', fontWeight: 500 }}>{count}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 層級分佈 */}
-      <div>
-        <h3 style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <BarChart3 size={13} />
-          層級分佈
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {Object.entries(metrics.layerCount).sort((a, b) => b[1] - a[1]).map(([layer, count]) => {
-            const pct = metrics.totalNodes > 0 ? (count / metrics.totalNodes) * 100 : 0;
-            return (
-              <div
-                key={layer}
-                onClick={() => onLayerClick?.(layer)}
-                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', padding: '6px 0' }}
-              >
-                <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#af52de', flexShrink: 0 }} />
-                <span style={{ fontSize: '0.82rem', color: 'var(--apple-text-secondary)', flex: 1 }}>{layer}</span>
-                <div style={{ width: '80px', height: '4px', backgroundColor: 'rgba(0,0,0,0.06)', borderRadius: '2px', overflow: 'hidden' }}>
-                  <div style={{ width: `${pct}%`, height: '100%', backgroundColor: '#af52de', borderRadius: '2px' }} />
-                </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--apple-text-tertiary)', minWidth: '28px', textAlign: 'right', fontWeight: 500 }}>{count}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Top 10 Hub 節點 */}
-      <div>
-        <h3 style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px', fontWeight: 600 }}>
-          Top 10 知識樞紐
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          {metrics.topNodes.map((node, i) => (
-            <div
-              key={node.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '6px 10px',
-                backgroundColor: i === 0 ? 'rgba(255, 149, 0, 0.06)' : 'transparent',
-                borderRadius: '8px',
-              }}
-            >
-              <span style={{ fontSize: '0.675rem', color: 'var(--apple-text-tertiary)', minWidth: '18px', fontWeight: 500 }}>
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span style={{ fontSize: '0.82rem', color: 'var(--apple-text-primary)', flex: 1, fontWeight: i < 3 ? 500 : 400 }}>{node.name}</span>
-              <span style={{
-                fontSize: '0.65rem',
-                color: CATEGORY_COLORS[node.category],
-                backgroundColor: `${CATEGORY_COLORS[node.category]}12`,
-                padding: '2px 8px',
-                borderRadius: '6px',
-                fontWeight: 500,
-              }}>
-                {node.category}
-              </span>
-              <span style={{ fontSize: '0.75rem', color: '#ff9500', fontWeight: 600 }}>{node.links}</span>
+      <div style={{ marginBottom: '24px' }}>
+        <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '12px', color: 'var(--apple-text-secondary)' }}>🏆 知識中心（Top 15）</h3>
+        {topNodes.map((node, i) => (
+          <div key={node.name} style={{ display: 'flex', alignItems: 'center', padding: '6px 0', borderBottom: '1px solid var(--apple-border)' }}>
+            <span style={{ width: '24px', fontSize: '0.75rem', color: 'var(--apple-text-tertiary)', fontWeight: 600 }}>{i + 1}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 500 }}>{node.name}</div>
+              <div style={{ fontSize: '0.68rem', color: 'var(--apple-text-tertiary)' }}>{node.category} · {node.layer}</div>
             </div>
-          ))}
-        </div>
+            <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--apple-blue)' }}>{node.links} 🔗</div>
+          </div>
+        ))}
+      </div>
+      <div>
+        <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '12px', color: 'var(--apple-text-secondary)' }}>📂 類別分布</h3>
+        {Object.entries(catCounts).sort((a, b) => (b[1] as number) - (a[1] as number)).map(([cat, count]) => {
+          const pct = n > 0 ? ((count as number) / n) * 100 : 0;
+          return (
+            <div key={cat} style={{ marginBottom: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', marginBottom: '4px' }}>
+                <span>{cat}</span>
+                <span style={{ color: 'var(--apple-text-tertiary)' }}>{count} ({pct.toFixed(1)}%)</span>
+              </div>
+              <div style={{ height: '4px', backgroundColor: '#e5e5ea', borderRadius: '2px', overflow: 'hidden' }}>
+                <div style={{ width: `${pct}%`, height: '100%', backgroundColor: 'var(--apple-blue)', borderRadius: '2px' }} />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
-};
+}

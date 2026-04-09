@@ -1,69 +1,32 @@
-import React, { useState } from 'react';
-import { TreeNode } from '../types';
-import { ChevronRight, ChevronDown, FileText, Folder } from 'lucide-react';
+import { ChevronDown, ChevronRight, Folder } from 'lucide-react';
+import { useState } from 'react';
+import type { ContentTreeItem } from '../types';
 
-interface SidebarProps {
-  tree: TreeNode[];
-  onSelectFile: (path: string) => void;
+export function Sidebar({ tree, onSelect, activePath }: { tree: ContentTreeItem[]; onSelect: (path: string) => void; activePath: string | null }) {
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
+      {tree.map((n) => <TreeNodeItem key={n.path} node={n} onSelect={onSelect} activePath={activePath} />)}
+    </div>
+  );
 }
 
-const TreeNodeItem: React.FC<{ node: TreeNode, onSelectFile: (path: string) => void }> = ({ node, onSelectFile }) => {
-  const [isOpen, setIsOpen] = useState(false);
+function TreeNodeItem({ node, onSelect, activePath, depth = 0 }: { node: ContentTreeItem; onSelect: (p: string) => void; activePath: string | null; depth?: number }) {
+  const [open, setOpen] = useState(depth === 0);
+  const displayName = node.name.replace(/^\d+_/, '');
 
   if (node.type === 'dir') {
     return (
-      <div style={{ marginLeft: '0.8rem', marginTop: '0.4rem' }}>
-        <div 
-          onClick={() => setIsOpen(!isOpen)}
-          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.9rem', padding: '4px 0' }}
-        >
-          {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          <Folder size={14} style={{ margin: '0 6px', opacity: 0.7 }} />
-          <span>{node.name}</span>
+      <div>
+        <div onClick={() => setOpen(!open)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px 6px', color: 'var(--apple-text-secondary)', fontSize: depth === 0 ? '0.8rem' : '0.74rem', fontWeight: depth === 0 ? 600 : 500, borderRadius: '4px' }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}>
+          {open ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+          <Folder size={11} style={{ marginRight: '4px', opacity: 0.6 }} />
+          {displayName}
         </div>
-        {isOpen && node.children && (
-          <div style={{ borderLeft: '1px solid rgba(255,255,255,0.05)', marginLeft: '6px' }}>
-            {node.children.map((child, idx) => (
-              <TreeNodeItem key={idx} node={child} onSelectFile={onSelectFile} />
-            ))}
-          </div>
-        )}
+        {open && node.children?.map((child) => <TreeNodeItem key={child.path} node={child} onSelect={onSelect} activePath={activePath} depth={depth + 1} />)}
       </div>
     );
   }
-
-  return (
-    <div 
-      onClick={() => onSelectFile(node.path)}
-      style={{ marginLeft: '1.8rem', marginTop: '0.2rem', display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--text-main)', fontSize: '0.85rem', padding: '4px 0' }}
-    >
-      <FileText size={14} style={{ margin: '0 6px', color: 'var(--accent-electric)', opacity: 0.8 }} />
-      <span 
-        style={{ transition: 'all 0.2s', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} 
-        onMouseEnter={(e) => {
-          e.currentTarget.style.color = 'var(--accent-neon)';
-        }} 
-        onMouseLeave={(e) => {
-          e.currentTarget.style.color = 'var(--text-main)';
-        }}
-      >
-        {node.name.replace('.md', '')}
-      </span>
-    </div>
-  );
-};
-
-const Sidebar: React.FC<SidebarProps> = ({ tree, onSelectFile }) => {
-  return (
-    <div style={{ flex: 1, overflowY: 'auto', padding: '1rem 0.5rem' }}>
-      {tree.length === 0 && (
-        <div style={{ padding: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>知識探測中...</div>
-      )}
-      {tree.map((node, idx) => (
-        <TreeNodeItem key={idx} node={node} onSelectFile={onSelectFile} />
-      ))}
-    </div>
-  );
-};
-
-export default Sidebar;
+  return null;
+}
