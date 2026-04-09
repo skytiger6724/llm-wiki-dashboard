@@ -6,48 +6,51 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
-![Style](https://img.shields.io/badge/Design-Apple%20UI-blue.svg)
 ![Version](https://img.shields.io/badge/Version-2.1-green.svg)
 
 ---
 
 ## The Core Idea
 
-Instead of RAG-style retrieval that rediscovers knowledge from scratch on every query, the LLM **compiles** a persistent wiki — updating entity pages, revising summaries, flagging contradictions, and maintaining cross-references. The wiki is a persistent, compounding artifact. This dashboard lets you browse, search, and visualize that wiki.
+Instead of RAG-style retrieval that rediscovers knowledge from scratch on every query, the LLM **compiles** a persistent wiki — updating entity pages, revising summaries, flagging contradictions, and maintaining cross-references. This dashboard lets you browse, search, and visualize that wiki.
 
 ## 🔥 Features
 
-### 📰 Changelog Feed
-- **Recent Changes**: Shows the latest 5 wiki updates with type badges (new / fix / update / remove).
-- **Auto-Refresh**: Click "Refresh" to pull the latest entries from `KM_changelog.md`.
-- **Impact Summary**: See how many files each change affected.
+### 📂 Knowledge Directory Navigation
+- **Hierarchical Tree**: Expandable directories + clickable files
+- **Unified Nav**: Same tree in Home (browse) and Reader (navigate) modes
+- **Active Highlighting**: Current file highlighted in blue
+- **Auto-root-filter**: Skips wrapper directory, shows content directly
 
-### 📂 Knowledge Directory
-- **Hierarchical Navigation**: Browse the full wiki directory with expand/collapse.
-- **Category-Based**: Organized by System, Raw, Wiki layers — not individual files.
-- **Quick Access**: Click any node to jump straight into the reader.
+### 📖 Apple UI Reader
+- **720px Centered Layout**: Generous 48px margins, optimal reading width
+- **Frosted Glass Breadcrumb**: `backdropFilter: blur(20px)` sticky header
+- **Typography Hierarchy**: H1 2rem/700, H2 1.5rem/600, body 0.95rem/1.75
+- **SF Pro + SF Mono**: System fonts, proper letter-spacing, line-height tuning
+- **Table Styling**: 2pt borders, centered text, rounded container, uppercase headers
+- **Wikilink Navigation**: Blue dashed underline → solid on hover, click to jump
+
+### 📰 Changelog Feed
+- **Recent Changes**: Shows latest 5 wiki updates with type badges
+- **Auto-Refresh**: Pull latest entries from `KM_changelog.md` on demand
+- **Impact Summary**: See how many files each change affected
 
 ### 🔗 Knowledge Graph
-- **1,616 Wikilinks**: Extracted from `[[Double Bracket Links]]` across 370 files.
-- **Force-Directed Layout**: Interactive 2D network via `react-force-graph-2d` + D3.
-- **Color-Coded Nodes**: Entities (green), Concepts (blue), Summaries (red), Synthesis (purple).
-- **Search & Filter**: Real-time node search with instant results.
+- **1,616 Wikilinks**: Extracted from `[[Double Bracket Links]]` across 370 files
+- **Force-Directed Layout**: Interactive 2D network via `react-force-graph-2d` + D3
+- **Color-Coded Nodes**: Entities (green), Concepts (blue), Summaries (red), Synthesis (purple)
+- **Search & Filter**: Real-time node search with instant results
 
-### 📊 Knowledge Density
-- **4 Key Metrics**: Nodes, Links, Density%, Wikilinks count.
-- **Top 15 Hubs**: Most connected knowledge nodes ranked by link count.
-- **Category Distribution**: Visual breakdown with progress bars.
-- **Isolated Nodes**: Detects and lists pages with no incoming links.
-
-### 📖 Reader
-- **Markdown Rendering**: Full GFM support with tables, code blocks, and lists.
-- **Wikilink Navigation**: Click `[[links]]` to jump between connected pages.
-- **Breadcrumb Path**: Always know where you are in the knowledge hierarchy.
+### 📊 Knowledge Density Dashboard
+- **4 Key Metrics**: Nodes, Links, Density%, Wikilinks count
+- **Top 15 Hubs**: Most connected knowledge nodes ranked by link count
+- **Category Distribution**: Visual breakdown with progress bars
+- **Isolated Nodes**: Detects and lists pages with no incoming links
 
 ### 🎨 Apple UI Design
-- **Clean & Minimal**: SF Pro typography, generous whitespace, subtle shadows.
-- **Semantic Colors**: Consistent blue/green/red/orange/purple palette.
-- **Smooth Interactions**: Hover states, focus rings, transitions.
+- **Clean & Minimal**: Generous whitespace, subtle shadows
+- **Semantic Colors**: Blue/green/red/orange/purple palette
+- **Smooth Interactions**: Hover states, focus rings, transitions
 
 ---
 
@@ -95,7 +98,7 @@ llm-wiki-app/
 ### 1. Requirements
 Node.js 18+. Wiki directory at:
 ```
-/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫
+~/Documents/21_LLM_Wiki_核心知識庫
 ```
 
 ### 2. Quick Start
@@ -105,10 +108,7 @@ bash start.sh
 
 Or manually:
 ```bash
-# Backend
 cd backend && npm install && node precompute-graph.js && node server.js
-
-# Frontend (another terminal)
 cd frontend && npm install && npx vite
 ```
 
@@ -130,7 +130,6 @@ screen -S llm-wiki-api -X quit && screen -S llm-wiki-fe -X quit
 | Graph Links | 1,616 |
 | Files with Links | 370 |
 | Changelog Entries | 8 |
-| Isolated Nodes | ~200 |
 
 ---
 

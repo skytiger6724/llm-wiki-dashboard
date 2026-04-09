@@ -2,39 +2,51 @@
 
 All notable changes to LLM Wiki Dashboard.
 
+---
+
 ## [2.1.0] — 2026-04-09
 
 ### Complete Graph Rebuild
 
-- **Fixed `precompute-graph.js`** to correctly extract `[[wikilinks]]` from all Markdown files — wikilinks went from 0 to **1,810**
+- **Fixed `precompute-graph.js`** to correctly extract `[[wikilinks]]` — wikilinks went from 0 to **1,810**
 - **1,616 graph links** across **1,343 nodes** from **370 files** with wikilinks
-- **Karpathy-style compilation**: respects `[[target|alias]]` format, auto-creates target nodes even without physical files
+- **Karpathy-style compilation**: respects `[[target|alias]]` format, auto-creates target nodes
 
-### Homepage Redesign
+### Apple UI Reader Overhaul
 
-- **Changelog Feed**: Shows latest 5 wiki changes with type badges (✅ new / 🔧 fix / 📝 update / 🗑️ remove)
-- **Directory Navigation**: Replaced "Top 10 hot nodes" with full hierarchical directory browser
-- **Refresh Button**: Pulls latest entries from `KM_changelog.md` on demand
-- **4-Column Stats Cards**: Nodes, Links, Density%, Wikilinks count
+- **720px Centered Layout**: Optimal reading width with 48px margins
+- **Frosted Glass Breadcrumb**: Sticky header with `backdropFilter: blur(20px)`
+- **Typography Hierarchy**: H1 2rem/700 `-0.025em`, H2 1.5rem/600 `-0.02em`, body 0.95rem/1.75
+- **Table Styling**: 2pt borders, centered text, rounded container, uppercase headers
+- **Code Blocks**: `#1d1d1f` dark background, SF Mono font
+- **Wikilink Navigation**: Blue underline, hover transition, click to jump
+
+### Directory Navigation Fix
+
+- **Fixed TreeNodeItem**: Was `return null` for files — now displays all `.md` files
+- **File Click Handler**: `onSelect(node.path)` opens reader view
+- **Active Highlighting**: Current file highlighted blue with bold font
+- **Unified Tree**: Same directory structure in both Home and Reader modes
+- **Root Filter**: Auto-skips `21_LLM_Wiki_核心知識庫` wrapper, shows content directly
+
+### Changelog Feed
+
+- **Recent 5 Changes**: Parsed from `KM_changelog.md` via `/api/km-changelog`
+- **Type Badges**: ✅ New / 🔧 Fix / 📝 Update / 🗑️ Remove
+- **Refresh Button**: Pulls latest entries on demand
 
 ### Knowledge Density Dashboard
 
 - **Top 15 Hubs**: Most connected nodes ranked by link count
 - **Category Distribution**: Progress bars showing entity/concept/summary breakdown
-- **Density Metrics**: Metcalfe's Law-based calculation + average degree + isolated node count
-
-### Architecture Simplification
-
-- **Unified `types.ts`**: All interfaces (ContentTreeItem, ChangelogEntry, GraphNode, GraphData) in one file
-- **Simplified Components**: GraphView, DashboardMetrics, IsolatedNodes — no prop type conflicts
-- **Zero TypeScript errors**: Clean compilation across all files
+- **4-Column Stats Cards**: Nodes, Links, Density%, Wikilinks count
 
 ### Bug Fixes
 
-- Fixed node_modules corruption that prevented Vite from starting
-- Removed backup files with special characters in filenames
-- Fixed Sidebar component import errors
-- Fixed graphDataParser to fetch from API instead of rebuilding locally
+- Removed backup files with special characters (`*Dwayne的MacBook Pro.*`)
+- Fixed TypeScript compilation errors in all components
+- Fixed Vite connectivity issues with corrupted node_modules
+- Simplified component props (GraphView, DashboardMetrics, IsolatedNodes)
 
 ---
 
