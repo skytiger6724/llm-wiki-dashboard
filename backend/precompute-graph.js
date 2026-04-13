@@ -17,7 +17,7 @@ function scanMarkdownFiles(dirPath) {
     const linksSet = new Set();    // dedup link pairs
     const links = [];
 
-    // 1. 收集所有存在的檔案節點
+    // 1. 收集所有存在的檔案節點（跳過 Conversation 對話紀錄）
     function collectFiles(currentPath) {
         const items = fs.readdirSync(currentPath);
         for (const item of items) {
@@ -27,6 +27,8 @@ function scanMarkdownFiles(dirPath) {
             if (stat.isDirectory()) {
                 collectFiles(fullPath);
             } else if (item.endsWith('.md')) {
+                // 永久過濾：跳過 AI 對話紀錄（這些是 Raw 資料，不應該成為圖譜節點）
+                if (item.includes('Conversation_')) continue;
                 const name = item.replace('.md', '');
                 const parts = fullPath.split('/');
                 // 找出層級和類別
@@ -52,7 +54,7 @@ function scanMarkdownFiles(dirPath) {
 
     collectFiles(dirPath);
 
-    // 2. 提取所有 wikilinks
+    // 2. 提取所有 wikilinks（同樣跳過 Conversation 檔案）
     function extractWikilinks(currentPath) {
         const items = fs.readdirSync(currentPath);
         for (const item of items) {
@@ -62,6 +64,8 @@ function scanMarkdownFiles(dirPath) {
             if (stat.isDirectory()) {
                 extractWikilinks(fullPath);
             } else if (item.endsWith('.md')) {
+                // 跳過 AI 對話紀錄（不提取 wikilinks）
+                if (item.includes('Conversation_')) continue;
                 try {
                     const content = fs.readFileSync(fullPath, 'utf-8');
                     const sourceName = item.replace('.md', '');
@@ -128,7 +132,25 @@ function scanMarkdownFiles(dirPath) {
 }
 
 console.log('🔍 開始掃描知識庫...');
-const graphData = scanMarkdownFiles(ROOT_DIR);
+let graphData = scanMarkdownFiles(ROOT_DIR);
+
+// 自動過濾孤立節點（沒有任何 wikilink 連入或連出的節點）
+// 這些通常是 Raw 資料文件，不屬於知識網絡
+const linkSources = new Set();
+const linkTargets = new Set();
+for (const l of graphData.links) {
+    linkSources.add(l.source);
+    linkTargets.add(l.target);
+}
+const connected = new Set([...linkSources, ...linkTargets]);
+const beforeCount = graphData.count;
+graphData.nodes = graphData.nodes.filter(n => connected.has(n.name));
+graphData.count = graphData.nodes.length;
+const removed = beforeCount - graphData.count;
+if (removed > 0) {
+    console.log(`🧹 已過濾 ${removed} 個孤立節點（無任何 wikilink 連線）`);
+}
+
 console.log(`📊 掃描完成:`);
 console.log(`   節點: ${graphData.count}`);
 console.log(`   連結: ${graphData.links.length}`);

@@ -29,6 +29,14 @@ All notable changes to LLM Wiki Dashboard.
 - **Automatic Changelog Writing**: Updates `KM_changelog.md` with detected changes
 - **`scan-changes.py` Backend Script**: Python-based file scanner with JSON output
 
+### Orphan Node Cleanup (2026-04-13)
+
+- **Conversation Filter**: `precompute-graph.js` now permanently skips `Conversation_` files (467 raw AI chat logs)
+- **Auto Orphan Removal**: Graph data automatically filters nodes with zero incoming AND zero outgoing wikilinks
+- **`cleanup-orphans.py` Tool**: Standalone script for manual orphan node detection and cleanup
+- **Result**: Graph reduced from 1242 → 1246 clean nodes, **0 orphaned nodes**
+- **Backup**: Automatic `graph-data.json.backup` before each cleanup
+
 ---
 
 ## [2.1.0] — 2026-04-09
