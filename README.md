@@ -6,7 +6,7 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
-![Version](https://img.shields.io/badge/Version-2.1-green.svg)
+![Version](https://img.shields.io/badge/Version-2.2-green.svg)
 
 ---
 

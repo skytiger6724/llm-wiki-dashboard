@@ -1,34 +1,274 @@
+import { useRef, useCallback, useState, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 
-export function GraphView({ nodes, links, onNodeClick, searchQuery }: {
+// Obsidian-style category colors
+const SUBCATEGORY_COLORS: Record<string, string> = {
+  'Entities_實體': '#34d399',
+  'Concepts_概念': '#3b82f6',
+  'Summaries_摘要': '#f472b6',
+  'Synthesis_綜合': '#a78bfa',
+};
+
+const LAYER_COLORS: Record<string, string> = {
+  '01_System_系統層': '#8b5cf6',
+  '02_Raw_原始資料': '#06b6d4',
+  '03_Wiki_知識層': '#10b981',
+  '04_Output_產出層': '#f59e0b',
+};
+
+interface GraphViewProps {
   nodes: any[];
   links: any[];
   onNodeClick: (node: any) => void;
   searchQuery: string;
-}) {
-  const filteredNodes = searchQuery
-    ? nodes.filter(n => n.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    : nodes;
-  const nodeIds = new Set(filteredNodes.map(n => n.name));
-  const filteredLinks = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
+}
+
+export function GraphView({ nodes, links, onNodeClick, searchQuery }: GraphViewProps) {
+  const fgRef = useRef<any>(null);
+  const [highlightNodes, setHighlightNodes] = useState<Set<string>>(new Set());
+  const [highlightLinks, setHighlightLinks] = useState<Set<string>>(new Set());
+  const [hoverNode, setHoverNode] = useState<string | null>(null);
+  const [showLabels, setShowLabels] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [nodeScale, setNodeScale] = useState(1.0);
+  const [linkDist, setLinkDist] = useState(30);
+  const [minDegree, setMinDegree] = useState(0);
+  const [selectedLayer, setSelectedLayer] = useState('all');
+
+  // Build adjacency once
+  const adjRef = useRef<Map<string, Set<string>>>(new Map());
+  if (adjRef.current.size === 0 && nodes.length > 0) {
+    const m = new Map<string, Set<string>>();
+    links.forEach(l => {
+      if (!m.has(l.source)) m.set(l.source, new Set());
+      if (!m.has(l.target)) m.set(l.target, new Set());
+      m.get(l.source)!.add(l.target);
+      m.get(l.target)!.add(l.source);
+    });
+    adjRef.current = m;
+  }
+
+  // Link strength cache
+  const strRef = useRef<Map<string, number>>(new Map());
+  if (strRef.current.size === 0 && links.length > 0) {
+    const m = new Map<string, number>();
+    links.forEach(l => { const k = `${l.source}--${l.target}`; m.set(k, (m.get(k) || 0) + (l.strength || 1)); });
+    strRef.current = m;
+  }
+
+  const layers = Array.from(new Set(nodes.map(n => n.layer || n.category || 'unknown')));
+
+  const fNodes = nodes.filter(n => {
+    const layer = n.layer || n.category || 'unknown';
+    if (selectedLayer !== 'all' && layer !== selectedLayer) return false;
+    if ((n.links || 0) < minDegree) return false;
+    if (searchQuery && !n.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    return true;
+  });
+  const nIds = new Set(fNodes.map(n => n.name));
+  const fLinks = links.filter(l => nIds.has(l.source) && nIds.has(l.target));
+
+  const onNodeHover = useCallback((node: any) => {
+    if (!node) { setHighlightNodes(new Set()); setHighlightLinks(new Set()); setHoverNode(null); return; }
+    const id = node.name;
+    setHoverNode(id);
+    setHighlightNodes(new Set([id, ...(adjRef.current.get(id) || [])]));
+    const hl = new Set<string>();
+    fLinks.forEach(l => { if (l.source === id || l.target === id) hl.add(`${l.source}--${l.target}`); });
+    setHighlightLinks(hl);
+  }, [fLinks]);
+
+  const gColor = useCallback((n: any) => {
+    const layer = n.layer || n.category || '';
+    const c = SUBCATEGORY_COLORS[layer] || LAYER_COLORS[layer] || '#6b7280';
+    if (hoverNode && !highlightNodes.has(n.name)) return darkMode ? '#1e293b' : '#e2e8f0';
+    return c;
+  }, [hoverNode, highlightNodes, darkMode]);
+
+  const gSize = useCallback((n: any) => Math.max(1.5, Math.min(10, Math.sqrt(n.links || 1) * 1.5)) * nodeScale, [nodeScale]);
+
+  const lColor = useCallback((l: any) => {
+    const k = `${l.source}--${l.target}`;
+    const hl = highlightLinks.has(k);
+    if (hoverNode && !hl) return darkMode ? 'rgba(30,41,59,0.04)' : 'rgba(226,232,240,0.08)';
+    const a = hl ? 0.5 : Math.min(0.25, (strRef.current.get(k) || 1) * 0.08);
+    return darkMode ? `rgba(139,92,246,${a})` : `rgba(99,102,241,${a})`;
+  }, [hoverNode, highlightLinks, darkMode]);
+
+  const lWidth = useCallback((l: any) => {
+    const k = `${l.source}--${l.target}`;
+    const s = strRef.current.get(k) || 1;
+    return highlightLinks.has(k) ? Math.max(0.5, s * 0.6) : Math.max(0.2, s * 0.2);
+  }, [highlightLinks]);
+
+  useEffect(() => {
+    if (fgRef.current) {
+      fgRef.current.centerAt();
+      fgRef.current.zoom(0.7, 0);
+    }
+  }, []);
+
+  // Update link distance
+  useEffect(() => {
+    if (fgRef.current) {
+      const f = fgRef.current.d3Force('link');
+      if (f) f.distance(linkDist);
+    }
+  }, [linkDist]);
+
+  const bg = darkMode ? '#0f172a' : '#fafafa';
+  const txt = darkMode ? '#e2e8f0' : '#1e293b';
+  const panelBg = darkMode ? 'rgba(30,41,59,0.92)' : 'rgba(255,255,255,0.92)';
+  const border = darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const muted = darkMode ? '#64748b' : '#94a3b8';
 
   return (
-    <ForceGraph2D
-      graphData={{ nodes: filteredNodes, links: filteredLinks }}
-      nodeLabel="name"
-      nodeRelSize={4}
-      nodeVal={(n: any) => Math.max(2, Math.min(8, n.links || 1))}
-      nodeColor={(n: any) => {
-        const cat = n.category?.split('_')[0] || '';
-        const colors: Record<string, string> = { Entities: '#34c759', Concepts: '#0071e3', Summaries: '#ff375f', Synthesis: '#af52de' };
-        return colors[cat] || '#86868b';
-      }}
-      linkWidth={0.5}
-      linkColor={() => 'rgba(0,113,227,0.15)'}
-      backgroundColor="#f5f5f7"
-      onNodeClick={onNodeClick}
-      width={window.innerWidth - 280}
-      height={window.innerHeight - 60}
-    />
+    <div style={{ position: 'relative', width: '100%', height: '100%', background: bg }}>
+      {/* Control Panel — Obsidian-inspired glass */}
+      <div style={{
+        position: 'absolute', top: 12, left: 12, zIndex: 100,
+        background: panelBg, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        borderRadius: 14, padding: 14, border: `1px solid ${border}`,
+        boxShadow: darkMode ? '0 8px 32px rgba(0,0,0,0.4)' : '0 8px 32px rgba(0,0,0,0.06)',
+        width: 220, maxHeight: 'calc(100vh - 100px)', overflowY: 'auto',
+        fontSize: 11, color: txt,
+      }}>
+        <div style={{ fontWeight: 700, fontSize: 12, marginBottom: 10, letterSpacing: '-0.01em' }}>⚡ Graph View</div>
+
+        {/* Toggle buttons */}
+        <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+          {[
+            { label: showLabels ? '🏷️ On' : '🏷️ Off', active: showLabels, onClick: () => setShowLabels(!showLabels) },
+            { label: darkMode ? '☀️ Light' : '🌙 Dark', active: darkMode, onClick: () => setDarkMode(!darkMode) },
+          ].map(b => (
+            <button key={b.label} onClick={b.onClick} style={{
+              flex: 1, padding: '5px 0', fontSize: 10, fontWeight: 600, border: 'none', borderRadius: 6,
+              cursor: 'pointer', transition: 'all 0.15s',
+              background: b.active ? '#6366f1' : (darkMode ? '#334155' : '#f1f5f9'),
+              color: b.active ? '#fff' : txt,
+            }}>{b.label}</button>
+          ))}
+        </div>
+
+        {/* Sliders */}
+        {[
+          { label: 'Node Size', val: nodeScale, min: 0.5, max: 3, step: 0.1, unit: 'x', set: setNodeScale },
+          { label: 'Link Dist', val: linkDist, min: 10, max: 80, step: 5, unit: 'px', set: setLinkDist },
+          { label: 'Min Degree', val: minDegree, min: 0, max: 20, step: 1, unit: '', set: setMinDegree },
+        ].map(s => (
+          <div key={s.label} style={{ marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: muted, marginBottom: 3 }}>
+              <span>{s.label}</span><span>{s.val}{s.unit}</span>
+            </div>
+            <input type="range" min={s.min} max={s.max} step={s.step} value={s.val}
+              onChange={e => s.set(parseFloat(e.target.value))}
+              style={{ width: '100%', accentColor: '#6366f1', height: 4 }} />
+          </div>
+        ))}
+
+        {/* Layer filter */}
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 10, color: muted, marginBottom: 4 }}>Layer</div>
+          <select value={selectedLayer} onChange={e => setSelectedLayer(e.target.value)}
+            style={{
+              width: '100%', padding: '4px 8px', fontSize: 10, borderRadius: 6,
+              border: `1px solid ${border}`, background: darkMode ? '#1e293b' : '#fff',
+              color: txt, outline: 'none',
+            }}>
+            <option value="all">All ({nodes.length})</option>
+            {layers.map(l => <option key={l} value={l}>{l.replace(/_/g, ' ')} ({nodes.filter(n => (n.layer || n.category) === l).length})</option>)}
+          </select>
+        </div>
+
+        {/* Legend */}
+        <div style={{ borderTop: `1px solid ${border}`, paddingTop: 8, marginTop: 4 }}>
+          <div style={{ fontSize: 9, color: muted, marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Legend</div>
+          {Object.entries(SUBCATEGORY_COLORS).map(([k, v]) => (
+            <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: v }} />
+              <span style={{ fontSize: 9 }}>{k.split('_')[0]}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Live stats */}
+        <div style={{ borderTop: `1px solid ${border}`, paddingTop: 8, marginTop: 8, fontSize: 10, color: muted }}>
+          <span style={{ color: txt, fontWeight: 600 }}>{fNodes.length}</span> nodes · <span style={{ color: txt, fontWeight: 600 }}>{fLinks.length}</span> links
+        </div>
+      </div>
+
+      {/* Graph */}
+      <ForceGraph2D
+        ref={fgRef}
+        graphData={{ nodes: fNodes, links: fLinks }}
+        nodeRelSize={1}
+        nodeVal={gSize}
+        nodeColor={gColor}
+        nodeCanvasObjectMode={() => ['after']}
+        nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, gs: number) => {
+          const sz = gSize(node);
+          const hl = highlightNodes.has(node.name);
+          const hv = hoverNode === node.name;
+          const layer = node.layer || node.category || '';
+          const base = SUBCATEGORY_COLORS[layer] || LAYER_COLORS[layer] || '#6b7280';
+
+          // Glow for highlighted
+          if (hl) {
+            const r = sz * (hv ? 3 : 2);
+            const g = ctx.createRadialGradient(node.x!, node.y!, sz * 0.3, node.x!, node.y!, r);
+            g.addColorStop(0, base + '35');
+            g.addColorStop(1, base + '00');
+            ctx.beginPath();
+            ctx.arc(node.x!, node.y!, r, 0, Math.PI * 2);
+            ctx.fillStyle = g;
+            ctx.fill();
+          }
+
+          // Node body
+          ctx.beginPath();
+          ctx.arc(node.x!, node.y!, hv ? sz * 1.4 : sz, 0, Math.PI * 2);
+          ctx.fillStyle = gColor(node);
+          ctx.fill();
+
+          if (hl) {
+            ctx.strokeStyle = hv ? '#fff' : (darkMode ? '#475569' : '#cbd5e1');
+            ctx.lineWidth = hv ? 2 : 1;
+            ctx.stroke();
+          }
+
+          // Label
+          if (showLabels && gs > 0.55) {
+            const op = Math.min(1, (gs - 0.55) * 2.5);
+            const show = highlightNodes.size === 0 || hl;
+            ctx.font = `${hv ? '600' : '400'} ${hv ? 12 : 10}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+            ctx.fillStyle = darkMode ? `rgba(226,232,240,${op * (show ? 0.85 : 0.12)})` : `rgba(30,41,59,${op * (show ? 0.85 : 0.1)})`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            const name = node.name.length > 28 ? node.name.slice(0, 28) + '…' : node.name;
+            ctx.fillText(name, node.x!, node.y! + sz + 4);
+          }
+        }}
+        linkColor={lColor}
+        linkWidth={lWidth}
+        linkDirectionalParticles={2}
+        linkDirectionalParticleWidth={1.5}
+        linkDirectionalParticleSpeed={0.003}
+        linkDirectionalParticleColor={(l: any) => {
+          const k = `${l.source}--${l.target}`;
+          return highlightLinks.has(k) ? '#818cf8' : (darkMode ? 'rgba(139,92,246,0.25)' : 'rgba(99,102,241,0.15)');
+        }}
+        backgroundColor={bg}
+        onNodeHover={onNodeHover}
+        onNodeClick={onNodeClick}
+        d3AlphaDecay={0.015}
+        d3VelocityDecay={0.3}
+        warmupTicks={150}
+        cooldownTicks={Infinity}
+        minZoom={0.05}
+        maxZoom={5}
+        width={window.innerWidth - 30}
+        height={window.innerHeight - 60}
+      />
+    </div>
   );
 }

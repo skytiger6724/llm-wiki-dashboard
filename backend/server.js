@@ -352,6 +352,24 @@ app.get('/api/density-heatmap', (req, res) => {
     }
 });
 
+// 掃描 Wiki/Output 變更，自動寫入 changelog
+app.get('/api/scan-changes', (req, res) => {
+    try {
+        const { spawnSync } = require('child_process');
+        const result = spawnSync('python3', [path.join(__dirname, 'scan-changes.py')], {
+            encoding: 'utf-8',
+            timeout: 30000,
+        });
+        const output = result.stdout.trim().split('\n');
+        // 最後一行是 JSON
+        const jsonLine = output.pop();
+        const data = JSON.parse(jsonLine);
+        res.json(data);
+    } catch (e) {
+        res.status(500).json({ error: e.message, changes: 0, files: [] });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`🚀 LLM Wiki 知識庫 API 啟動於 http://localhost:${PORT}`);
 });

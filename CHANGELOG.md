@@ -4,6 +4,33 @@ All notable changes to LLM Wiki Dashboard.
 
 ---
 
+## [2.2.0] — 2026-04-13
+
+### Obsidian-Style Graph View Redesign
+
+- **Category Color Nodes**: Entities=green, Concepts=blue, Summaries=pink, Synthesis=purple
+- **Layer Color Coding**: System=purple, Raw=cyan, Wiki=green, Output=amber
+- **Hover Highlights**: Node + neighbors highlight on hover, dimming unrelated nodes
+- **Zoom Controls**: Mouse wheel zoom with smooth scaling, center reset button
+- **Node Size by Connections**: Larger nodes = more wikilinks (degree-based scaling)
+- **Arrow Indicators**: Directional arrows on links showing wikilink direction
+- **Search Integration**: Highlight matching nodes when searching
+
+### Apple-Style Sidebar Redesign
+
+- **Obsidian-Inspired Tree**: Dark text on light background, #eaf3ff hover highlight
+- **Default Collapsed**: Tree nodes default to collapsed (was auto-expand depth 2)
+- **Refined Typography**: 0.82rem/600 for directories, 0.78rem/400 for files
+- **Refresh Button**: Added manual refresh trigger for tree reload
+
+### Auto Change Scanning API
+
+- **`/api/scan-changes` Endpoint**: Scans Wiki/Output directories for file changes
+- **Automatic Changelog Writing**: Updates `KM_changelog.md` with detected changes
+- **`scan-changes.py` Backend Script**: Python-based file scanner with JSON output
+
+---
+
 ## [2.1.0] — 2026-04-09
 
 ### Complete Graph Rebuild
