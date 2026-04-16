@@ -19,11 +19,14 @@ export interface GraphNode {
   layer: string;
   path: string;
   links: number;
+  confidence?: number;
+  decay_factor?: number;
+  isCrystallized?: boolean;
 }
 
 export interface GraphData {
   nodes: GraphNode[];
-  links: Array<{ source: string; target: string; strength?: number }>;
+  links: Array<{ source: string; target: string; strength?: number; relation?: string }>;
   wikilinks: Record<string, string[]>;
   count: number;
   totalWikilinks: number;

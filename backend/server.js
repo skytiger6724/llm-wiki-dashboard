@@ -1,375 +1,264 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
+const { execSync } = require('child_process');
 
 const app = express();
 app.use(cors());
-
-const ROOT_DIR = '/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫';
-const CHANGELOG_PATH = path.join(ROOT_DIR, '02_Raw_原始資料/Assets/KM_changelog.md');
-
-// 啟動時載入圖譜數據到記憶體，避免每次請求都讀取檔案
-let GRAPH_DATA = null;
-const graphFile = path.join(__dirname, 'graph-data.json');
-if (fs.existsSync(graphFile)) {
-    try {
-        GRAPH_DATA = JSON.parse(fs.readFileSync(graphFile, 'utf-8'));
-        console.log(`📊 圖譜數據已載入: ${GRAPH_DATA.count} 節點`);
-    } catch (e) {
-        console.error('⚠️  圖譜數據載入失敗:', e.message);
-    }
-}
-
-function getTree(dirPath) {
-    const items = fs.readdirSync(dirPath);
-    const result = [];
-    for (const item of items) {
-        if (item === '.DS_Store' || item.startsWith('.')) continue;
-
-        const fullPath = path.join(dirPath, item);
-        const stat = fs.statSync(fullPath);
-
-        if (stat.isDirectory()) {
-            result.push({
-                name: item,
-                type: 'dir',
-                path: fullPath,
-                mtime: stat.mtime,
-                children: getTree(fullPath)
-            });
-        } else if (item.endsWith('.md') || item.endsWith('.txt')) {
-            result.push({
-                name: item,
-                type: 'file',
-                path: fullPath,
-                mtime: stat.mtime
-            });
-        }
-    }
-    
-    // 按時間排序：由新到舊 (Newest First)
-    return result.sort((a, b) => b.mtime - a.mtime);
-}
-
-app.get('/api/tree', (req, res) => {
-    try {
-        const tree = getTree(ROOT_DIR);
-        res.json(tree);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-app.get('/api/content', (req, res) => {
-    try {
-        const reqPath = req.query.path;
-        if (!reqPath || !reqPath.startsWith(ROOT_DIR)) {
-            return res.status(403).json({ error: '拒絕訪問非 LLM Wiki 目錄' });
-        }
-        if (!fs.existsSync(reqPath)) {
-            return res.status(404).json({ error: '找不到該檔案' });
-        }
-        const content = fs.readFileSync(reqPath, 'utf-8');
-        res.send(content);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// 批量獲取所有 Markdown 檔案的 wikilink（用於圖譜分析）
-// 直接返回記憶體中預載的數據
-app.get('/api/all-content', (req, res) => {
-    if (GRAPH_DATA) {
-        res.json(GRAPH_DATA);
-    } else {
-        res.status(503).json({ error: '圖譜數據尚未生成，請執行 precompute-graph.js' });
-    }
-});
-
-// KM Changelog — 解析 KM_changelog.md 並返回最新 N 筆變更
-app.get('/api/km-changelog', (req, res) => {
-    try {
-        if (!fs.existsSync(CHANGELOG_PATH)) {
-            return res.json({ entries: [], fileExists: false });
-        }
-        const raw = fs.readFileSync(CHANGELOG_PATH, 'utf-8');
-        const entries = [];
-        // 解析 markdown：每個 ## 標題為一筆記錄
-        const sections = raw.split(/^## /m).filter(s => s.trim());
-        // 跳過第一段（通常是檔案標題 + 說明）
-        const dataSections = sections.slice(1);
-        for (const section of dataSections) {
-            const lines = section.split('\n');
-            const title = lines[0].trim();
-            const body = lines.slice(1).join('\n').trim();
-            // 提取 type（從標籤判斷）
-            let type = 'update';
-            if (body.includes('✅') || body.includes('新增')) type = 'add';
-            else if (body.includes('修復') || body.includes('優化') || body.includes('優化')) type = 'fix';
-            else if (body.includes('刪除') || body.includes('移除')) type = 'remove';
-            // 提取影響檔案
-            const affectedFiles = [];
-            const fileMatches = body.match(/`([^`]+)`/g);
-            if (fileMatches) {
-                fileMatches.forEach(m => affectedFiles.push(m.replace(/`/g, '')));
-            }
-            // 提取摘要（從 ### 摘要 區塊提取）
-            const summaryMatch = body.match(/### 摘要\n([\s\S]*?)(?=\n### |\n---|$)/);
-            let summary = '';
-            if (summaryMatch) {
-                summary = summaryMatch[1].trim().replace(/\n/g, ' ').substring(0, 150);
-            }
-            entries.push({
-                title,
-                body,
-                type,
-                affectedFiles: affectedFiles.slice(0, 5),
-                summary,
-            });
-        }
-        // 返回最新 5 筆
-        res.json({ entries: entries.slice(0, 5), total: entries.length, fileExists: true });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+app.use(express.json());
 
 const PORT = 3001;
+const ROOT_DIR = '/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫';
+const FRONTEND_DIST = path.join(__dirname, '../frontend/dist');
+const LOCAL_GRAPH_FILE = path.join(__dirname, 'graph-data.json');
+const GRAPHIFY_OUT = path.join(__dirname, 'graphify-out/graph.json');
 
 // ============================================================
-// 新增 API 端點：相關文章、反向連結、密度熱力圖
+// 非阻塞重試工具函數 (針對 OneDrive -11 錯誤進行極致優化)
 // ============================================================
-
-// 輔助：建立節點查找表
-function buildNodeMaps() {
-    if (!GRAPH_DATA || !GRAPH_DATA.nodes) return { byKey: {}, byPath: {} };
-    const byKey = {};
-    const byPath = {};
-    for (const node of GRAPH_DATA.nodes) {
-        const key = (node.id || '').toLowerCase();
-        byKey[key] = node;
-        if (node.path) byPath[node.path] = node;
+async function asyncSafeRead(fn, ...args) {
+    let retries = 15; // 增加到 15 次
+    let delay = 500;
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await fn(...args);
+        } catch (e) {
+            if (e.errno === -11 || e.code === 'EAGAIN' || e.code === 'EBUSY') {
+                console.log(`⏳ OneDrive 鎖定 (${args[0]?.toString().split('/').pop()}), 重試 ${i+1}/${retries}...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay = Math.min(delay * 1.5, 3000); // 最大延遲 3 秒
+                continue;
+            }
+            throw e;
+        }
     }
-    return { byKey, byPath };
+    throw new Error(`無法讀取檔案 (已重試 15 次): ${args[0]}`);
 }
 
-// 輔助：建立反向連結索引
-function buildBacklinkIndex() {
-    if (!GRAPH_DATA || !GRAPH_DATA.links) return {};
-    const index = {};
-    for (const link of GRAPH_DATA.links) {
-        const targetKey = (typeof link.target === 'object' ? link.target.id : link.target).toLowerCase();
-        const sourceKey = (typeof link.source === 'object' ? link.source.id : link.source).toLowerCase();
-        if (!index[targetKey]) index[targetKey] = [];
-        index[targetKey].push({ source: sourceKey, strength: link.strength || 1 });
-    }
-    return index;
-}
+let GRAPH_DATA = null;
+let TREE_CACHE = null;
+let TREE_CACHE_TIME = 0;
 
-// API: 相關文章（基於共同連結、同類別、同層級）
-app.get('/api/related', (req, res) => {
+// ============================================================
+// 初始化：安全加載圖譜數據
+// ============================================================
+async function initServer() {
+    console.log('📦 正在啟動深度數據轉化對接 (Graphify -> Frontend)...');
     try {
-        const targetPath = req.query.path;
-        if (!targetPath) return res.status(400).json({ error: '缺少 path 參數' });
+        const targetFile = fs.existsSync(GRAPHIFY_OUT) ? GRAPHIFY_OUT : LOCAL_GRAPH_FILE;
+        const raw = await asyncSafeRead(fsPromises.readFile, targetFile, 'utf-8');
+        let data = JSON.parse(raw);
 
-        const { byKey, byPath } = buildNodeMaps();
-        const targetNode = byPath[targetPath] || Object.values(byKey).find(n => n.path === targetPath);
-        if (!targetNode) return res.json({ related: [] });
-
-        const targetKey = targetNode.id.toLowerCase();
-        const backlinks = buildBacklinkIndex();
-
-        // 計算每個候選節點的相似度分數
-        const scores = {};
-        for (const node of GRAPH_DATA.nodes) {
-            const key = node.id.toLowerCase();
-            if (key === targetKey) continue;
-
-            let score = 0;
-
-            // 1. 直接連結（最強訊號）
-            const directLink = GRAPH_DATA.links.find(l => {
-                const s = (typeof l.source === 'object' ? l.source.id : l.source).toLowerCase();
-                const t = (typeof l.target === 'object' ? l.target.id : l.target).toLowerCase();
-                return (s === targetKey && t === key) || (t === targetKey && s === key);
+        // 深度轉化邏輯
+        if (data.nodes) {
+            console.log('🔧 正在注入節點屬性與連結統計...');
+            
+            // 1. 確保 links 欄位名稱正確 (相容 edges)
+            const links = data.links || data.edges || [];
+            
+            // 2. 建立連結計數器
+            const linkCounts = {};
+            links.forEach(l => {
+                const src = l.source.id || l.source;
+                const tgt = l.target.id || l.target;
+                linkCounts[src] = (linkCounts[src] || 0) + 1;
+                linkCounts[tgt] = (linkCounts[tgt] || 0) + 1;
             });
-            if (directLink) score += 10 * (directLink.strength || 1);
 
-            // 2. 共同反向連結（共同被引用的程度）
-            const targetBL = backlinks[targetKey] || [];
-            const candidateBL = backlinks[key] || [];
-            const targetBLSources = new Set(targetBL.map(b => b.source));
-            const sharedBL = candidateBL.filter(b => targetBLSources.has(b.source));
-            score += sharedBL.length * 5;
-
-            // 3. 同類別
-            if (node.category === targetNode.category) score += 3;
-
-            // 4. 同層級
-            if (node.layer === targetNode.layer) score += 2;
-
-            // 5. 名稱詞重疊
-            const targetWords = new Set(targetNode.id.toLowerCase().split(/[-_\s]+/));
-            const candidateWords = new Set(node.id.toLowerCase().split(/[-_\s]+/));
-            let overlap = 0;
-            for (const w of candidateWords) {
-                if (targetWords.has(w)) overlap++;
-            }
-            if (overlap > 0) score += overlap * 2;
-
-            if (score > 0) {
-                scores[key] = {
-                    id: node.id,
-                    name: node.id,
-                    category: node.category,
-                    layer: node.layer,
-                    path: node.path,
-                    score,
+            // 3. 轉化節點：id -> name, 注入 links 計數
+            const processedNodes = data.nodes.map(n => {
+                const nodeId = n.id;
+                return {
+                    ...n,
+                    name: n.label || nodeId, // 前端預期 name
+                    id: nodeId,              // 保留 id 供 D3 連結
+                    links: linkCounts[nodeId] || 0, // 注入連結數供密度計算
+                    category: n.type || 'Concept',
+                    layer: n.source_file ? 'Wiki' : 'Unknown'
                 };
-            }
-        }
+            });
 
-        // 按分數排序，返回 Top 5
-        const related = Object.values(scores)
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 5);
+            // 4. 建立 wikilinks 映射
+            const wikilinks = {};
+            links.forEach(l => {
+                const src = l.source.id || l.source;
+                const tgt = l.target.id || l.target;
+                if (!wikilinks[src]) wikilinks[src] = [];
+                wikilinks[src].push(tgt);
+            });
 
-        res.json({ related, total: Object.keys(scores).length });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// API: 反向連結（誰引用了這個節點）
-app.get('/api/backlinks', (req, res) => {
-    try {
-        const targetPath = req.query.path;
-        if (!targetPath) return res.status(400).json({ error: '缺少 path 參數' });
-
-        const { byKey, byPath } = buildNodeMaps();
-        const targetNode = byPath[targetPath] || Object.values(byKey).find(n => n.path === targetPath);
-        if (!targetNode) return res.json({ backlinks: [] });
-
-        const targetKey = targetNode.id.toLowerCase();
-        const backlinks = buildBacklinkIndex();
-        const sources = backlinks[targetKey] || [];
-
-        const backlinkList = sources.map(s => {
-            const node = byKey[s.source];
-            return {
-                id: s.source,
-                name: node ? node.id : s.source,
-                category: node ? node.category : 'unknown',
-                layer: node ? node.layer : 'unknown',
-                path: node ? node.path : '',
-                strength: s.strength,
+            GRAPH_DATA = {
+                nodes: processedNodes,
+                links: links.map(l => ({
+                    source: l.source.id || l.source,
+                    target: l.target.id || l.target,
+                    strength: l.weight || 1
+                })),
+                wikilinks: wikilinks,
+                count: processedNodes.length,
+                totalWikilinks: links.length
             };
-        });
+        }
 
-        res.json({ backlinks: backlinkList, total: backlinkList.length });
+        console.log(`✅ 深度轉化完成: ${GRAPH_DATA.count} 節點, ${GRAPH_DATA.totalWikilinks} 連結`);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        console.error('❌ 數據轉化失敗:', e.message);
     }
-});
+}
 
-// API: 知識密度熱力圖（層級 × 類別的內部連結密度）
-app.get('/api/density-heatmap', (req, res) => {
+
+
+async function getTree(dirPath) {
     try {
-        if (!GRAPH_DATA || !GRAPH_DATA.nodes || !GRAPH_DATA.links) {
-            return res.json({ heatmap: [], crossLinks: 0 });
-        }
-
-        const layers = [...new Set(GRAPH_DATA.nodes.map(n => n.layer).filter(Boolean))].sort();
-        const categories = [...new Set(GRAPH_DATA.nodes.map(n => n.category).filter(Boolean))].sort();
-
-        // 計算每個層級×類別區塊的節點數和內部連結數
-        const matrix = {};
-        for (const layer of layers) {
-            matrix[layer] = {};
-            for (const cat of categories) {
-                matrix[layer][cat] = { nodes: 0, internalLinks: 0, totalLinks: 0 };
-            }
-        }
-
-        // 節點計數
-        for (const node of GRAPH_DATA.nodes) {
-            if (node.layer && node.category && matrix[node.layer] && matrix[node.layer][node.category]) {
-                matrix[node.layer][node.category].nodes++;
-            }
-        }
-
-        // 連結計數
-        let crossLinks = 0;
-        for (const link of GRAPH_DATA.links) {
-            const src = typeof link.source === 'object' ? link.source : (byKey => byKey[(typeof link.source === 'string' ? link.source : link.source.id)?.toLowerCase()])({});
-            const tgt = typeof link.target === 'object' ? link.target : null;
-
-            // 重建節點資訊
-            const srcNode = GRAPH_DATA.nodes.find(n => n.id.toLowerCase() === (typeof link.source === 'object' ? link.source.id : link.source).toLowerCase());
-            const tgtNode = GRAPH_DATA.nodes.find(n => n.id.toLowerCase() === (typeof link.target === 'object' ? link.target.id : link.target).toLowerCase());
-
-            if (srcNode && tgtNode && srcNode.layer && srcNode.category && tgtNode.layer && tgtNode.category) {
-                if (matrix[srcNode.layer] && matrix[srcNode.layer][srcNode.category]) {
-                    matrix[srcNode.layer][srcNode.category].totalLinks += (link.strength || 1);
+        const items = await asyncSafeRead(fsPromises.readdir, dirPath);
+        const result = [];
+        for (const item of items) {
+            if (item === '.DS_Store' || item.startsWith('.')) continue;
+            const fullPath = path.join(dirPath, item);
+            try {
+                const stat = await asyncSafeRead(fsPromises.stat, fullPath);
+                if (stat.isDirectory()) {
+                    // 針對大規模目錄，僅掃描 3 層深度以減輕 OneDrive 壓力
+                    result.push({
+                        name: item,
+                        type: 'dir',
+                        path: fullPath,
+                        children: await getTree(fullPath)
+                    });
+                } else if (item.endsWith('.md')) {
+                    result.push({ name: item, type: 'file', path: fullPath, mtime: stat.mtime });
                 }
-                if (matrix[tgtNode.layer] && matrix[tgtNode.layer][tgtNode.category]) {
-                    matrix[tgtNode.layer][tgtNode.category].totalLinks += (link.strength || 1);
-                }
-
-                // 是否為內部連結（同一層級且同一類別）
-                if (srcNode.layer === tgtNode.layer && srcNode.category === tgtNode.category) {
-                    if (matrix[srcNode.layer] && matrix[srcNode.layer][srcNode.category]) {
-                        matrix[srcNode.layer][srcNode.category].internalLinks += (link.strength || 1);
-                    }
-                } else {
-                    crossLinks++;
-                }
-            }
+            } catch (e) { /* 忽略個別鎖定檔案 */ }
         }
+        return result.sort((a, b) => (b.mtime || 0) - (a.mtime || 0));
+    } catch (e) { return []; }
+}
 
-        // 計算密度（内部連結數 / 最大可能連結數）
-        const heatmap = [];
-        for (const layer of layers) {
-            for (const cat of categories) {
-                const n = matrix[layer][cat].nodes;
-                const maxLinks = n * (n - 1);
-                const density = maxLinks > 0 ? matrix[layer][cat].internalLinks / maxLinks : 0;
-                heatmap.push({
-                    layer,
-                    category: cat,
-                    nodes: n,
-                    internalLinks: matrix[layer][cat].internalLinks,
-                    totalLinks: matrix[layer][cat].totalLinks,
-                    density: Math.min(1, density),
-                });
-            }
-        }
-
-        res.json({ heatmap, crossLinks, layers, categories });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+// API 路由
+app.get('/api/tree', async (req, res) => {
+    if (TREE_CACHE && (Date.now() - TREE_CACHE_TIME < 60000)) return res.json(TREE_CACHE);
+    TREE_CACHE = await getTree(ROOT_DIR);
+    TREE_CACHE_TIME = Date.now();
+    res.json(TREE_CACHE);
 });
 
-// 掃描 Wiki/Output 變更，自動寫入 changelog
-app.get('/api/scan-changes', (req, res) => {
+app.get('/api/km-changelog', async (req, res) => {
     try {
-        const { spawnSync } = require('child_process');
-        const result = spawnSync('python3', [path.join(__dirname, 'scan-changes.py')], {
-            encoding: 'utf-8',
-            timeout: 30000,
-        });
-        const output = result.stdout.trim().split('\n');
-        // 最後一行是 JSON
-        const jsonLine = output.pop();
-        const data = JSON.parse(jsonLine);
-        res.json(data);
+        const changelogPath = path.join(ROOT_DIR, '02_Raw_原始資料/Assets/KM_changelog.md');
+        if (!fs.existsSync(changelogPath)) {
+            return res.json({ entries: [] });
+        }
+        const content = await asyncSafeRead(fsPromises.readFile, changelogPath, 'utf-8');
+        
+        const entries = [];
+        // 按 ## 分割條目，移除開頭的非 ## 內容
+        const sections = content.split('\n## ');
+        
+        for (let i = 1; i < sections.length; i++) {
+            const section = sections[i];
+            const lines = section.split('\n');
+            const titleLine = lines[0];
+            
+            // 提取摘要
+            let summary = '';
+            const summaryIdx = lines.findIndex(l => l.includes('### 摘要'));
+            if (summaryIdx !== -1) {
+                summary = lines[summaryIdx + 1]?.replace(/^- /, '') || '';
+            }
+            
+            // 提取受影響檔案
+            const affectedFiles = [];
+            const filesIdx = lines.findIndex(l => l.includes('### 影響檔案'));
+            if (filesIdx !== -1) {
+                for (let j = filesIdx + 1; j < lines.length && lines[j].trim().startsWith('- `'); j++) {
+                    affectedFiles.push(lines[j].replace(/^- `(.*?)`/, '$1').trim());
+                }
+            }
+            
+            // 判定類型
+            let type = 'update';
+            if (titleLine.includes('新增') || section.includes('新增')) type = 'add';
+            else if (titleLine.includes('修復') || section.includes('修復')) type = 'fix';
+            else if (titleLine.includes('掃描') || section.includes('掃描')) type = 'scan';
+            else if (titleLine.includes('刪除') || section.includes('刪除')) type = 'remove';
+
+            entries.push({
+                title: titleLine.trim(),
+                summary: summary.trim(),
+                affectedFiles: affectedFiles,
+                type: type,
+                body: section
+            });
+        }
+        
+        res.json({ entries: entries.slice(0, 20) });
     } catch (e) {
-        res.status(500).json({ error: e.message, changes: 0, files: [] });
+        console.error('Changelog error:', e);
+        res.json({ entries: [] });
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 LLM Wiki 知識庫 API 啟動於 http://localhost:${PORT}`);
+app.get('/api/scan-changes', async (req, res) => {
+    const { exec } = require('child_process');
+    exec('python3 scan-changes.py', { cwd: __dirname }, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
+            return res.status(500).json({ error: error.message });
+        }
+        // 掃描後清除 Tree 快取，以便前端抓到最新狀態
+        TREE_CACHE = null;
+        res.json({ success: true, output: stdout });
+    });
 });
+
+app.get('/api/all-content', (req, res) => {
+    if (!GRAPH_DATA) return res.status(503).json({ error: '數據加載中...' });
+    res.json(GRAPH_DATA);
+});
+
+app.get('/api/content', async (req, res) => {
+    try {
+        const content = await asyncSafeRead(fsPromises.readFile, req.query.path, 'utf-8');
+        res.send(content);
+    } catch (e) { res.status(500).send(e.message); }
+});
+
+// 靜態文件
+if (fs.existsSync(FRONTEND_DIST)) {
+    app.use(express.static(FRONTEND_DIST));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
+    });
+}
+
+// 啟動監聽 (強制先初始化數據)
+async function start() {
+    console.log('📦 正在預載入知識圖譜數據...');
+    await initServer();
+    
+    if (!GRAPH_DATA) {
+        console.error('❌ 關鍵錯誤: 無法預載入知識圖譜，請檢查 graph.json 是否存在或被 OneDrive 鎖定。');
+        // 即使失敗也啟動，避免 App 徹底打不開，但會記錄錯誤
+    }
+
+    const server = app.listen(PORT, '0.0.0.0', () => {
+        console.log('\n========================================');
+        console.log(`🚀 LLM Wiki Dashboard: http://localhost:${PORT}`);
+        console.log(`📊 數據狀態: ${GRAPH_DATA ? 'READY (' + GRAPH_DATA.count + ' nodes)' : 'FAILED'}`);
+        console.log('========================================\n');
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            try {
+                execSync(`lsof -ti:${PORT} | xargs kill -9`);
+                setTimeout(start, 1000);
+            } catch (e) { process.exit(1); }
+        }
+    });
+}
+
+start();
+

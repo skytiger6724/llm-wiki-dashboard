@@ -6,7 +6,7 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
-![Version](https://img.shields.io/badge/Version-2.2-green.svg)
+![Version](https://img.shields.io/badge/Version-3.1.0-blue.svg)
 
 ---
 
@@ -14,7 +14,17 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 Instead of RAG-style retrieval that rediscovers knowledge from scratch on every query, the LLM **compiles** a persistent wiki — updating entity pages, revising summaries, flagging contradictions, and maintaining cross-references. This dashboard lets you browse, search, and visualize that wiki.
 
-## 🔥 Features
+## 🔥 Features (v3.1.0 Update)
+
+### ✨ Stellar Map Visual System
+- **Neon Aesthetic**: Pure black background with high-contrast glowing nodes and Aurora-inspired link colors.
+- **Advanced Rendering**: Custom Canvas-based radial gradients for stellar-style light effects.
+- **Dynamic Energy Flows**: Directional particles simulating knowledge transmission between nodes.
+
+### 🗄️ Content Preview Drawer
+- **In-Graph Preview**: Click any node in the graph to slide out a glassmorphism drawer.
+- **Seamless Context**: Read full Markdown content without leaving the visual graph interface.
+- **One-Click Reader**: Transition to full reader mode directly from the preview drawer.
 
 ### 📂 Knowledge Directory Navigation
 - **Hierarchical Tree**: Expandable directories + clickable files

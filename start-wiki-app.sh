@@ -4,7 +4,7 @@
 
 set -e
 
-BASE_DIR="/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/00_KM_核心知識庫/20_LLM_Wiki/02_Raw_原始資料/Articles/Project_Source/llm-wiki-app"
+BASE_DIR="/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/llm-wiki-app"
 
 echo "🚀 LLM Wiki App 啟動中..."
 

@@ -15,7 +15,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({ filePath }) => {
     if (!filePath) return;
     setLoading(true);
     console.log("正在讀取檔案:", filePath);
-    fetch(`http://localhost:3001/api/content?path=${encodeURIComponent(filePath)}`)
+    fetch(`/api/content?path=${encodeURIComponent(filePath)}`)
       .then(res => res.text())
       .then(text => {
         setContent(text);

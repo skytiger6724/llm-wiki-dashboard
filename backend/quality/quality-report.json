@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-04-14T07:44:34.815Z",
+  "totalNodes": 1435,
+  "needsReview": 608,
+  "avgScore": 35,
+  "top5Lowest": [
+    {
+      "id": "Dynasafe_Accenture_AI研究報告摘要",
+      "score": 13
+    },
+    {
+      "id": "來源頁面名",
+      "score": 13
+    },
+    {
+      "id": "另一個來源",
+      "score": 13
+    },
+    {
+      "id": "舊版聲明",
+      "score": 13
+    },
+    {
+      "id": "實體名稱",
+      "score": 13
+    }
+  ],
+  "top5Highest": [
+    {
+      "id": "全域原始資料與對話總索引",
+      "score": 67
+    },
+    {
+      "id": "高階AI_Persona_鑄造爐",
+      "score": 67
+    },
+    {
+      "id": "神秘學知識複利戰略分析_v12.0",
+      "score": 67
+    },
+    {
+      "id": "知識TCO_202節點複利價值分析",
+      "score": 67
+    },
+    {
+      "id": "時空博弈決策矩陣",
+      "score": 67
+    }
+  ]
+}

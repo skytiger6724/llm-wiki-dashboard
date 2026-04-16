@@ -1,0 +1,28 @@
+{
+  "phase3": {
+    "entities": 1165,
+    "links": 3366
+  },
+  "phase4": {},
+  "phase5": {
+    "timestamp": "2026-04-14T05:01:28.083Z",
+    "totalNodes": 0,
+    "needsReview": 0,
+    "avgScore": null,
+    "top5Lowest": [],
+    "top5Highest": []
+  },
+  "searchTest": [],
+  "contextTest": {
+    "query": "Redis",
+    "contextCount": 0,
+    "backlinkCount": 0,
+    "relatedCount": 0
+  },
+  "phase6": {
+    "synced": 0,
+    "conflicts": 0
+  },
+  "timestamp": "2026-04-14T05:01:28.147Z",
+  "elapsed": "0.5"
+}

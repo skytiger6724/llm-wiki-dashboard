@@ -39,6 +39,23 @@ function scanMarkdownFiles(dirPath) {
                 }
                 category = parts[parts.length - 2] || '';
                 
+                // Wiki v2.0: 提取元數據 (Confidence, Decay, Crystallized)
+                let confidence = 3;
+                let decay_factor = 0.2;
+                let isCrystallized = fullPath.includes('05_Crystallized');
+                
+                try {
+                    const content = fs.readFileSync(fullPath, 'utf-8');
+                    const yamlMatch = content.match(/^---\s*([\s\S]*?)\s*---/);
+                    if (yamlMatch) {
+                        const yamlStr = yamlMatch[1];
+                        const confMatch = yamlStr.match(/confidence:\s*(\d+)/);
+                        if (confMatch) confidence = parseInt(confMatch[1]);
+                        const decayMatch = yamlStr.match(/decay_factor:\s*([\d.]+)/);
+                        if (decayMatch) decay_factor = parseFloat(decayMatch[1]);
+                    }
+                } catch (e) {}
+
                 if (!nodeMap.has(name)) {
                     nodeMap.set(name, {
                         name,
@@ -46,6 +63,9 @@ function scanMarkdownFiles(dirPath) {
                         category,
                         layer: layer.replace(/^\d+/, ''),
                         links: 0,
+                        confidence,
+                        decay_factor,
+                        isCrystallized
                     });
                 }
             }
@@ -70,54 +90,76 @@ function scanMarkdownFiles(dirPath) {
                     const content = fs.readFileSync(fullPath, 'utf-8');
                     const sourceName = item.replace('.md', '');
                     
-                    // 提取 [[...]] wikilinks
+                    // 提取 [[...]] wikilinks，支援 Wiki v2.0 的語義權重格式 [[A]] --(關係:權重)--> [[B]]
                     const wikilinkRegex = /\[\[(.+?)\]\]/g;
+                    // 同時匹配語義權重標註
+                    const weightedLinkRegex = /\[\[(.+?)\]\]\s*--\((.+?):([\d.]+)\)-->\s*\[\[(.+?)\]\]/g;
+                    
                     let match;
                     const targets = [];
                     
-                    while ((match = wikilinkRegex.exec(content)) !== null) {
-                        const raw = match[1].trim();
-                        // Handle [[target|alias]] format
-                        const parts = raw.split('|');
-                        const target = parts[0].trim();
+                    // 先處理語義加權連結
+                    while ((match = weightedLinkRegex.exec(content)) !== null) {
+                        const source = match[1].trim().split('|')[0];
+                        const relation = match[2].trim();
+                        const weight = parseFloat(match[3]);
+                        const target = match[4].trim().split('|')[0];
                         
-                        if (target && target !== sourceName) {
+                        if (source === sourceName && target) {
                             targets.push(target);
-                            
-                            // 確保目標節點存在（即使沒有實體檔案）
-                            if (!nodeMap.has(target)) {
-                                nodeMap.set(target, {
-                                    name: target,
-                                    path: '',
-                                    category: 'unknown',
-                                    layer: 'unknown',
-                                    links: 0,
-                                });
-                            }
-                            
-                            // 建立連結（去重）
                             const linkKey = `${sourceName}→${target}`;
                             if (!linksSet.has(linkKey)) {
                                 linksSet.add(linkKey);
+                                links.push({ source: sourceName, target, strength: weight, relation });
+                                updateNodeLinks(sourceName, target);
+                            }
+                        }
+                    }
+
+                    // 再處理一般 wikilinks
+                    wikilinkRegex.lastIndex = 0;
+                    while ((match = wikilinkRegex.exec(content)) !== null) {
+                        const raw = match[1].trim();
+                        const target = raw.split('|')[0].trim();
+                        
+                        if (target && target !== sourceName) {
+                            const linkKey = `${sourceName}→${target}`;
+                            if (!linksSet.has(linkKey)) {
+                                targets.push(target);
+                                linksSet.add(linkKey);
                                 links.push({ source: sourceName, target, strength: 1 });
-                                
-                                // 更新連結計數
-                                const srcNode = nodeMap.get(sourceName);
-                                const tgtNode = nodeMap.get(target);
-                                if (srcNode) srcNode.links++;
-                                if (tgtNode) tgtNode.links++;
+                                updateNodeLinks(sourceName, target);
                             }
                         }
                     }
                     
                     if (targets.length > 0) {
-                        wikilinks[sourceName] = targets;
+                        wikilinks[sourceName] = Array.from(new Set(targets));
                     }
                 } catch (e) {
                     console.error(`⚠️  讀取檔案失敗: ${fullPath}`, e.message);
                 }
             }
         }
+    }
+
+    function updateNodeLinks(sourceName, target) {
+        if (!nodeMap.has(target)) {
+            nodeMap.set(target, {
+                name: target,
+                path: '',
+                category: 'unknown',
+                layer: 'unknown',
+                links: 0,
+                confidence: 1,
+                decay_factor: 0.5,
+                isCrystallized: false
+            });
+        }
+        const srcNode = nodeMap.get(sourceName);
+        const tgtNode = nodeMap.get(target);
+        if (srcNode) srcNode.links++;
+        if (tgtNode) tgtNode.links++;
     }
 
     extractWikilinks(dirPath);

@@ -1,0 +1,287 @@
+[
+  {
+    "timestamp": "2026-04-14T06:27:08.787Z",
+    "totalNodes": 1257,
+    "avgScore": 21,
+    "distribution": {
+      "0-20%": 572,
+      "21-40%": 685,
+      "41-60%": 0,
+      "61-80%": 0,
+      "81-100%": 0
+    },
+    "needsReview": 1128,
+    "top5Highest": [
+      {
+        "id": "Schema_v3",
+        "score": 33
+      },
+      {
+        "id": "Karpathy_LLM_Wiki_Gist",
+        "score": 33
+      },
+      {
+        "id": "創意",
+        "score": 33
+      },
+      {
+        "id": "塔羅",
+        "score": 33
+      },
+      {
+        "id": "工作",
+        "score": 33
+      }
+    ],
+    "top5Lowest": [
+      {
+        "id": "Acting_Mastery",
+        "score": 13
+      },
+      {
+        "id": "Acting_Self_Cultivation_Summary",
+        "score": 13
+      },
+      {
+        "id": "神秘學_塔羅全書大索引摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Accenture AI研究報告摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Nvidia FSI論壇摘要",
+        "score": 13
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-04-14T06:28:02.491Z",
+    "totalNodes": 1257,
+    "avgScore": 21,
+    "distribution": {
+      "0-20%": 572,
+      "21-40%": 685,
+      "41-60%": 0,
+      "61-80%": 0,
+      "81-100%": 0
+    },
+    "needsReview": 1128,
+    "top5Highest": [
+      {
+        "id": "Schema_v3",
+        "score": 33
+      },
+      {
+        "id": "Karpathy_LLM_Wiki_Gist",
+        "score": 33
+      },
+      {
+        "id": "創意",
+        "score": 33
+      },
+      {
+        "id": "塔羅",
+        "score": 33
+      },
+      {
+        "id": "工作",
+        "score": 33
+      }
+    ],
+    "top5Lowest": [
+      {
+        "id": "Acting_Mastery",
+        "score": 13
+      },
+      {
+        "id": "Acting_Self_Cultivation_Summary",
+        "score": 13
+      },
+      {
+        "id": "神秘學_塔羅全書大索引摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Accenture AI研究報告摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Nvidia FSI論壇摘要",
+        "score": 13
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-04-14T06:28:56.329Z",
+    "totalNodes": 1257,
+    "avgScore": 21,
+    "distribution": {
+      "0-20%": 572,
+      "21-40%": 685,
+      "41-60%": 0,
+      "61-80%": 0,
+      "81-100%": 0
+    },
+    "needsReview": 1128,
+    "top5Highest": [
+      {
+        "id": "Schema_v3",
+        "score": 33
+      },
+      {
+        "id": "Karpathy_LLM_Wiki_Gist",
+        "score": 33
+      },
+      {
+        "id": "創意",
+        "score": 33
+      },
+      {
+        "id": "塔羅",
+        "score": 33
+      },
+      {
+        "id": "工作",
+        "score": 33
+      }
+    ],
+    "top5Lowest": [
+      {
+        "id": "Acting_Mastery",
+        "score": 13
+      },
+      {
+        "id": "Acting_Self_Cultivation_Summary",
+        "score": 13
+      },
+      {
+        "id": "神秘學_塔羅全書大索引摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Accenture AI研究報告摘要",
+        "score": 13
+      },
+      {
+        "id": "Dynasafe_Nvidia FSI論壇摘要",
+        "score": 13
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-04-14T07:36:45.897Z",
+    "totalNodes": 1435,
+    "avgScore": 18,
+    "distribution": {
+      "0-20%": 1050,
+      "21-40%": 385,
+      "41-60%": 0,
+      "61-80%": 0,
+      "81-100%": 0
+    },
+    "needsReview": 1289,
+    "top5Highest": [
+      {
+        "id": "Index",
+        "score": 33
+      },
+      {
+        "id": "Schema_v3",
+        "score": 33
+      },
+      {
+        "id": "AI工廠",
+        "score": 33
+      },
+      {
+        "id": "Logo Designer",
+        "score": 33
+      },
+      {
+        "id": "ChatGPT Prompts Library (Fixed)",
+        "score": 33
+      }
+    ],
+    "top5Lowest": [
+      {
+        "id": "20260326_0326工作報告_OnePage",
+        "score": 13
+      },
+      {
+        "id": "20260326_0326工作報告_PPTX_Execution",
+        "score": 13
+      },
+      {
+        "id": "2026-03-31_LinkedIn_IT趨勢分析",
+        "score": 13
+      },
+      {
+        "id": "2026-03-31_PM技能包安裝紀錄",
+        "score": 13
+      },
+      {
+        "id": "2026-03-31_iThome_IT趨勢觀察",
+        "score": 13
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-04-14T07:44:36.107Z",
+    "totalNodes": 1435,
+    "avgScore": 35,
+    "distribution": {
+      "0-20%": 602,
+      "21-40%": 111,
+      "41-60%": 613,
+      "61-80%": 109,
+      "81-100%": 0
+    },
+    "needsReview": 608,
+    "top5Highest": [
+      {
+        "id": "Index",
+        "score": 67
+      },
+      {
+        "id": "Schema_v3",
+        "score": 67
+      },
+      {
+        "id": "Nvidia 網路分析",
+        "score": 67
+      },
+      {
+        "id": "命理諮詢新手指南：專業應對婚姻、財運、事業提問的實戰對話範本",
+        "score": 67
+      },
+      {
+        "id": "工業 AI 大腦 (Industrial AI Brain) 建設戰略研究報告",
+        "score": 67
+      }
+    ],
+    "top5Lowest": [
+      {
+        "id": "Dynasafe_Accenture_AI研究報告摘要",
+        "score": 13
+      },
+      {
+        "id": "來源頁面名",
+        "score": 13
+      },
+      {
+        "id": "另一個來源",
+        "score": 13
+      },
+      {
+        "id": "舊版聲明",
+        "score": 13
+      },
+      {
+        "id": "實體名稱",
+        "score": 13
+      }
+    ]
+  }
+]

@@ -4,6 +4,29 @@ All notable changes to LLM Wiki Dashboard.
 
 ---
 
+## [3.1.0] — 2026-04-16
+
+### "Stellar Map" Aesthetic Overhaul
+
+- **Pure Black Canvas**: Optimized contrast for low-light knowledge exploration.
+- **Glowing Node Physics**: Replaced standard circles with multi-layered radial gradients and halos.
+- **Relationship Categorization**: Color-coded links (Cyan=Entities, Purple=Concepts, Pink=Summaries, Gold=Crystallized).
+- **Interactive Highlighting**: Advanced hover logic with neighbor expansion and background dimming.
+
+### Content Discovery & Integration
+
+- **Integrated Preview Drawer**: Real-time side drawer for Markdown preview without view-switching.
+- **Glassmorphism UI**: High-end frosted glass panel with sliding animations and deep-linked reader transition.
+- **Dynamic Label Scaling**: Labels intelligently scale and show/hide based on zoom levels and importance.
+
+### Stability & Performance
+
+- **Responsive Viewport**: Added `RESET VIEWPORT` capability and dynamic window resizing listeners.
+- **Physics Synchronization**: Fixed sidebar parameter lag via `d3ReheatSimulation` hooks.
+- **Defensive Data Handling**: Robust error-checking for D3 node-link transformations to prevent UI crashes.
+
+---
+
 ## [2.2.0] — 2026-04-13
 
 ### Obsidian-Style Graph View Redesign

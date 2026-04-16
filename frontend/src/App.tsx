@@ -103,15 +103,16 @@ const ChangelogList = ({ entries }: { entries: ChangelogEntry[] }) => {
 };
 
 // ==================== 全站搜尋 ====================
-const GlobalSearch = ({ graphData, onNodeClick }: { graphData: GraphData | null; onNodeClick: (node: GraphNode) => void }) => {
+const GlobalSearch = ({ graphData, onNodeClick, onSearchChange }: { graphData: GraphData | null; onNodeClick: (node: GraphNode) => void; onSearchChange: (q: string) => void }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<GraphNode[]>([]);
 
   useEffect(() => {
+    onSearchChange(query);
     if (!graphData || !query.trim()) { setResults([]); return; }
     const q = query.toLowerCase();
     setResults(graphData.nodes.filter(n => n.name.toLowerCase().includes(q) || n.category.toLowerCase().includes(q)).slice(0, 20));
-  }, [query, graphData]);
+  }, [query, graphData, onSearchChange]);
 
   const CAT_COLORS: Record<string, string> = { 實體: '#14866d', 概念: '#0645ad', 摘要: '#d33', 綜合: '#7b61ff' };
 
@@ -179,27 +180,61 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [changelog, setChangelog] = useState<ChangelogEntry[]>([]);
   const [scanning, setScanning] = useState(false);
+  
+  // Drawer States for Graph View
+  const [drawerPath, setDrawerPath] = useState<string | null>(null);
+  const [drawerContent, setDrawerContent] = useState('');
+  const [drawerLoading, setDrawerLoading] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/tree').then(r => r.json()).then((data: ContentTreeItem[]) => {
-      const filtered = data.length === 1 && data[0].children ? data[0].children : data;
-      setTree(filtered);
-    });
-    fetch('http://localhost:3001/api/km-changelog').then(r => r.json()).then(d => setChangelog(d.entries || []));
+    console.log("[App] Fetching initial data...");
+    fetch('/api/tree')
+      .then(r => r.json())
+      .then((data: ContentTreeItem[]) => {
+        const filtered = data.length === 1 && data[0].children ? data[0].children : data;
+        setTree(filtered);
+      })
+      .catch(err => console.error("[App] Failed to fetch tree:", err));
+
+    fetch('/api/km-changelog')
+      .then(r => r.json())
+      .then(d => setChangelog(d.entries || []))
+      .catch(err => console.error("[App] Failed to fetch changelog:", err));
   }, []);
 
   useEffect(() => {
     if (selectedPath) {
       setLoading(true);
-      fetch(`http://localhost:3001/api/content?path=${encodeURIComponent(selectedPath)}`).then(r => r.text()).then(t => { setContent(t); setLoading(false); });
+      fetch(`/api/content?path=${encodeURIComponent(selectedPath)}`)
+        .then(r => r.text())
+        .then(t => { setContent(t); setLoading(false); })
+        .catch(err => { console.error("[App] Failed to fetch content:", err); setLoading(false); });
     }
   }, [selectedPath]);
 
+  // Handle Drawer Content
+  useEffect(() => {
+    if (drawerPath) {
+      setDrawerLoading(true);
+      fetch(`/api/content?path=${encodeURIComponent(drawerPath)}`)
+        .then(r => r.text())
+        .then(t => { setDrawerContent(t); setDrawerLoading(false); })
+        .catch(err => { console.error("[App] Failed to fetch drawer content:", err); setDrawerLoading(false); });
+    }
+  }, [drawerPath]);
+
   const loadGraphData = useCallback(async () => {
-    if (graphData || tree.length === 0) return;
+    if (graphData) return;
+    if (tree.length === 0) return;
+    
     setGraphLoading(true);
-    try { const g = await buildGraphData(tree, {}); setGraphData(g); }
-    catch (e) { console.error(e); }
+    console.log("[App] Loading graph data...");
+    try { 
+      const g = await buildGraphData(tree, {}); 
+      console.log("[App] Graph data loaded:", g.nodes.length, "nodes");
+      setGraphData(g); 
+    }
+    catch (e) { console.error("[App] Graph load error:", e); }
     finally { setGraphLoading(false); }
   }, [tree, graphData]);
 
@@ -211,17 +246,35 @@ function App() {
     return null;
   }, []);
 
-  const handleGraphNodeClick = useCallback((node: GraphNode) => { if (node.path) { setSelectedPath(node.path); setViewMode('reader'); } }, []);
+  const handleGraphNodeClick = useCallback((node: any) => { 
+    console.log("[Graph] Node Clicked:", node.id || node.name);
+    
+    // 從原始 graphData 中精確查找，確保屬性完整
+    const originalNode = graphData?.nodes.find(n => (n.id === node.id) || (n.name === (node.id || node.name)));
+    const path = originalNode?.path || node.path;
+    
+    if (path) { 
+      console.log("[Graph] Navigating to path:", path);
+      if (viewMode === 'graph') {
+        setDrawerPath(path);
+      } else {
+        setSelectedPath(path); 
+        setViewMode('reader'); 
+      }
+    } else {
+      console.warn("[Graph] No path found for node:", node);
+    }
+  }, [viewMode, graphData]);
 
   // 掃描變更 + 重新整理 changelog
   const handleRefresh = useCallback(async () => {
     setScanning(true);
     try {
-      await fetch('http://localhost:3001/api/scan-changes');
+      await fetch('/api/scan-changes');
     } catch (e) { console.error('Scan failed:', e); }
     await new Promise(r => setTimeout(r, 1500));
     try {
-      const d = await fetch('http://localhost:3001/api/km-changelog').then(r => r.json());
+      const d = await fetch('/api/km-changelog').then(r => r.json());
       setChangelog(d.entries || []);
     } catch (e) { console.error(e); }
     setScanning(false);
@@ -237,7 +290,11 @@ function App() {
     display: 'flex', alignItems: 'center', gap: '5px', fontFamily: 'sans-serif',
   });
 
-  useEffect(() => { if (viewMode !== 'reader' && !graphData) loadGraphData(); }, [viewMode, loadGraphData]);
+  useEffect(() => { 
+    if (viewMode !== 'reader' && !graphData) {
+      loadGraphData();
+    }
+  }, [viewMode, loadGraphData, graphData]);
 
   const processedContent = content.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`);
 
@@ -318,7 +375,7 @@ function App() {
                 <div style={{ fontSize: '0.82rem', color: '#54595d', marginBottom: '10px', lineHeight: 1.5 }}>
                   歡迎來到你的個人知識庫。編譯並展示了 <strong>{graphData?.count || '...'}</strong> 個知識節點，通過 <strong>{graphData?.links.length || '...'}</strong> 條關聯連結相互連接。
                 </div>
-                <GlobalSearch graphData={graphData} onNodeClick={handleGraphNodeClick} />
+                <GlobalSearch graphData={graphData} onNodeClick={handleGraphNodeClick} onSearchChange={setSearchQuery} />
               </div>
             </div>
             {/* 三欄佈局 */}
@@ -454,7 +511,75 @@ function App() {
             </div>
           </div>
         ) : viewMode === 'graph' && graphData ? (
-          <GraphView nodes={graphData.nodes} links={graphData.links} onNodeClick={handleGraphNodeClick} searchQuery={searchQuery} />
+          <div style={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
+            <GraphView nodes={graphData.nodes} links={graphData.links} onNodeClick={handleGraphNodeClick} searchQuery={searchQuery} />
+            
+            {/* Content Drawer */}
+            {drawerPath && (
+              <div style={{
+                position: 'absolute', top: 12, right: 12, bottom: 12, width: '400px',
+                background: 'rgba(10, 10, 20, 0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+                borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.6)',
+                zIndex: 1000, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+                animation: 'slideIn 0.3s ease-out'
+              }}>
+                <div style={{
+                  padding: '16px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: 'rgba(255, 255, 255, 0.05)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <FileText size={16} color="#00f2ff" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', maxWidth: '280px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {drawerPath.split('/').pop()}
+                    </span>
+                  </div>
+                  <button onClick={() => setDrawerPath(null)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', padding: '4px' }}>
+                    <X size={18} />
+                  </button>
+                </div>
+                
+                <div style={{ flex: 1, overflowY: 'auto', padding: '24px 30px', color: '#eee' }}>
+                  {drawerLoading ? (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                      <div className="spin"><RefreshCw size={24} color="#00f2ff" /></div>
+                    </div>
+                  ) : (
+                    <div className="drawer-markdown">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
+                        h1: ({ children }) => <h1 style={{ fontSize: '1.5rem', borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '16px', color: '#fff' }}>{children}</h1>,
+                        h2: ({ children }) => <h2 style={{ fontSize: '1.25rem', marginTop: '24px', marginBottom: '12px', color: '#fff' }}>{children}</h2>,
+                        p: ({ children }) => <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '12px', color: '#ccc' }}>{children}</p>,
+                        li: ({ children }) => <li style={{ fontSize: '0.9rem', marginBottom: '6px', color: '#ccc' }}>{children}</li>,
+                        code: ({ children }) => <code style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.8rem', color: '#ff79c6' }}>{children}</code>,
+                        pre: ({ children }) => <pre style={{ background: '#111', padding: '12px', borderRadius: '8px', overflowX: 'auto', marginBottom: '16px' }}>{children}</pre>,
+                        a: ({ href, children }) => <a href={href} style={{ color: '#00f2ff', textDecoration: 'none', borderBottom: '1px dotted #00f2ff' }}>{children}</a>,
+                      }}>{drawerContent.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`)}</ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+                
+                <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)' }}>
+                  <button 
+                    onClick={() => { setSelectedPath(drawerPath); setViewMode('reader'); setDrawerPath(null); }}
+                    style={{
+                      width: '100%', padding: '8px', background: '#36c', color: '#fff', border: 'none',
+                      borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+                    }}
+                  >
+                    <ArrowUpRight size={14} /> 在閱讀器中打開
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            <style>{`
+              @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+              .drawer-markdown ul { padding-left: 20px; }
+            `}</style>
+          </div>
         ) : viewMode === 'metrics' && graphData ? (
           <DashboardMetrics nodes={graphData.nodes} links={graphData.links} />
         ) : viewMode === 'isolated' && graphData ? (

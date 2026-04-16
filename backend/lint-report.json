@@ -1,0 +1,1165 @@
+{
+  "timestamp": "2026-04-14T07:44:34.874Z",
+  "issues": [
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "Index",
+      "duplicate": "index",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/02_Raw_原始資料/Personal_Growth/PUA/PUA书籍文章/Yearly_電子書庫/loving-books-master/docs/index.md"
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "LLM_Wiki",
+      "duplicate": "LLM Wiki",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "Dynasafe_Accenture_AI研究報告摘要",
+      "duplicate": "Dynasafe_Accenture AI研究報告摘要",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "Dynasafe_Nvidia_FSI論壇摘要",
+      "duplicate": "Dynasafe_Nvidia FSI論壇摘要",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "Dynasafe_Cisco_Live_精華摘要",
+      "duplicate": "Dynasafe_Cisco Live_精華摘要",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "LLM_Wiki_V2_戰略結晶",
+      "duplicate": "LLM_Wiki_v2_戰略結晶",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "Agentic_AI",
+      "duplicate": "Agentic AI",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "A",
+      "duplicate": "a",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "LLM_Wiki_V2_戰略結晶",
+      "duplicate": "LLM Wiki V2 戰略結晶",
+      "path": ""
+    },
+    {
+      "type": "duplicate",
+      "severity": "warning",
+      "existing": "karpathy-guidelines",
+      "duplicate": "Karpathy_Guidelines",
+      "path": ""
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金星_Venus",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/金星_Venus.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "火星_Mars",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/火星_Mars.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "木星_Jupiter",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/木星_Jupiter.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "土星_Saturn",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/土星_Saturn.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "天王星_Uranus",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/天王星_Uranus.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "海王星_Neptune",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/海王星_Neptune.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "冥王星_Pluto",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/冥王星_Pluto.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "雲端智能部_Cloud_Intelligence_Dept",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/雲端智能部_Cloud_Intelligence_Dept.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Cisco360PartnerProgram",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/Cisco360PartnerProgram.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "MarkItDown",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/MarkItDown.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "前鋒三角_2026",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/前鋒三角_2026.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Continental_Engineering_CEC",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/Continental_Engineering_CEC.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "HP_Consumer_Personal_Systems",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/HP_Consumer_Personal_Systems.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Method_Acting",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/Method_Acting.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "數位孿生_Digital_Twin",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/數位孿生_Digital_Twin.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "邊緣AI_Edge_AI",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/邊緣AI_Edge_AI.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "具身智能_Embodied_AI",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/具身智能_Embodied_AI.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "數位信任_Digital_Trust",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/數位信任_Digital_Trust.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "社交力學_Social_Dynamics",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/社交力學_Social_Dynamics.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "說服策略_Persuasion_Strategy",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/說服策略_Persuasion_Strategy.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "人性分析_Human_Nature",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/人性分析_Human_Nature.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "溝通技巧_Communication_Skills",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/溝通技巧_Communication_Skills.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "五步陷阱_Five_Step_Trap",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/五步陷阱_Five_Step_Trap.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "浪子模式_Player_Mode",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/浪子模式_Player_Mode.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "天生好手_Natural_Talent",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/天生好手_Natural_Talent.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "戀愛腦_Love_Brain",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/戀愛腦_Love_Brain.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Gemini_CLI技能",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/Gemini_CLI技能.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "提示詞工程_Prompt_Engineering",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/提示詞工程_Prompt_Engineering.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AI工廠_AI_Factory",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/AI工廠_AI_Factory.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "工業AI大腦_Industrial_AI_Brain",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/工業AI大腦_Industrial_AI_Brain.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "數位韌性_Digital_Resilience",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/數位韌性_Digital_Resilience.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "知識複利系統_Knowledge_Compounding",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/知識複利系統_Knowledge_Compounding.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "客戶Tier分層模型_Client_Tier_Strategy",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/客戶Tier分層模型_Client_Tier_Strategy.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "知識自動化管線_Knowledge_Automation_Pipeline",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/知識自動化管線_Knowledge_Automation_Pipeline.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AI轉型方案匹配引擎_AI_Transformation_Matching",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/AI轉型方案匹配引擎_AI_Transformation_Matching.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "開發行為準則SOP_Karpathy_Guidelines_Enterprise",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/開發行為準則SOP_Karpathy_Guidelines_Enterprise.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "塔羅AI解牌框架_Tarot_AI_Reading",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/塔羅AI解牌框架_Tarot_AI_Reading.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "命理營銷心理學_Numerology_Marketing_Psychology",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/命理營銷心理學_Numerology_Marketing_Psychology.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "儀式魔法體系_Ritual_Magic_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/儀式魔法體系_Ritual_Magic_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "混沌魔法與意圖驅動_Chaos_Magic_Intent",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/混沌魔法與意圖驅動_Chaos_Magic_Intent.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "西方占星體系_Western_Astrology_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/西方占星體系_Western_Astrology_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "四大元素_Four_Elements",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/四大元素_Four_Elements.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "宮位系統_House_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/宮位系統_House_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "相位系統_Aspect_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/相位系統_Aspect_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "奇門遁甲體系_Qi_Men_Dun_Jia_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/奇門遁甲體系_Qi_Men_Dun_Jia_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "奇門四盤結構_Four_Layers",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/奇門四盤結構_Four_Layers.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "紫微斗數體系_Zi_Wei_Dou_Shu_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/紫微斗數體系_Zi_Wei_Dou_Shu_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "大六壬體系_Da_Liu_Ren_System",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/大六壬體系_Da_Liu_Ren_System.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "術數與現代專家系統映射",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/術數與現代專家系統映射.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "三式與時空決策模型_The_Three_Styles",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/三式與時空決策模型_The_Three_Styles.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "東方專家系統實務_Eastern_Expert_Systems",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/東方專家系統實務_Eastern_Expert_Systems.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "東方术數體系_Eastern_Divination_Systems",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/東方术數體系_Eastern_Divination_Systems.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "統一標籤治理_Unified_Tag_Governance",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/統一標籤治理_Unified_Tag_Governance.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026_Q1_iThome_IT趨勢摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/2026_Q1_iThome_IT趨勢摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Cisco_NVIDIA_GTC_2026摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Cisco_NVIDIA_GTC_2026摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026_LinkedIn_IT趨勢摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/2026_LinkedIn_IT趨勢摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026商機清單摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/2026商機清單摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Personal_Growth_PUA書籍摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Personal_Growth_PUA書籍摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "死囚漫步五步陷阱摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/死囚漫步五步陷阱摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "23年戀愛電子書摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/23年戀愛電子書摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Articles技能安裝工作紀錄摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Articles技能安裝工作紀錄摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Articles技術分析與市場趨勢摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Articles技術分析與市場趨勢摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "PUA社交力學新書摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/PUA社交力學新書摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "全域Raw_原始資料深度掃描摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/全域Raw_原始資料深度掃描摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "極簡筆記AI工具與技巧摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/極簡筆記AI工具與技巧摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "極簡筆記工作項目摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/極簡筆記工作項目摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "極簡筆記Prompt模板摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/極簡筆記Prompt模板摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "極簡筆記個人成長摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/極簡筆記個人成長摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "PUA实战案例与惯例库摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/PUA实战案例与惯例库摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Gemini对话记录与loving-books摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Gemini对话记录与loving-books摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "KM工作紀錄與執行報告摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/KM工作紀錄與執行報告摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_2026_戰略與治理總綱",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_2026_戰略與治理總綱.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_AI算力調度與零信任實務摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_AI算力調度與零信任實務摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "命理師運營話術摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/命理師運營話術摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "塔羅體系核心教材摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/塔羅體系核心教材摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "清醒夢與控夢技術摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/清醒夢與控夢技術摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AS17STUDIO塔羅實戰精華摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/AS17STUDIO塔羅實戰精華摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AC電子書_GlobalFoundation摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/AC電子書_GlobalFoundation摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AC電子書_成為你改變世界摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/AC電子書_成為你改變世界摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AC電子書_金錢工作冊摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/AC電子書_金錢工作冊摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "魔法體系核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/魔法體系核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "榮格心理學核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/榮格心理學核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "雷諾曼預測體系核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/雷諾曼預測體系核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "自然能量與煉金轉化摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/自然能量與煉金轉化摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "靈修療癒與顯化法則核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/靈修療癒與顯化法則核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神祕學雜項核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神祕學雜項核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神祕學雜項與邊緣知識大索引",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神祕學雜項與邊緣知識大索引.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "生命靈數與卜卦占星核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/生命靈數與卜卦占星核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "晶體能量與水晶陣實戰摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/晶體能量與水晶陣實戰摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_魔法全書大索引摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_魔法全書大索引摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學書籍知識庫結構化目錄",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學書籍知識庫結構化目錄.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅白皮書與理論體系摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅白皮書與理論體系摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅感情解牌實戰摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅感情解牌實戰摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅AI解牌指令合集摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅AI解牌指令合集摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅AI解牌指令補遺摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅AI解牌指令補遺摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_西洋占星核心理論摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_西洋占星核心理論摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_靈修療癒與神秘學院摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_靈修療癒與神秘學院摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅深度解析體系摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅深度解析體系摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_海沙78張牌精講體系摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_海沙78張牌精講體系摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_海沙78張牌全集批次4摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_海沙78張牌全集批次4摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_靈魂占星與寶瓶世紀摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_靈魂占星與寶瓶世紀摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_吠陀占星與古典占星典籍摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_吠陀占星與古典占星典籍摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe工作文件核心摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe工作文件核心摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_Cisco 技術文件摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_Cisco 技術文件摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_Azure_CAF摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_Azure_CAF摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_2025_Solution_Day摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_2025_Solution_Day摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_AppD_MicroCloud摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_AppD_MicroCloud摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_FinOps_FinCloud_AIInfra摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_FinOps_FinCloud_AIInfra摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_NVIDIA_Canonical_AI_Infra摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_NVIDIA_Canonical_AI_Infra摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_Reference_Architecture摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_Reference_Architecture摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_AI趨勢與金融實戰摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_AI趨勢與金融實戰摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe_多供應商聯合防禦體系摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/Dynasafe_多供應商聯合防禦體系摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶_DR2Cloud災備上雲摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶_DR2Cloud災備上雲摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶_SD-WAN軟體定義廣域網路摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶_SD-WAN軟體定義廣域網路摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶零信任安全架構摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶零信任安全架構摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶雲端遷移與混合雲架構摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶雲端遷移與混合雲架構摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶_AIOps與網路營運保證摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶_AIOps與網路營運保證摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融業自動化維運與企業雲平台案例摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融業自動化維運與企業雲平台案例摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "金融客戶_Cisco_ACI微分段與數據中心網路摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/金融客戶_Cisco_ACI微分段與數據中心網路摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "MF-MIGRATE-001_SA11標準化搬遷方法論_20260408",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/MF-MIGRATE-001_SA11標準化搬遷方法論_20260408.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "20260408_Legacy_COE_Cisco360計畫摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/20260408_Legacy_COE_Cisco360計畫摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "20260408_Legacy_COE_PotentialProduct摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/20260408_Legacy_COE_PotentialProduct摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "20260408_Legacy_COE_VMOffloadMigration摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/20260408_Legacy_COE_VMOffloadMigration摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "20260408_Legacy_COE_MultiCloudReference摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/20260408_Legacy_COE_MultiCloudReference摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "20260408_Legacy_COE_雜項摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/20260408_Legacy_COE_雜項摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "WIKI-SUM-20260408-001_Q3_Partner_PM_Meeting",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/WIKI-SUM-20260408-001_Q3_Partner_PM_Meeting.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "WIKI-SUM-20260408-005_Case_Solution_TPCA_SEMI_聯電",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/WIKI-SUM-20260408-005_Case_Solution_TPCA_SEMI_聯電.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "AI-混合雲知識複利戰略報告_v1.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/AI-混合雲知識複利戰略報告_v1.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v10.0_健康度診斷篇",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/2026全域知識複利戰略報告_v10.0_健康度診斷篇.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v9.0_AI煉金術師藍圖",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/2026全域知識複利戰略報告_v9.0_AI煉金術師藍圖.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "High_Level_AI_Persona_Design_Guide",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Drafts/High_Level_AI_Persona_Design_Guide.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Drafts/2026全域知識複利戰略報告.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v2.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Drafts/2026全域知識複利戰略報告_v2.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v3.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Drafts/2026全域知識複利戰略報告_v3.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v4.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Archive_歷史版本/2026全域知識複利戰略報告_v4.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v7.0_終極統合篇",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Archive_歷史版本/2026全域知識複利戰略報告_v7.0_終極統合篇.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v8.0_大圓滿終章",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/2026全域知識複利戰略報告_v8.0_大圓滿終章.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v12.0_神秘學知識複利專題",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/2026全域知識複利戰略報告_v12.0_神秘學知識複利專題.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v13.0_Dynasafe知識複利專題",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/2026全域知識複利戰略報告_v13.0_Dynasafe知識複利專題.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026全域知識複利戰略報告_v14.0_全光譜統合篇",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/2026全域知識複利戰略報告_v14.0_全光譜統合篇.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "全域知識網絡健康度強化報告_20260409",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/全域知識網絡健康度強化報告_20260409.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "全域Wiki大編譯與知識網絡強化_20260409",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/全域Wiki大編譯與知識網絡強化_20260409.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "全域知識複利精華手冊_Compounding_CheatSheet",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/全域知識複利精華手冊_Compounding_CheatSheet.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "知識TCO_202節點複利價值分析",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/知識TCO_202節點複利價值分析.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學知識複利戰略分析_v12.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/神秘學知識複利戰略分析_v12.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "全域知識v14.0全光譜統合分析",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/全域知識v14.0全光譜統合分析.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Dynasafe知識複利戰略分析_v13.0",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Synthesis_綜合/Dynasafe知識複利戰略分析_v13.0.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "NVIDIA",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/NVIDIA.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "知識TCO_Knowledge_TCO",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/知識TCO_Knowledge_TCO.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "LLM_Wiki_Compiler",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/LLM_Wiki_Compiler.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "女性回应心理分析_Female_Response_Psychology",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/女性回应心理分析_Female_Response_Psychology.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "Social_Dynamics",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Entities_實體/Social_Dynamics.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "2026_FSI_AgenticAI_Strategy",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/04_Output_產出層/Drafts/2026_FSI_AgenticAI_Strategy.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "榮格原型理論_Jungian_Archetypes",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/榮格原型理論_Jungian_Archetypes.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "集體無意識與共時性_Collective_Unconscious",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/集體無意識與共時性_Collective_Unconscious.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "雷諾曼組合解讀邏輯_Lenormand_Combinations",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/雷諾曼組合解讀邏輯_Lenormand_Combinations.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "事件劇本建模_Event_Script_Modeling",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/事件劇本建模_Event_Script_Modeling.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "塔羅與占星聯動_Tarot_Astrology_Link",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/塔羅與占星聯動_Tarot_Astrology_Link.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "逆位解讀邏輯_Reversed_Cards_Logic",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/逆位解讀邏輯_Reversed_Cards_Logic.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神秘學_塔羅AI解牌指令全集摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/神秘學_塔羅AI解牌指令全集摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "塔羅牌陣Prompt模型_Tarot_Spread_Prompts",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/塔羅牌陣Prompt模型_Tarot_Spread_Prompts.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "清醒夢與意識操縱_Lucid_Dreaming",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/清醒夢與意識操縱_Lucid_Dreaming.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "符號感應與直覺模型_Symbolic_Intuition",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/符號感應與直覺模型_Symbolic_Intuition.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "自然能量與草藥魔法_Natural_Magic",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/自然能量與草藥魔法_Natural_Magic.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "煉金術與系統轉化模型_Alchemy_Transformation",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/煉金術與系統轉化模型_Alchemy_Transformation.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "靈修療癒與能量清理_Healing_Clearing",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/靈修療癒與能量清理_Healing_Clearing.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "顯化法則與意圖對齊_Law_of_Attraction",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/顯化法則與意圖對齊_Law_of_Attraction.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "生命靈數運算體系_Numerology_Computing",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/生命靈數運算體系_Numerology_Computing.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "卜卦占星與即時決策模型_Horary_Decisions",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/卜卦占星與即時決策模型_Horary_Decisions.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "東方術數核心教材摘要",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/東方術數核心教材摘要.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "晶體能量與頻率共振_Crystal_Resonance",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/晶體能量與頻率共振_Crystal_Resonance.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "水晶陣與能量拓撲_Crystal_Grids",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/水晶陣與能量拓撲_Crystal_Grids.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "神聖幾何與宇宙結構_Sacred_Geometry",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/神聖幾何與宇宙結構_Sacred_Geometry.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "企業級AI自律規範_Enterprise_AI_Ethics",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/企業級AI自律規範_Enterprise_AI_Ethics.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "混合雲AI算力調度_Hybrid_AI_Orchestration",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/混合雲AI算力調度_Hybrid_AI_Orchestration.md"
+    },
+    {
+      "type": "stale",
+      "severity": "info",
+      "id": "暗示話術_Suggestion_Techniques",
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/暗示話術_Suggestion_Techniques.md"
+    }
+  ],
+  "fixes": [
+    {
+      "type": "add_superseded_tag",
+      "target": "金星_Venus",
+      "action": "添加 [Superseded] 標記"
+    },
+    {
+      "type": "add_superseded_tag",
+      "target": "火星_Mars",
+      "action": "添加 [Superseded] 標記"
+    },
+    {
+      "type": "add_superseded_tag",
+      "target": "木星_Jupiter",
+      "action": "添加 [Superseded] 標記"
+    },
+    {
+      "type": "add_superseded_tag",
+      "target": "土星_Saturn",
+      "action": "添加 [Superseded] 標記"
+    },
+    {
+      "type": "add_superseded_tag",
+      "target": "天王星_Uranus",
+      "action": "添加 [Superseded] 標記"
+    }
+  ],
+  "stats": {
+    "total": 186,
+    "orphan": 0,
+    "brokenRef": 0,
+    "duplicate": 10,
+    "stale": 176
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "timestamp": "2026-04-14T07:08:49.599Z",
+  "elapsed": 0.1,
+  "stats": {
+    "total": 260,
+    "compiled": 128,
+    "skipped": 132,
+    "errors": 0
+  },
+  "results": [
+    {
+      "action": "summary",
+      "name": "Gemini CLI 技能文檔 (Skill Documentation).md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "極簡筆記：提示詞模板整理表格.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "10个NotebookLM提示词Prompts将NotebookLM变为高效的生产力工具.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "10个NotebookLM高级提示词直接复制到NotebookLM使用.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "2025-12～2026-3 工作運.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "20251217靈感對應.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "2026 Q1工作演變.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "202601-03工作運勢.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "20260105財運預測.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "20260209投機分析.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "20260210投機分析.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "26 Pic Prompt.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "6 个直接产生商业结果的高杠杆提示词.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "AI Factory.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "AI 深度使用指南：教你比99%的人更会用AI.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "AI合照.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "AI工廠.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "AI情侶合成咒語.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "AI Kickstart Prompt Role.md",
+      "category": "prompt"
+    },
+    {
+      "action": "summary",
+      "name": "AI Writing Tutor Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "AI Writing Tutor Role 3 (Education Focus).md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "AI Writing Tutor.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Accountant Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Accountant Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Advertiser Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Advertiser Role 3.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Advertiser.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Automobile Mechanic Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Automobile Mechanic Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Babysitter Role.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Blog Writer Role 2.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Blog Writer Role 3.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Blog Writer Role.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Career Counselor Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Character Roleplay.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Chef Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Chef Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Chief Executive Officer.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Composer Role 2.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Composer Role 3 (Entertainment).md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Composer Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Cyber Attack App Developer Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Cyber Security Specialist Role 2 (Technical).md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Cyber Security Specialist Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Data Scientist Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Debate Coach Role 2 (Education).md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Debate Coach Role.md",
+      "category": "general"
+    },
+    {
+      "action": "summary",
+      "name": "Debater Role 2 (Entertainment).md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Debater Role.md",
+      "category": "ai-tool"
+    },
+    {
+      "action": "summary",
+      "name": "Dentist (Sample Role).md",
+      "category": "ai-tool"
+    }
+  ],
+  "categoryCounts": {
+    "prompt": 27,
+    "ai-tool": 79,
+    "general": 19,
+    "workflow": 2,
+    "content": 1
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "timestamp": "2026-04-14T07:14:41.043Z",
+  "elapsed": 0.3,
+  "stats": {
+    "total": 475,
+    "byMonth": {
+      "2025-12": 17,
+      "2026-01": 45,
+      "2026-02": 63,
+      "2026-03": 350
+    },
+    "byTopic": {
+      "Prompt工程": 475,
+      "Gemini": 475,
+      "神秘學": 12,
+      "感情關係": 28,
+      "學習教育": 27,
+      "個人成長": 73,
+      "工作運勢": 30,
+      "AI工具": 244,
+      "寫作創作": 126,
+      "財運投機": 57,
+      "健康": 13
+    },
+    "topics": [
+      "Prompt工程",
+      "Gemini",
+      "神秘學",
+      "感情關係",
+      "學習教育",
+      "個人成長",
+      "工作運勢",
+      "AI工具",
+      "寫作創作",
+      "財運投機",
+      "健康"
+    ]
+  },
+  "monthlySummaries": [
+    {
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/對話摘要_2025年12月.md",
+      "count": 17
+    },
+    {
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/對話摘要_2026年1月.md",
+      "count": 45
+    },
+    {
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/對話摘要_2026年2月.md",
+      "count": 63
+    },
+    {
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Summaries_摘要/對話摘要_2026年3月.md",
+      "count": 350
+    }
+  ],
+  "concepts": [
+    {
+      "topic": "Prompt工程",
+      "count": 475,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_Prompt工程.md"
+    },
+    {
+      "topic": "Gemini",
+      "count": 475,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_Gemini.md"
+    },
+    {
+      "topic": "神秘學",
+      "count": 12,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_神秘學.md"
+    },
+    {
+      "topic": "感情關係",
+      "count": 28,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_感情關係.md"
+    },
+    {
+      "topic": "學習教育",
+      "count": 27,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_學習教育.md"
+    },
+    {
+      "topic": "個人成長",
+      "count": 73,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_個人成長.md"
+    },
+    {
+      "topic": "工作運勢",
+      "count": 30,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_工作運勢.md"
+    },
+    {
+      "topic": "AI工具",
+      "count": 244,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_AI工具.md"
+    },
+    {
+      "topic": "寫作創作",
+      "count": 126,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_寫作創作.md"
+    },
+    {
+      "topic": "財運投機",
+      "count": 57,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_財運投機.md"
+    },
+    {
+      "topic": "健康",
+      "count": 13,
+      "path": "/Users/dwaynejohnson/Library/CloudStorage/OneDrive-個人/Documents/21_LLM_Wiki_核心知識庫/03_Wiki_知識層/Concepts_概念/對話主題_健康.md"
+    }
+  ]
+}

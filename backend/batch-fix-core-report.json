@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-04-14T07:36:06.012Z",
+  "elapsed": 0.1,
+  "stats": {
+    "total": 1294,
+    "skipped": 1293,
+    "fixed": 1,
+    "fake": 0,
+    "error": 0
+  },
+  "fixedPages": [
+    {
+      "name": "Prompt_Engineering_知識編譯框架",
+      "path": "03_Wiki_知識層/Concepts_概念/Prompt_Engineering_知識編譯框架.md",
+      "type": "concept",
+      "confidence": 4,
+      "wikilinks": 33
+    }
+  ],
+  "fakePages": []
+}
