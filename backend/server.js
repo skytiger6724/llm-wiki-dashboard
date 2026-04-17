@@ -67,16 +67,16 @@ async function initServer() {
                 linkCounts[tgt] = (linkCounts[tgt] || 0) + 1;
             });
 
-            // 3. 轉化節點：id -> name, 注入 links 計數
+            // 3. 轉化節點：確保具備 id 與 name，注入 links 計數
             const processedNodes = data.nodes.map(n => {
-                const nodeId = n.id;
+                const nodeId = n.id || n.name; // 相容性處理
                 return {
                     ...n,
-                    name: n.label || nodeId, // 前端預期 name
-                    id: nodeId,              // 保留 id 供 D3 連結
-                    links: linkCounts[nodeId] || 0, // 注入連結數供密度計算
-                    category: n.type || 'Concept',
-                    layer: n.source_file ? 'Wiki' : 'Unknown'
+                    id: nodeId,
+                    name: n.name || n.label || nodeId,
+                    links: linkCounts[nodeId] || 0,
+                    category: n.category || n.type || 'Concept',
+                    layer: n.layer || (n.source_file ? 'Wiki' : 'Unknown')
                 };
             });
 

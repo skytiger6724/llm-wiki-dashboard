@@ -118,8 +118,11 @@ const GlobalSearch = ({ graphData, onNodeClick, onSearchChange }: {
     }
     const q = query.toLowerCase();
     
-    // 1. 精確匹配
-    setResults(graphData.nodes.filter(n => n.name.toLowerCase().includes(q) || n.category.toLowerCase().includes(q)).slice(0, 10));
+    // 1. 精確匹配 (增加空值檢查)
+    setResults(graphData.nodes.filter(n => 
+      (n.name && n.name.toLowerCase().includes(q)) || 
+      (n.category && n.category.toLowerCase().includes(q))
+    ).slice(0, 10));
 
     // 2. 語義匹配 (Debounced)
     const timer = setTimeout(() => {
@@ -308,22 +311,25 @@ function App() {
   const handleGraphNodeClick = useCallback((node: any) => { 
     console.log("[Graph] Node Clicked:", node.id || node.name);
     
-    // 從原始 graphData 中精確查找，確保屬性完整
-    const originalNode = graphData?.nodes.find(n => (n.id === node.id) || (n.name === (node.id || node.name)));
-    const path = originalNode?.path || node.path;
+    // 優先使用節點自帶的 path (語義搜尋結果會帶)
+    let path = node.path;
+    
+    // 如果沒有 path，嘗試從原始 graphData 中精確查找
+    if (!path && graphData) {
+        const originalNode = graphData.nodes.find(n => 
+            (node.id && n.id === node.id) || 
+            (node.name && n.name === node.name)
+        );
+        path = originalNode?.path;
+    }
     
     if (path) { 
-      console.log("[Graph] Navigating to path:", path);
-      if (viewMode === 'graph') {
-        setDrawerPath(path);
-      } else {
-        setSelectedPath(path); 
-        setViewMode('reader'); 
-      }
+      console.log("[Graph] Opening path in drawer:", path);
+      setDrawerPath(path);
     } else {
       console.warn("[Graph] No path found for node:", node);
     }
-  }, [viewMode, graphData]);
+  }, [graphData]);
 
   // 掃描變更 + 重新整理 changelog
   const handleRefresh = useCallback(async () => {
