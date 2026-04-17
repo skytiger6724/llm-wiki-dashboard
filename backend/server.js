@@ -225,6 +225,57 @@ app.get('/api/content', async (req, res) => {
     } catch (e) { res.status(500).send(e.message); }
 });
 
+// ============================================================
+// 語義搜尋接口 (Semantic RAG Bridge)
+// ============================================================
+app.get('/api/search/semantic', async (req, res) => {
+    const query = req.query.q;
+    if (!query) return res.status(400).json({ error: 'Missing query parameter q' });
+
+    console.log(`🧠 [Semantic Search] Bridging to Python: "${query}"`);
+    
+    const { spawn } = require('child_process');
+    // 使用之前建立的虛擬環境執行搜尋
+    const pythonProcess = spawn('./venv/bin/python3', ['search_wiki.py', query], {
+        cwd: __dirname
+    });
+
+    let resultData = '';
+    pythonProcess.stdout.on('data', (data) => { resultData += data.toString(); });
+    
+    pythonProcess.on('close', (code) => {
+        if (code !== 0) {
+            console.error(`❌ Python process exited with code ${code}`);
+            return res.status(500).json({ error: 'Search engine failure' });
+        }
+
+        // 解析 Python 輸出 (增強版正則與路徑處理)
+        const lines = resultData.split('\n');
+        const results = [];
+        let currentItem = null;
+
+        lines.forEach(line => {
+            const cleanLine = line.trim();
+            // 匹配格式: "1. [filename.md] (Distance: 123.456)"
+            const resultMatch = cleanLine.match(/^\d+\.\s+\[(.*?)\]\s+\(Distance:\s+(.*?)\)/);
+
+            if (resultMatch) {
+                currentItem = { 
+                    title: resultMatch[1].replace('.md', ''), 
+                    distance: parseFloat(resultMatch[2]), 
+                    path: '' 
+                };
+                results.push(currentItem);
+            } else if (cleanLine.startsWith('Path:') && currentItem) {
+                currentItem.path = cleanLine.replace('Path:', '').trim();
+            }
+        });
+
+        console.log(`✅ [Semantic Search] Found ${results.length} relevant documents.`);
+        res.json({ results });
+        });
+        });
+
 // 靜態文件
 if (fs.existsSync(FRONTEND_DIST)) {
     app.use(express.static(FRONTEND_DIST));

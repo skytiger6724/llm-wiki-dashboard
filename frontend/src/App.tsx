@@ -102,49 +102,96 @@ const ChangelogList = ({ entries }: { entries: ChangelogEntry[] }) => {
   );
 };
 
-// ==================== 全站搜尋 ====================
-const GlobalSearch = ({ graphData, onNodeClick, onSearchChange }: { graphData: GraphData | null; onNodeClick: (node: GraphNode) => void; onSearchChange: (q: string) => void }) => {
+// ==================== 全站搜尋 (含語義增強) ====================
+const GlobalSearch = ({ graphData, onNodeClick, onSearchChange }: { 
+  graphData: GraphData | null; onNodeClick: (node: any) => void; onSearchChange: (q: string) => void 
+}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<GraphNode[]>([]);
+  const [semanticResults, setSemanticResults] = useState<any[]>([]);
+  const [isSearchingSemantic, setIsSearchingSemantic] = useState(false);
 
   useEffect(() => {
     onSearchChange(query);
-    if (!graphData || !query.trim()) { setResults([]); return; }
+    if (!graphData || !query.trim()) { 
+        setResults([]); setSemanticResults([]); return; 
+    }
     const q = query.toLowerCase();
-    setResults(graphData.nodes.filter(n => n.name.toLowerCase().includes(q) || n.category.toLowerCase().includes(q)).slice(0, 20));
+    
+    // 1. 精確匹配
+    setResults(graphData.nodes.filter(n => n.name.toLowerCase().includes(q) || n.category.toLowerCase().includes(q)).slice(0, 10));
+
+    // 2. 語義匹配 (Debounced)
+    const timer = setTimeout(() => {
+        if (query.length > 1) {
+            setIsSearchingSemantic(true);
+            fetch(`/api/search/semantic?q=${encodeURIComponent(query)}`)
+              .then(r => r.json())
+              .then(data => {
+                setSemanticResults(data.results || []);
+                setIsSearchingSemantic(false);
+              })
+              .catch(() => setIsSearchingSemantic(false));
+        }
+    }, 600);
+    return () => clearTimeout(timer);
   }, [query, graphData, onSearchChange]);
 
   const CAT_COLORS: Record<string, string> = { 實體: '#14866d', 概念: '#0645ad', 摘要: '#d33', 綜合: '#7b61ff' };
 
   return (
     <div>
-      <div style={{ position: 'relative', background: '#fff', border: '1px solid #a2a9b1', borderRadius: '2px', padding: '4px', marginBottom: '14px' }}>
-        <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#72777d' }} />
-        <input value={query} onChange={(e) => setQuery(e.target.value)} autoFocus placeholder="搜尋知識庫..."
-          style={{ width: '100%', padding: '9px 34px 9px 34px', backgroundColor: 'transparent', border: 'none', color: '#202122', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box', fontFamily: 'sans-serif' }} />
-        {query && <X size={15} onClick={() => setQuery('')} style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', color: '#72777d', cursor: 'pointer' }} />}
+      <div style={{ position: 'relative', background: '#fff', border: '1px solid #a2a9b1', borderRadius: '4px', padding: '4px', marginBottom: '14px', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#72777d' }} />
+        <input value={query} onChange={(e) => setQuery(e.target.value)} autoFocus placeholder="搜尋知識庫 (支援語義模糊搜尋)..."
+          style={{ width: '100%', padding: '10px 40px', backgroundColor: 'transparent', border: 'none', color: '#202122', fontSize: '1rem', outline: 'none', boxSizing: 'border-box' }} />
+        {query && <X size={16} onClick={() => setQuery('')} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: '#72777d', cursor: 'pointer' }} />}
       </div>
 
-      {query && results.length > 0 && (
-        <div style={{ background: '#fff', border: '1px solid #eaecf0', borderRadius: '2px', overflow: 'hidden' }}>
-          {results.map((node, i) => (
-            <div key={i} onClick={() => { if (node.path) onNodeClick(node); }}
-              style={{ padding: '7px 10px', cursor: node.path ? 'pointer' : 'default', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid #eaecf0' }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#eaf3ff')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-            >
-              <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: CAT_COLORS[node.category.split('_')[0]] || '#72777d' }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.82rem', color: '#0645ad', fontWeight: 500 }}>{node.name}</div>
+      {query && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', animation: 'fadeIn 0.3s ease' }}>
+          {/* 精確匹配欄 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ fontSize: '0.7rem', color: '#72777d', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>📌 精確匹配</div>
+            {results.length > 0 ? results.map((node, i) => (
+              <div key={i} onClick={() => onNodeClick(node)}
+                style={{ background: '#fff', border: '1px solid #eaecf0', borderRadius: '6px', padding: '10px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#eaf3ff')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#fff')}
+              >
+                <div style={{ fontSize: '0.86rem', color: '#0645ad', fontWeight: 600 }}>{node.name}</div>
                 <div style={{ fontSize: '0.68rem', color: '#72777d' }}>{node.category}</div>
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#72777d' }}>{node.links} 🔗</div>
+            )) : <div style={{ fontSize: '0.8rem', color: '#999', padding: '10px' }}>無直接匹配</div>}
+          </div>
+
+          {/* 語義智庫欄 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ fontSize: '0.7rem', color: '#0645ad', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <BrainCircuit size={12} /> 語義智庫推薦 {isSearchingSemantic && <RefreshCw size={10} className="spin" />}
             </div>
-          ))}
+            {semanticResults.length > 0 ? semanticResults.map((res, i) => (
+              <div key={i} onClick={() => onNodeClick({ path: res.path, name: res.title })}
+                style={{ background: '#f8f9fa', border: '1px solid #00f2ff33', borderRadius: '6px', padding: '10px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#00f2ff'; e.currentTarget.style.backgroundColor = '#fff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#00f2ff33'; e.currentTarget.style.backgroundColor = '#f8f9fa'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ fontSize: '0.86rem', color: '#202122', fontWeight: 600 }}>{res.title}</div>
+                    <div style={{ fontSize: '0.6rem', color: '#14866d', background: '#e6f7f1', padding: '1px 4px', borderRadius: '4px' }}>
+                        Match: {((1 - res.distance/1000) * 100).toFixed(0)}%
+                    </div>
+                </div>
+                <div style={{ fontSize: '0.68rem', color: '#72777d' }}>{res.path.split('/').pop()}</div>
+              </div>
+            )) : <div style={{ fontSize: '0.8rem', color: '#999', padding: '10px' }}>{isSearchingSemantic ? 'AI 正在大腦中檢索...' : '無語義相關結果'}</div>}
+          </div>
         </div>
       )}
 
-      {query && results.length === 0 && <div style={{ textAlign: 'center', padding: '28px', color: '#72777d' }}><div>找不到符合的結果</div></div>}
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
 
       {graphData && !query && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
@@ -212,15 +259,27 @@ function App() {
     }
   }, [selectedPath]);
 
-  // Handle Drawer Content
+  // Handle Drawer Content Asynchronously
   useEffect(() => {
+    let active = true;
     if (drawerPath) {
       setDrawerLoading(true);
       fetch(`/api/content?path=${encodeURIComponent(drawerPath)}`)
         .then(r => r.text())
-        .then(t => { setDrawerContent(t); setDrawerLoading(false); })
-        .catch(err => { console.error("[App] Failed to fetch drawer content:", err); setDrawerLoading(false); });
+        .then(t => { 
+          if (active) {
+            setDrawerContent(t); 
+            setDrawerLoading(false); 
+          }
+        })
+        .catch(err => { 
+          if (active) {
+            console.error("[App] Failed to fetch drawer content:", err); 
+            setDrawerLoading(false); 
+          }
+        });
     }
+    return () => { active = false; };
   }, [drawerPath]);
 
   const loadGraphData = useCallback(async () => {
@@ -282,6 +341,17 @@ function App() {
 
   const density = useMemo(() => graphData ? computeKnowledgeDensity(graphData) : null, [graphData]);
 
+  // Memoize markdown processing to prevent UI lag on long files
+  const processedContent = useMemo(() => {
+    if (!content) return '';
+    return content.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`);
+  }, [content]);
+
+  const processedDrawerContent = useMemo(() => {
+    if (!drawerContent) return '';
+    return drawerContent.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`);
+  }, [drawerContent]);
+
   const navButtonStyle = (mode: ViewMode): React.CSSProperties => ({
     padding: '6px 10px', borderRadius: '2px', border: viewMode === mode ? '1px solid #36c' : '1px solid #a2a9b1',
     backgroundColor: viewMode === mode ? '#eaf3ff' : '#f8f9fa',
@@ -295,8 +365,6 @@ function App() {
       loadGraphData();
     }
   }, [viewMode, loadGraphData, graphData]);
-
-  const processedContent = content.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`);
 
   // ==================== 目錄樹面板 ====================
   const TreePanel = ({ onNav }: { onNav?: boolean }) => (
@@ -357,7 +425,70 @@ function App() {
       </div>
 
       {/* 主內容區 */}
-      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        
+        {/* 全局 Content Drawer (v3.8 穩定版) */}
+        {drawerPath && (
+          <div style={{
+            position: 'absolute', top: 12, right: 12, bottom: 12, width: '450px',
+            background: 'rgba(10, 10, 20, 0.9)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)',
+            borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '-12px 0 48px rgba(0, 0, 0, 0.8)',
+            zIndex: 9999, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+            animation: 'slideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)'
+          }}>
+            <div style={{
+              padding: '18px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              background: 'rgba(255, 255, 255, 0.03)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <FileText size={18} color="#00f2ff" />
+                <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff', maxWidth: '320px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {drawerPath.split('/').pop()?.replace('.md', '')}
+                </span>
+              </div>
+              <button onClick={() => setDrawerPath(null)} style={{ background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', padding: '6px' }}>
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div style={{ flex: 1, overflowY: 'auto', padding: '28px 36px', color: '#eee' }}>
+              {drawerLoading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                  <div className="spin"><RefreshCw size={28} color="#00f2ff" /></div>
+                </div>
+              ) : (
+                <div className="drawer-markdown">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
+                    h1: ({ children }) => <h1 style={{ fontSize: '1.6rem', borderBottom: '2px solid #00f2ff33', paddingBottom: '10px', marginBottom: '20px', color: '#fff', fontWeight: 800 }}>{children}</h1>,
+                    h2: ({ children }) => <h2 style={{ fontSize: '1.3rem', marginTop: '28px', marginBottom: '14px', color: '#00f2ff', fontWeight: 700 }}>{children}</h2>,
+                    p: ({ children }) => <p style={{ fontSize: '0.92rem', lineHeight: 1.8, marginBottom: '14px', color: '#d1d5db' }}>{children}</p>,
+                    li: ({ children }) => <li style={{ fontSize: '0.92rem', marginBottom: '8px', color: '#d1d5db' }}>{children}</li>,
+                    code: ({ children }) => <code style={{ background: 'rgba(0,242,255,0.1)', padding: '2px 6px', borderRadius: '6px', fontSize: '0.85rem', color: '#00f2ff' }}>{children}</code>,
+                    pre: ({ children }) => <pre style={{ background: '#0a0a0f', padding: '16px', borderRadius: '12px', overflowX: 'auto', border: '1px solid #333', marginBottom: '20px' }}>{children}</pre>,
+                    a: ({ href, children }) => <a href={href} style={{ color: '#00f2ff', textDecoration: 'none', borderBottom: '1px dotted #00f2ff' }}>{children}</a>,
+                  }}>{processedDrawerContent}</ReactMarkdown>
+                </div>
+              )}
+            </div>
+            
+            <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.4)' }}>
+              <button 
+                onClick={() => { setSelectedPath(drawerPath); setViewMode('reader'); setDrawerPath(null); }}
+                style={{
+                  width: '100%', padding: '12px', background: 'linear-gradient(135deg, #36c, #258)', color: '#fff', border: 'none',
+                  borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  boxShadow: '0 4px 12px rgba(51, 102, 204, 0.3)'
+                }}
+              >
+                <ArrowUpRight size={16} /> 進入全屏閱讀器
+              </button>
+            </div>
+          </div>
+        )}
+
         {graphLoading ? (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#f8f9fa' }}>
             <div style={{ textAlign: 'center', color: '#54595d' }}><div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>⏳</div><div>正在解析知識圖譜...</div></div>
@@ -513,68 +644,6 @@ function App() {
         ) : viewMode === 'graph' && graphData ? (
           <div style={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
             <GraphView nodes={graphData.nodes} links={graphData.links} onNodeClick={handleGraphNodeClick} searchQuery={searchQuery} />
-            
-            {/* Content Drawer */}
-            {drawerPath && (
-              <div style={{
-                position: 'absolute', top: 12, right: 12, bottom: 12, width: '400px',
-                background: 'rgba(10, 10, 20, 0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
-                borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.6)',
-                zIndex: 1000, display: 'flex', flexDirection: 'column', overflow: 'hidden',
-                animation: 'slideIn 0.3s ease-out'
-              }}>
-                <div style={{
-                  padding: '16px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: 'rgba(255, 255, 255, 0.05)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <FileText size={16} color="#00f2ff" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', maxWidth: '280px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {drawerPath.split('/').pop()}
-                    </span>
-                  </div>
-                  <button onClick={() => setDrawerPath(null)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', padding: '4px' }}>
-                    <X size={18} />
-                  </button>
-                </div>
-                
-                <div style={{ flex: 1, overflowY: 'auto', padding: '24px 30px', color: '#eee' }}>
-                  {drawerLoading ? (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                      <div className="spin"><RefreshCw size={24} color="#00f2ff" /></div>
-                    </div>
-                  ) : (
-                    <div className="drawer-markdown">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
-                        h1: ({ children }) => <h1 style={{ fontSize: '1.5rem', borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '16px', color: '#fff' }}>{children}</h1>,
-                        h2: ({ children }) => <h2 style={{ fontSize: '1.25rem', marginTop: '24px', marginBottom: '12px', color: '#fff' }}>{children}</h2>,
-                        p: ({ children }) => <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '12px', color: '#ccc' }}>{children}</p>,
-                        li: ({ children }) => <li style={{ fontSize: '0.9rem', marginBottom: '6px', color: '#ccc' }}>{children}</li>,
-                        code: ({ children }) => <code style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.8rem', color: '#ff79c6' }}>{children}</code>,
-                        pre: ({ children }) => <pre style={{ background: '#111', padding: '12px', borderRadius: '8px', overflowX: 'auto', marginBottom: '16px' }}>{children}</pre>,
-                        a: ({ href, children }) => <a href={href} style={{ color: '#00f2ff', textDecoration: 'none', borderBottom: '1px dotted #00f2ff' }}>{children}</a>,
-                      }}>{drawerContent.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, (m, t) => `[${t}](wikilink:${t})`)}</ReactMarkdown>
-                    </div>
-                  )}
-                </div>
-                
-                <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.2)' }}>
-                  <button 
-                    onClick={() => { setSelectedPath(drawerPath); setViewMode('reader'); setDrawerPath(null); }}
-                    style={{
-                      width: '100%', padding: '8px', background: '#36c', color: '#fff', border: 'none',
-                      borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
-                    }}
-                  >
-                    <ArrowUpRight size={14} /> 在閱讀器中打開
-                  </button>
-                </div>
-              </div>
-            )}
-            
             <style>{`
               @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
               .drawer-markdown ul { padding-left: 20px; }
