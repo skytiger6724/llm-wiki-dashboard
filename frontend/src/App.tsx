@@ -157,7 +157,10 @@ const GlobalSearch = ({ graphData, onNodeClick, onSearchChange }: {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ fontSize: '0.7rem', color: '#72777d', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>📌 精確匹配</div>
             {results.length > 0 ? results.map((node, i) => (
-              <div key={i} onClick={() => onNodeClick(node)}
+              <div key={i} onClick={() => {
+                  console.log("[Search] Precise Match Clicked:", node.name, node.path);
+                  onNodeClick({ path: node.path, id: node.id, name: node.name });
+              }}
                 style={{ background: '#fff', border: '1px solid #eaecf0', borderRadius: '6px', padding: '10px 14px', cursor: 'pointer', transition: 'all 0.2s' }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#eaf3ff')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#fff')}
@@ -309,25 +312,27 @@ function App() {
   }, []);
 
   const handleGraphNodeClick = useCallback((node: any) => { 
-    console.log("[Graph] Node Clicked:", node.id || node.name);
+    const nodeName = node.name || node.id;
+    console.log("[Graph] Node Interaction:", nodeName);
     
-    // 優先使用節點自帶的 path (語義搜尋結果會帶)
+    // 優先使用節點自帶的 path
     let path = node.path;
     
-    // 如果沒有 path，嘗試從原始 graphData 中精確查找
+    // 如果沒有 path (例如從舊版圖譜來的節點)，嘗試從當前 graphData 中精確查找
     if (!path && graphData) {
-        const originalNode = graphData.nodes.find(n => 
+        const found = graphData.nodes.find(n => 
             (node.id && n.id === node.id) || 
-            (node.name && n.name === node.name)
+            (nodeName && n.name === nodeName)
         );
-        path = originalNode?.path;
+        path = found?.path;
     }
     
     if (path) { 
-      console.log("[Graph] Opening path in drawer:", path);
+      console.log("[Graph] Activating Content Drawer for:", path);
       setDrawerPath(path);
+      // 如果是在搜索中，我們可能希望保持在當前頁面
     } else {
-      console.warn("[Graph] No path found for node:", node);
+      console.warn("[Graph] Resolution Failed. Node data:", node);
     }
   }, [graphData]);
 
@@ -507,7 +512,7 @@ function App() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <BrainCircuit size={24} color="#0645ad" />
                   <h1 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#202122', margin: 0 }}>LLM Wiki Dashboard</h1>
-                  <span style={{ fontSize: '0.65rem', color: '#72777d', background: '#eaf3ff', padding: '1px 7px', borderRadius: '2px', fontWeight: 500 }}>v2.1</span>
+                  <span style={{ fontSize: '0.65rem', color: '#72777d', background: '#eaf3ff', padding: '1px 7px', borderRadius: '2px', fontWeight: 500 }}>v4.1.0</span>
                 </div>
                 <div style={{ fontSize: '0.82rem', color: '#54595d', marginBottom: '10px', lineHeight: 1.5 }}>
                   歡迎來到你的個人知識庫。編譯並展示了 <strong>{graphData?.count || '...'}</strong> 個知識節點，通過 <strong>{graphData?.links.length || '...'}</strong> 條關聯連結相互連接。

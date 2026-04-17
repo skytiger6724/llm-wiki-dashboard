@@ -252,18 +252,22 @@ app.get('/api/search/semantic', async (req, res) => {
         }
 
         try {
-            // 直接解析 Python 輸出的標準 JSON
-            const results = JSON.parse(resultData.trim());
+            // 魯棒性解析：尋找第一個 [ 的位置
+            const jsonStartIndex = resultData.indexOf('[');
+            const jsonEndIndex = resultData.lastIndexOf(']') + 1;
             
-            if (results.error) {
-                console.error(`❌ Python logic error: ${results.error}`);
-                return res.status(500).json({ error: results.error });
+            if (jsonStartIndex === -1) {
+                console.error(`❌ No valid JSON found in output. Raw: ${resultData}`);
+                return res.status(500).json({ error: 'Search engine returned invalid format' });
             }
 
+            const cleanJson = resultData.substring(jsonStartIndex, jsonEndIndex);
+            const results = JSON.parse(cleanJson);
+            
             console.log(`✅ [Semantic Search] Success. Found ${results.length} nodes.`);
             res.json({ results });
         } catch (e) {
-            console.error(`❌ JSON Parsing failed. Raw output: ${resultData}`);
+            console.error(`❌ JSON Parsing failed. Error: ${e.message}. Raw: ${resultData}`);
             res.status(500).json({ error: 'Data synchronization failure' });
         }
     });
