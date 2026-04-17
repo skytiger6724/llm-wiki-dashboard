@@ -226,7 +226,7 @@ app.get('/api/content', async (req, res) => {
 });
 
 // ============================================================
-// 語義搜尋接口 (Semantic RAG Bridge)
+// 語義搜尋接口 (Semantic RAG Bridge - v3.9 Robust Edition)
 // ============================================================
 app.get('/api/search/semantic', async (req, res) => {
     const query = req.query.q;
@@ -235,46 +235,39 @@ app.get('/api/search/semantic', async (req, res) => {
     console.log(`🧠 [Semantic Search] Bridging to Python: "${query}"`);
     
     const { spawn } = require('child_process');
-    // 使用之前建立的虛擬環境執行搜尋
     const pythonProcess = spawn('./venv/bin/python3', ['search_wiki.py', query], {
         cwd: __dirname
     });
 
     let resultData = '';
+    let errorData = '';
+
     pythonProcess.stdout.on('data', (data) => { resultData += data.toString(); });
+    pythonProcess.stderr.on('data', (data) => { errorData += data.toString(); });
     
     pythonProcess.on('close', (code) => {
         if (code !== 0) {
-            console.error(`❌ Python process exited with code ${code}`);
-            return res.status(500).json({ error: 'Search engine failure' });
+            console.error(`❌ Python process crashed: ${errorData}`);
+            return res.status(500).json({ error: 'Search engine internal error' });
         }
 
-        // 解析 Python 輸出 (增強版正則與路徑處理)
-        const lines = resultData.split('\n');
-        const results = [];
-        let currentItem = null;
-
-        lines.forEach(line => {
-            const cleanLine = line.trim();
-            // 匹配格式: "1. [filename.md] (Distance: 123.456)"
-            const resultMatch = cleanLine.match(/^\d+\.\s+\[(.*?)\]\s+\(Distance:\s+(.*?)\)/);
-
-            if (resultMatch) {
-                currentItem = { 
-                    title: resultMatch[1].replace('.md', ''), 
-                    distance: parseFloat(resultMatch[2]), 
-                    path: '' 
-                };
-                results.push(currentItem);
-            } else if (cleanLine.startsWith('Path:') && currentItem) {
-                currentItem.path = cleanLine.replace('Path:', '').trim();
+        try {
+            // 直接解析 Python 輸出的標準 JSON
+            const results = JSON.parse(resultData.trim());
+            
+            if (results.error) {
+                console.error(`❌ Python logic error: ${results.error}`);
+                return res.status(500).json({ error: results.error });
             }
-        });
 
-        console.log(`✅ [Semantic Search] Found ${results.length} relevant documents.`);
-        res.json({ results });
-        });
-        });
+            console.log(`✅ [Semantic Search] Success. Found ${results.length} nodes.`);
+            res.json({ results });
+        } catch (e) {
+            console.error(`❌ JSON Parsing failed. Raw output: ${resultData}`);
+            res.status(500).json({ error: 'Data synchronization failure' });
+        }
+    });
+});
 
 // 靜態文件
 if (fs.existsSync(FRONTEND_DIST)) {
