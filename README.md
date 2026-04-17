@@ -6,7 +6,7 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19-blue.svg)
-![Version](https://img.shields.io/badge/Version-3.1.0-blue.svg)
+![Version](https://img.shields.io/badge/Version-4.0.0-purple.svg)
 
 ---
 
@@ -14,17 +14,21 @@ A personal knowledge base dashboard inspired by **Andrej Karpathy's** [LLM Wiki 
 
 Instead of RAG-style retrieval that rediscovers knowledge from scratch on every query, the LLM **compiles** a persistent wiki — updating entity pages, revising summaries, flagging contradictions, and maintaining cross-references. This dashboard lets you browse, search, and visualize that wiki.
 
-## 🔥 Features (v3.1.0 Update)
+## 🔥 Features (v4.0.0 The Singularity Update)
 
-### ✨ Stellar Map Visual System
-- **Neon Aesthetic**: Pure black background with high-contrast glowing nodes and Aurora-inspired link colors.
-- **Advanced Rendering**: Custom Canvas-based radial gradients for stellar-style light effects.
-- **Dynamic Energy Flows**: Directional particles simulating knowledge transmission between nodes.
+### 🧠 Local RAG Semantic Engine
+- **Conceptual Discovery**: Beyond keyword matching. Find "High Dividend" notes by searching for "Investment Strategy".
+- **Ollama & ChromaDB Integration**: 100% local embedding and vector search for ultimate privacy.
+- **Node-Python Bridge**: High-performance JSON-based communication for reliable data retrieval.
 
-### 🗄️ Content Preview Drawer
-- **In-Graph Preview**: Click any node in the graph to slide out a glassmorphism drawer.
-- **Seamless Context**: Read full Markdown content without leaving the visual graph interface.
-- **One-Click Reader**: Transition to full reader mode directly from the preview drawer.
+### ✨ Stellar Map v3.6+
+- **Galactic Aesthetic**: Pure black canvas with glowing, size-responsive nodes.
+- **ResizeObserver Powered**: Pixel-perfect interaction alignment regardless of browser scaling.
+- **Dynamic Energy Particles**: Visualizing the pulse of your knowledge network.
+
+### 🗄️ Unified Content Drawer
+- **One-Click Reading**: Click any search result or graph node to instantly preview content via a persistent side drawer.
+- **Seamless Transition**: Move from visual exploration to deep reading in 0ms.
 
 ### 📂 Knowledge Directory Navigation
 - **Hierarchical Tree**: Expandable directories + clickable files

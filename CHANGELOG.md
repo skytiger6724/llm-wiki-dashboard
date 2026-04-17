@@ -4,6 +4,28 @@ All notable changes to LLM Wiki Dashboard.
 
 ---
 
+## [4.0.0] — 2026-04-17 (The Singularity Update)
+
+### Revolutionary Semantic Intelligence
+
+- **Local RAG Integration**: Full-text semantic search powered by **Ollama** (`nomic-embed-text`) and **ChromaDB**.
+- **Cross-Language Data Bridge**: Robust Node-Python bridge using standardized JSON communication.
+- **Persistent Vector Store**: Pre-indexed 3,544 nodes for sub-100ms conceptual retrieval.
+
+### Interaction & Visualization (v3.6+)
+
+- **Universal Content Drawer**: A centralized preview panel that works across Home, Graph, and Search views.
+- **ResizeObserver Architecture**: Rewrote the dimension engine to eliminate click-mapping drift and scale bugs.
+- **Performance Shield**: Implemented `React.memo` and segmented rendering to handle 4k+ nodes at 60fps.
+- **Stellar Map v3.6**: Aggressive node sizing and light-based radial gradients for max readability.
+
+### Reliability & Infrastructure
+
+- **Path Normalization**: Unified project directory structures for OneDrive/Cloud environments.
+- **Robustness Overhaul**: Defensive null-checks on D3 simulated attributes to prevent UI freezing.
+
+---
+
 ## [3.1.0] — 2026-04-16
 
 ### "Stellar Map" Aesthetic Overhaul
